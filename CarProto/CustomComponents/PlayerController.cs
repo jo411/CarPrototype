@@ -20,7 +20,7 @@ namespace CarProto.Custom_Components
         /// <returns>Cloned PlayerController instance.</returns>
         public override BaseComponent Clone()
         {
-            throw new NotImplementedException();
+            return new PlayerController();
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ using GeonBit.ECS.Components.Sound;
 using System.Diagnostics;
 
 using CarProto.Custom_Components;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace CarProto
 {
@@ -29,7 +30,7 @@ namespace CarProto
             InitParams.DebugMode = true;
             InitParams.EnableVsync = true;
             InitParams.Title = "New GeonBit Project";
-            InitParams.FullScreen = false;
+            InitParams.FullScreen = true;
         }
 
         /// <summary>
@@ -59,17 +60,28 @@ namespace CarProto
             /// Example 1: create UI text
             ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
 
-            /// Example 2: create camera and add to scene
-            GameObject cameraObject = new GameObject("camera", SceneNodeType.Simple);
-            cameraObject.AddComponent(new Camera());
-            cameraObject.SceneNode.PositionZ = 10;
-            cameraObject.Parent = ActiveScene.Root;
-
             /// Example 3: add 3d shape to scene
             shapeObject = new GameObject("shape");
-            shapeObject.AddComponent(new ShapeRenderer(ShapeMeshes.SphereSmooth));
+            Model carModel = Resources.GetModel("Models/Car");
+            shapeObject.AddComponent(new ModelRenderer(carModel));
             shapeObject.AddComponent(new PlayerController());
+            shapeObject.SceneNode.Rotation = new Vector3(90f * (MathHelper.Pi / 180), 0f, 0f);
+            shapeObject.SceneNode.Scale = new Vector3(0.025f, 0.025f, 0.025f);
             shapeObject.Parent = ActiveScene.Root;
+
+            GameObject backgroundObject = new GameObject("background");
+            Texture2D backgroundimage = Resources.GetTexture("Images/SpyHunter");
+            SceneBackground background = new SceneBackground(backgroundimage)
+            {
+                DrawMode = BackgroundDrawMode.Cover
+            };
+            backgroundObject.AddComponent(background);
+            backgroundObject.Parent = ActiveScene.Root;
+
+            GameObject cameraObject = new GameObject("camera", SceneNodeType.Simple);
+            cameraObject.AddComponent(new Camera());
+            cameraObject.SceneNode.PositionZ = 100;
+            cameraObject.Parent = ActiveScene.Root; //shapeObject
 
             // add diagnostic data paragraph to scene
             var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f, scale: 0.7f);
