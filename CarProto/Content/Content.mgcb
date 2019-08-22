@@ -1988,8 +1988,8 @@
 /processorParam:TextureFormat=Color
 /build:Images/SpyHunter.png
 
-#begin Models/MuscleCar.fbx
-/importer:FbxImporter
+#begin Models/MuscleCar.dae
+/importer:OpenAssetImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
@@ -2005,5 +2005,5 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
-/build:Models/MuscleCar.fbx
+/build:Models/MuscleCar.dae
 
