@@ -19,7 +19,9 @@ namespace CarProto
     /// </summary>
     internal class Game1 : GeonBitGame
     {
-        GameObject shapeObject;
+        GameObject carObject;
+        GameObject cameraObject;
+        GameObject trackObject;
 
         /// <summary>
         /// Initialize your GeonBitGame properties here.
@@ -45,8 +47,11 @@ namespace CarProto
             {
                 Exit();
             }
-
-            /// TBD add any custom Update functionality here.
+            else
+            {
+                cameraObject.SceneNode.Position = new Vector3(carObject.SceneNode.Position.X, carObject.SceneNode.Position.Y - 35, 30);
+                /// TBD add any custom Update functionality here.
+            }
         }
 
         /// <summary>
@@ -61,13 +66,20 @@ namespace CarProto
             ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
 
             /// Example 3: add 3d shape to scene
-            shapeObject = new GameObject("shape");
+            carObject = new GameObject("car");
             Model carModel = Resources.GetModel("Models/MuscleCar");
-            shapeObject.AddComponent(new ModelRenderer(carModel));
-            shapeObject.AddComponent(new PlayerController());
-            shapeObject.SceneNode.Rotation = new Vector3(0f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180));
-            shapeObject.SceneNode.Scale = new Vector3(1f, 1f, 1f);
-            shapeObject.Parent = ActiveScene.Root;
+            carObject.AddComponent(new ModelRenderer(carModel));
+            carObject.AddComponent(new PlayerController());
+            carObject.SceneNode.Rotation = new Vector3(0f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180));
+            carObject.Parent = ActiveScene.Root;
+
+            trackObject = new GameObject("track");
+            Model trackModel = Resources.GetModel("Models/Track");
+            trackObject.AddComponent(new ModelRenderer(trackModel));
+            trackObject.SceneNode.Rotation = new Vector3(0f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180));
+            trackObject.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
+            trackObject.Parent = ActiveScene.Root;
+            trackObject.SceneNode.Position = new Vector3(25f, -60f, 0f);
 
             GameObject backgroundObject = new GameObject("background");
             Texture2D backgroundimage = Resources.GetTexture("Images/SpyHunter");
@@ -78,10 +90,11 @@ namespace CarProto
             backgroundObject.AddComponent(background);
             backgroundObject.Parent = ActiveScene.Root;
 
-            GameObject cameraObject = new GameObject("camera", SceneNodeType.Simple);
+            cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
-            cameraObject.SceneNode.PositionZ = 100;
-            cameraObject.Parent = ActiveScene.Root; //shapeObject
+            cameraObject.SceneNode.PositionZ = 150;
+            cameraObject.SceneNode.Rotation = new Vector3(60f * (MathHelper.Pi / 180), 0f * (MathHelper.Pi / 180), 0f * (MathHelper.Pi / 180));
+            cameraObject.Parent = ActiveScene.Root;
 
             // add diagnostic data paragraph to scene
             var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f, scale: 0.7f);
