@@ -1,5 +1,4 @@
 ﻿using CarProto.Custom_Components;
-using CarProto.CustomComponents;
 using GeonBit;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
@@ -107,7 +106,7 @@ namespace CarProto
             ActiveScene.UserInterface.AddEntity(diagnosticData);
 
             //addGrid();
-            addGui();
+            //addGui();
         }
         void addGui()
         {
@@ -118,8 +117,7 @@ namespace CarProto
             // add title and text
             panel.AddChild(new Header("Death 'N' Derby"));
             panel.AddChild(new HorizontalLine());
-            var richParagraph = new Paragraph(@"This text will have default color, but {{RED}}this part will be red{{DEFAULT}}.
-                            This text will have regular weight, but {{BOLD}}this part will be bold{{DEFAULT}}.");
+            var richParagraph = new Paragraph("Cars!");
             panel.AddChild(richParagraph);
 
             // add a button at the bottom
