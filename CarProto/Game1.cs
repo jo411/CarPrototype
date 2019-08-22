@@ -118,7 +118,7 @@ namespace CarProto
             panel.AddChild(new HorizontalLine());
             var richParagraph = new Paragraph(@"This text will have default color, but {{RED}}this part will be red{{DEFAULT}}.
                             This text will have regular weight, but {{BOLD}}this part will be bold{{DEFAULT}}.");
-            panel.AddChild(new Paragraph("This is a simple panel with a button."));
+            panel.AddChild(richParagraph);
 
             // add a button at the bottom
             panel.AddChild(new Button("Click Me!", ButtonSkin.Default, Anchor.BottomCenter));
