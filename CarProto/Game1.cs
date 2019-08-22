@@ -8,9 +8,11 @@ using GeonBit.ECS.Components.Particles;
 using GeonBit.ECS.Components.Physics;
 using GeonBit.ECS.Components.Sound;
 using System.Diagnostics;
+using GeonBit.Core.Graphics.Materials;
 
 using CarProto.Custom_Components;
 using Microsoft.Xna.Framework.Graphics;
+using CarProto.CustomComponents;
 
 namespace CarProto
 {
@@ -20,7 +22,7 @@ namespace CarProto
     internal class Game1 : GeonBitGame
     {
         GameObject shapeObject;
-
+        
         /// <summary>
         /// Initialize your GeonBitGame properties here.
         /// </summary>
@@ -64,6 +66,7 @@ namespace CarProto
             shapeObject = new GameObject("shape");
             Model carModel = Resources.GetModel("Models/MuscleCar");
             shapeObject.AddComponent(new ModelRenderer(carModel));
+            shapeObject.Name = "player";
             shapeObject.AddComponent(new PlayerController());
             shapeObject.SceneNode.Rotation = new Vector3(0f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180));
             shapeObject.SceneNode.Scale = new Vector3(1f, 1f, 1f);
@@ -73,16 +76,24 @@ namespace CarProto
             Texture2D backgroundimage = Resources.GetTexture("Images/SpyHunter");
             SceneBackground background = new SceneBackground(backgroundimage)
             {
-                DrawMode = BackgroundDrawMode.Cover
+                DrawMode = BackgroundDrawMode.Tiled
             };
             backgroundObject.AddComponent(background);
             backgroundObject.Parent = ActiveScene.Root;
 
             GameObject cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
-            cameraObject.SceneNode.PositionZ = 100;
-            cameraObject.Parent = ActiveScene.Root; //shapeObject
+            cameraObject.AddComponent(new CameraFollow());
+            cameraObject.SceneNode.Rotation = new Vector3(util.degToRad(45), util.degToRad(0), util.degToRad(0));
 
+            CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
+            cf.setOffset(new Vector3(0,-50,50));
+            cf.dampingStrength = .07f;
+
+
+            cameraObject.Parent = ActiveScene.Root; //shapeObject
+            
+           // cameraObject.AddComponent(new PlayerController());
             // add diagnostic data paragraph to scene
             var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f, scale: 0.7f);
             diagnosticData.BeforeDraw = (GeonBit.UI.Entities.Entity entity) =>
@@ -90,8 +101,23 @@ namespace CarProto
                 diagnosticData.Text = Managers.Diagnostic.GetReportString();
             };
             ActiveScene.UserInterface.AddEntity(diagnosticData);
+
+            addGrid();
         }
 
+        void addGrid()
+        {
+            GameObject gridObject;
+            gridObject = new GameObject("shape");
+            Model planeModel = Resources.GetModel("GeonBit.Core/BasicMeshes/Plane");            
+            gridObject.AddComponent(new ModelRenderer(planeModel));
+            Texture2D gridTex = Resources.GetTexture("Images/grid");            
+            gridObject.GetComponent<ModelRenderer>().GetMaterials()[0].Texture=gridTex;
+            gridObject.GetComponent<ModelRenderer>().GetMaterials()[0].TextureEnabled = true;
+            gridObject.SceneNode.Rotation = new Vector3(util.degToRad(0), util.degToRad(0), util.degToRad(0));
+             gridObject.SceneNode.Scale = new Vector3(50, 50, 1);
+            gridObject.Parent = ActiveScene.Root;
+        }
         /// <summary>
         /// Draw function to implement per main type.
         /// </summary>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/u0936149/Documents/Visual Studio 2017/Projects/CarPrototype/CarProto/Content/GeonBit.Core/Textures/Skybox.png</SourceFile>
-  <SourceTime>2019-08-22T08:51:01.5087598-06:00</SourceTime>
+  <SourceTime>2019-08-22T11:44:37.7995316-06:00</SourceTime>
   <DestFile>C:/Users/u0936149/Documents/Visual Studio 2017/Projects/CarPrototype/CarProto/Content/bin/DesktopGL/GeonBit.Core/Textures/Skybox.xnb</DestFile>
-  <DestTime>2019-08-22T10:58:21.2563262-06:00</DestTime>
+  <DestTime>2019-08-22T11:45:19.1153161-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
