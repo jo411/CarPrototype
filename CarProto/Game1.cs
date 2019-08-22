@@ -7,6 +7,9 @@ using GeonBit.ECS.Components.Misc;
 using GeonBit.ECS.Components.Particles;
 using GeonBit.ECS.Components.Physics;
 using GeonBit.ECS.Components.Sound;
+using System.Diagnostics;
+
+using CarProto.Custom_Components;
 
 namespace CarProto
 {
@@ -15,6 +18,8 @@ namespace CarProto
     /// </summary>
     internal class Game1 : GeonBitGame
     {
+        GameObject shapeObject;
+
         /// <summary>
         /// Initialize your GeonBitGame properties here.
         /// </summary>
@@ -55,14 +60,15 @@ namespace CarProto
             ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
 
             /// Example 2: create camera and add to scene
-            GameObject cameraObject = new GameObject("camera");
+            GameObject cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
-            cameraObject.SceneNode.PositionZ = 5;
+            cameraObject.SceneNode.PositionZ = 10;
             cameraObject.Parent = ActiveScene.Root;
 
             /// Example 3: add 3d shape to scene
-            GameObject shapeObject = new GameObject("shape");
+            shapeObject = new GameObject("shape");
             shapeObject.AddComponent(new ShapeRenderer(ShapeMeshes.SphereSmooth));
+            shapeObject.AddComponent(new PlayerController());
             shapeObject.Parent = ActiveScene.Root;
 
             // add diagnostic data paragraph to scene
