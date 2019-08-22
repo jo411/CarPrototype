@@ -12,7 +12,7 @@ namespace CarProto.Custom_Components
     /// </summary>
     class PlayerController : BaseComponent
     {
-        private float movingSpeed = 10f;
+        private readonly float movingSpeed = 20f;
 
         /// <summary>
         /// Clone this component.

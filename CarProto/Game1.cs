@@ -62,11 +62,11 @@ namespace CarProto
 
             /// Example 3: add 3d shape to scene
             shapeObject = new GameObject("shape");
-            Model carModel = Resources.GetModel("Models/Car");
+            Model carModel = Resources.GetModel("Models/MuscleCar");
             shapeObject.AddComponent(new ModelRenderer(carModel));
             shapeObject.AddComponent(new PlayerController());
-            shapeObject.SceneNode.Rotation = new Vector3(90f * (MathHelper.Pi / 180), 0f, 0f);
-            shapeObject.SceneNode.Scale = new Vector3(0.025f, 0.025f, 0.025f);
+            shapeObject.SceneNode.Rotation = new Vector3(0f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180));
+            shapeObject.SceneNode.Scale = new Vector3(1f, 1f, 1f);
             shapeObject.Parent = ActiveScene.Root;
 
             GameObject backgroundObject = new GameObject("background");
