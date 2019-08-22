@@ -68,7 +68,7 @@ namespace CarProto
             shapeObject.AddComponent(new ModelRenderer(carModel));
             shapeObject.Name = "player";
             shapeObject.AddComponent(new PlayerController());
-            shapeObject.SceneNode.Rotation = new Vector3(0f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180));
+            shapeObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
             shapeObject.SceneNode.Scale = new Vector3(1f, 1f, 1f);
             shapeObject.Parent = ActiveScene.Root;
 
@@ -89,7 +89,7 @@ namespace CarProto
             CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
             cf.setOffset(new Vector3(0,-50,50));
             cf.dampingStrength = .07f;
-
+            
 
             cameraObject.Parent = ActiveScene.Root; //shapeObject
             
