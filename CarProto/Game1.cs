@@ -13,6 +13,8 @@ using GeonBit.Core.Graphics.Materials;
 using CarProto.Custom_Components;
 using Microsoft.Xna.Framework.Graphics;
 using CarProto.CustomComponents;
+using GeonBit.UI.Entities;
+using GeonBit.UI;
 
 namespace CarProto
 {
@@ -84,16 +86,16 @@ namespace CarProto
             GameObject cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
             cameraObject.AddComponent(new CameraFollow());
-            cameraObject.SceneNode.Rotation = new Vector3(util.degToRad(45), util.degToRad(0), util.degToRad(0));
+            cameraObject.SceneNode.Rotation = new Vector3(util.degToRad(60), util.degToRad(0), util.degToRad(0));
 
             CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
-            cf.setOffset(new Vector3(0,-50,50));
+            cf.setOffset(new Vector3(0, -50, 30));
             cf.dampingStrength = .07f;
-            
+
 
             cameraObject.Parent = ActiveScene.Root; //shapeObject
-            
-           // cameraObject.AddComponent(new PlayerController());
+
+            // cameraObject.AddComponent(new PlayerController());
             // add diagnostic data paragraph to scene
             var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f, scale: 0.7f);
             diagnosticData.BeforeDraw = (GeonBit.UI.Entities.Entity entity) =>
@@ -103,6 +105,23 @@ namespace CarProto
             ActiveScene.UserInterface.AddEntity(diagnosticData);
 
             addGrid();
+            addGui();
+        }
+        void addGui()
+        {
+            // create a panel and position in center of screen
+            Panel panel = new Panel(new Vector2(400, 400), PanelSkin.Default, Anchor.CenterLeft);
+            UserInterface.Active.AddEntity(panel);
+
+            // add title and text
+            panel.AddChild(new Header("Death 'N' Derby"));
+            panel.AddChild(new HorizontalLine());
+            var richParagraph = new Paragraph(@"This text will have default color, but {{RED}}this part will be red{{DEFAULT}}.
+                            This text will have regular weight, but {{BOLD}}this part will be bold{{DEFAULT}}.");
+            panel.AddChild(new Paragraph("This is a simple panel with a button."));
+
+            // add a button at the bottom
+            panel.AddChild(new Button("Click Me!", ButtonSkin.Default, Anchor.BottomCenter));
         }
 
         void addGrid()
@@ -115,9 +134,10 @@ namespace CarProto
             gridObject.GetComponent<ModelRenderer>().GetMaterials()[0].Texture=gridTex;
             gridObject.GetComponent<ModelRenderer>().GetMaterials()[0].TextureEnabled = true;
             gridObject.SceneNode.Rotation = new Vector3(util.degToRad(0), util.degToRad(0), util.degToRad(0));
-             gridObject.SceneNode.Scale = new Vector3(50, 50, 1);
+            gridObject.SceneNode.Scale = new Vector3(100, 100, 1);
             gridObject.Parent = ActiveScene.Root;
         }
+
         /// <summary>
         /// Draw function to implement per main type.
         /// </summary>
