@@ -1,15 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CarProto.Custom_Components;
+using CarProto.CustomComponents;
 using GeonBit;
 using GeonBit.ECS;
-using GeonBit.ECS.Components;
 using GeonBit.ECS.Components.Graphics;
-using GeonBit.ECS.Components.Misc;
-using GeonBit.ECS.Components.Particles;
-using GeonBit.ECS.Components.Physics;
-using GeonBit.ECS.Components.Sound;
-using System.Diagnostics;
-
-using CarProto.Custom_Components;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace CarProto
@@ -49,7 +43,7 @@ namespace CarProto
             }
             else
             {
-                cameraObject.SceneNode.Position = new Vector3(carObject.SceneNode.Position.X, carObject.SceneNode.Position.Y - 35, 30);
+                //cameraObject.SceneNode.Position = new Vector3(carObject.SceneNode.Position.X, carObject.SceneNode.Position.Y - 35, 30);
                 /// TBD add any custom Update functionality here.
             }
         }
@@ -66,17 +60,17 @@ namespace CarProto
             ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
 
             /// Example 3: add 3d shape to scene
-            carObject = new GameObject("car");
+            carObject = new GameObject("player");
             Model carModel = Resources.GetModel("Models/MuscleCar");
             carObject.AddComponent(new ModelRenderer(carModel));
             carObject.AddComponent(new PlayerController());
-            carObject.SceneNode.Rotation = new Vector3(0f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180));
+            carObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
             carObject.Parent = ActiveScene.Root;
 
             trackObject = new GameObject("track");
             Model trackModel = Resources.GetModel("Models/Track");
             trackObject.AddComponent(new ModelRenderer(trackModel));
-            trackObject.SceneNode.Rotation = new Vector3(0f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180), 270f * (MathHelper.Pi / 180));
+            trackObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
             trackObject.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
             trackObject.Parent = ActiveScene.Root;
             trackObject.SceneNode.Position = new Vector3(25f, -60f, 0f);
@@ -85,17 +79,23 @@ namespace CarProto
             Texture2D backgroundimage = Resources.GetTexture("Images/SpyHunter");
             SceneBackground background = new SceneBackground(backgroundimage)
             {
-                DrawMode = BackgroundDrawMode.Cover
+                DrawMode = BackgroundDrawMode.Tiled
             };
             backgroundObject.AddComponent(background);
             backgroundObject.Parent = ActiveScene.Root;
 
             cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
-            cameraObject.SceneNode.PositionZ = 150;
-            cameraObject.SceneNode.Rotation = new Vector3(60f * (MathHelper.Pi / 180), 0f * (MathHelper.Pi / 180), 0f * (MathHelper.Pi / 180));
+            cameraObject.AddComponent(new CameraFollow());
+            cameraObject.SceneNode.Rotation = new Vector3(util.degToRad(60), util.degToRad(0), util.degToRad(0));
             cameraObject.Parent = ActiveScene.Root;
 
+            CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
+            cf.offset = new Vector3(0, -35, 30);
+            cf.dampingStrength = .07f;
+
+
+            // cameraObject.AddComponent(new PlayerController());
             // add diagnostic data paragraph to scene
             var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f, scale: 0.7f);
             diagnosticData.BeforeDraw = (GeonBit.UI.Entities.Entity entity) =>
@@ -103,6 +103,22 @@ namespace CarProto
                 diagnosticData.Text = Managers.Diagnostic.GetReportString();
             };
             ActiveScene.UserInterface.AddEntity(diagnosticData);
+
+            //addGrid();
+        }
+
+        void addGrid()
+        {
+            GameObject gridObject;
+            gridObject = new GameObject("shape");
+            Model planeModel = Resources.GetModel("GeonBit.Core/BasicMeshes/Plane");
+            gridObject.AddComponent(new ModelRenderer(planeModel));
+            Texture2D gridTex = Resources.GetTexture("Images/grid");
+            gridObject.GetComponent<ModelRenderer>().GetMaterials()[0].Texture = gridTex;
+            gridObject.GetComponent<ModelRenderer>().GetMaterials()[0].TextureEnabled = true;
+            gridObject.SceneNode.Rotation = new Vector3(util.degToRad(0), util.degToRad(0), util.degToRad(0));
+            gridObject.SceneNode.Scale = new Vector3(50, 50, 1);
+            gridObject.Parent = ActiveScene.Root;
         }
 
         /// <summary>
