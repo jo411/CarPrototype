@@ -80,6 +80,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CustomComponents\AudioManager.cs" />
     <Compile Include="CustomComponents\CameraFollow.cs" />
     <Compile Include="CustomComponents\PlayerController.cs" />
     <Compile Include="Game1.cs" />

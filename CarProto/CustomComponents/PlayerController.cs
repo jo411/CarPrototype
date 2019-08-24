@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace CarProto.Custom_Components
+namespace CarProto.CustomComponents
 {
     /// <summary>
     /// A component to move the sphere using the game controls.

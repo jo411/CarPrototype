@@ -1,4 +1,4 @@
-﻿using CarProto.Custom_Components;
+﻿using CarProto.CustomComponents;
 using GeonBit;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;

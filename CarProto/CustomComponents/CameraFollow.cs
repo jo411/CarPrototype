@@ -2,7 +2,7 @@
 using GeonBit.ECS.Components;
 using Microsoft.Xna.Framework;
 
-namespace CarProto.Custom_Components
+namespace CarProto.CustomComponents
 {
     class CameraFollow : BaseComponent
     {
