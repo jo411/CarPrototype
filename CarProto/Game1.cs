@@ -28,7 +28,7 @@ namespace CarProto
             InitParams.UiTheme = "hd";
             InitParams.DebugMode = true;
             InitParams.EnableVsync = true;
-            InitParams.Title = "New GeonBit Project";
+            InitParams.Title = "Death 'N' Derby";
             InitParams.FullScreen = true;
         }
 
@@ -46,7 +46,7 @@ namespace CarProto
             }
             else
             {
-                //cameraObject.SceneNode.Position = new Vector3(carObject.SceneNode.Position.X, carObject.SceneNode.Position.Y - 35, 30);
+                
                 /// TBD add any custom Update functionality here.
             }
         }
@@ -77,7 +77,7 @@ namespace CarProto
             Model trackModel = Resources.GetModel("Models/Track");
             trackObject.AddComponent(new ModelRenderer(trackModel));
             trackObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
-            trackObject.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
+            trackObject.SceneNode.Scale = new Vector3(.50f, .25f, .25f);
             trackObject.Parent = ActiveScene.Root;
             trackObject.SceneNode.Position = new Vector3(25f, -60f, 0f);
 
@@ -124,7 +124,7 @@ namespace CarProto
         void addGameGui()
         {
            
-            Panel panel = new Panel(new Vector2(1200, 100), PanelSkin.Golden, Anchor.TopCenter);           
+            Panel panel = new Panel(new Vector2(600, 100), PanelSkin.Golden, Anchor.TopCenter);           
 
             Paragraph timeDisplay = new Paragraph("", Anchor.Center);
             Paragraph speedDisplay = new Paragraph("", Anchor.CenterLeft);
@@ -160,13 +160,19 @@ namespace CarProto
             // add title and text
             panel.AddChild(new Header("   Welcome to \nDeath 'N' Derby!"));
             panel.AddChild(new HorizontalLine());
-            var richParagraph = new Paragraph("Reach the end of the track without dying in a blaze of glory!\n\n" +
+            var tutorialText = new Paragraph("Reach the end of the track without dying in a blaze of glory!\n\n" +
                                                 "Use A and D to steer side to side to avoid objects.\n\n" +
                                                 "Be careful not to take too much damage or you may find steering difficult...");
-            panel.AddChild(richParagraph);
+            panel.AddChild(tutorialText);
 
             // add a button at the bottom
-            panel.AddChild(new Button("Click to hide!", ButtonSkin.Default, Anchor.BottomCenter));
+
+            Button closeTut = new Button("Click to hide!", ButtonSkin.Fancy, Anchor.BottomCenter);
+            closeTut.OnClick = (Entity btn) =>
+            {
+                btn.Parent.Visible = false;
+            };
+            panel.AddChild(closeTut);
         }
 
         void addGrid()

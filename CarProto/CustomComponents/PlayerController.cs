@@ -20,7 +20,8 @@ namespace CarProto.CustomComponents
         public float movingSpeed { get; private set; } = 20f;
         public float damage {  get;  set; }
         public float weight { get; set; }
-        
+
+        public bool freeControl = false;
 
         /// <summary>
         /// Clone this component.
@@ -36,16 +37,24 @@ namespace CarProto.CustomComponents
         /// </summary>
         protected override void OnUpdate()
         {
-            // Move up
-            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Forward))
+            if(freeControl)
             {
-                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor*(movingSpeed * damageShift());
+                // Move up
+                if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Forward))
+                {
+                    _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * (movingSpeed * damageShift());
+                }
+                // Move down
+                if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Backward))
+                {
+                    _GameObject.SceneNode.PositionY -= Managers.TimeManager.TimeFactor * movingSpeed;
+                }
             }
-            // Move down
-            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Backward))
+            else
             {
-                _GameObject.SceneNode.PositionY -= Managers.TimeManager.TimeFactor * movingSpeed ;
+                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * (movingSpeed * damageShift());//AutoForward
             }
+        
             // Move left
             if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Left))
             {
@@ -70,7 +79,7 @@ namespace CarProto.CustomComponents
             if (Managers.GameInput.IsKeyPressed(GeonBit.Input.GameKeys.Jump))
             {
                 addDamage(10);
-                damage = Math.Min(90, damage);
+                damage = Math.Min(99, damage);
                 
             }
 
@@ -82,7 +91,7 @@ namespace CarProto.CustomComponents
         /// </summary>
         void updateSpeed()
         {
-            movingSpeed += weight / 800;
+            movingSpeed += weight / 1000;
         }
 
         /// <summary>

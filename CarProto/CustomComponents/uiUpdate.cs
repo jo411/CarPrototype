@@ -39,19 +39,46 @@ namespace CarProto.CustomComponents
         /// </summary>
         protected override void OnUpdate()
         {
-            timeDisplay.Text = getFormattedTimeString();
-            damageDisplay.Text = pc.damage.ToString()+"% Damaged";
-            speedDisplay.Text = pc.movingSpeed.ToString("####.#") + "MPH";
-          
+            updateSpeedDisplay();
+            updateTimeDisplay();
+            updateDamageDisplay();    
+            
+        }
+
+        private void updateTimeDisplay()
+        {
+            TimeSpan current = Managers.TimeManager.TotalTime;
+            timeDisplay.Text = current.ToString(@"mm\:ss\:ff");
+
             timeDisplay.MarkAsDirty();
-            damageDisplay.MarkAsDirty();
+        }
+
+        private void updateSpeedDisplay()
+        {
+            speedDisplay.Text = pc.movingSpeed.ToString("####.#") + " MPH";
             speedDisplay.MarkAsDirty();
         }
 
-        private string getFormattedTimeString()
-        {
-            TimeSpan current = Managers.TimeManager.TotalTime;
-            return current.ToString(@"mm\:ss\:ff");            
+        private void updateDamageDisplay()
+        {            
+            float damage = pc.damage;
+            damageDisplay.Text =damage.ToString() + "% Damaged";
+            
+
+            if(damage<50)
+            {
+                damageDisplay.FillColor = Microsoft.Xna.Framework.Color.Green;
+            }
+            else if(damage <75)
+            {
+                damageDisplay.FillColor = Microsoft.Xna.Framework.Color.Yellow;
+            }
+            else
+            {
+                damageDisplay.FillColor = Microsoft.Xna.Framework.Color.Red;
+            }
+
+            damageDisplay.MarkAsDirty();
         }
     }
 }
