@@ -83,6 +83,7 @@
     <Compile Include="CustomComponents\AudioManager.cs" />
     <Compile Include="CustomComponents\CameraFollow.cs" />
     <Compile Include="CustomComponents\PlayerController.cs" />
+    <Compile Include="CustomComponents\uiUpdate.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

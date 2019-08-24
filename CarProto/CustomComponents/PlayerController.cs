@@ -13,11 +13,15 @@ namespace CarProto.CustomComponents
     /// </summary>
     class PlayerController : BaseComponent
     {
-        private readonly float movingSpeed = 20f;
+         
         private float turningAngle = 25f;
         private int turnState = 1; //0 Left | 1 Straight | 2 Right
 
-        private float damage = 0;
+        public float movingSpeed { get; private set; } = 20f;
+        public float damage {  get;  set; }
+        public float weight { get; set; }
+        
+
         /// <summary>
         /// Clone this component.
         /// </summary>
@@ -70,6 +74,15 @@ namespace CarProto.CustomComponents
                 
             }
 
+            updateSpeed();
+        }
+
+        /// <summary>
+        /// Slowly increase speed
+        /// </summary>
+        void updateSpeed()
+        {
+            movingSpeed += weight / 800;
         }
 
         /// <summary>

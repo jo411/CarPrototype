@@ -2,6 +2,7 @@
 using GeonBit;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
+using GeonBit.ECS.Components.Sound;
 using GeonBit.UI;
 using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
@@ -18,6 +19,7 @@ namespace CarProto
         GameObject cameraObject;
         GameObject trackObject;
 
+        bool showTutorial = true; 
         /// <summary>
         /// Initialize your GeonBitGame properties here.
         /// </summary>
@@ -58,13 +60,16 @@ namespace CarProto
             /// The code below contains a simple example of how to use UI, camera, and basic entity renderer.
 
             /// Example 1: create UI text
-            ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
+            //ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
 
             /// Example 3: add 3d shape to scene
             carObject = new GameObject("player");
             Model carModel = Resources.GetModel("Models/MuscleCar");
             carObject.AddComponent(new ModelRenderer(carModel));
-            carObject.AddComponent(new PlayerController());
+            PlayerController pc = new PlayerController();
+            pc.weight = 10;
+            
+            carObject.AddComponent(pc);
             carObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
             carObject.Parent = ActiveScene.Root;
 
@@ -106,22 +111,62 @@ namespace CarProto
             ActiveScene.UserInterface.AddEntity(diagnosticData);
 
             //addGrid();
-            //addGui();
+            if(showTutorial)
+            {
+                addTutorialGui();
+            }
+
+            addSound();
+            addGameGui();
+            
         }
-        void addGui()
+
+        void addGameGui()
+        {
+           
+            Panel panel = new Panel(new Vector2(1200, 100), PanelSkin.Golden, Anchor.TopCenter);           
+
+            Paragraph timeDisplay = new Paragraph("", Anchor.Center);
+            Paragraph speedDisplay = new Paragraph("", Anchor.CenterLeft);
+            Paragraph damageDisplay = new Paragraph("", Anchor.CenterRight);
+
+            panel.AddChild(timeDisplay);
+            panel.AddChild(speedDisplay);
+            panel.AddChild(damageDisplay);
+
+            GameObject uiManager = new GameObject("ui");
+            uiUpdate ui = new uiUpdate(timeDisplay, damageDisplay, speedDisplay);
+            uiManager.AddComponent(ui);
+            uiManager.Parent = ActiveScene.Root;
+
+
+            UserInterface.Active.AddEntity(panel);            
+
+        }
+
+        void addSound()
+        {           
+            GameObject backMusic = new GameObject("background_music");
+            backMusic.AddComponent(new BackgroundMusic("Audio/BGM"));
+            backMusic.Parent = ActiveScene.Root;
+            backMusic.GetComponent<BackgroundMusic>().Play();
+        }
+        void addTutorialGui()
         {
             // create a panel and position in center of screen
-            Panel panel = new Panel(new Vector2(400, 400), PanelSkin.Default, Anchor.CenterLeft);
+            Panel panel = new Panel(new Vector2(400, 600), PanelSkin.Default, Anchor.CenterLeft);
             UserInterface.Active.AddEntity(panel);
 
             // add title and text
-            panel.AddChild(new Header("Death 'N' Derby"));
+            panel.AddChild(new Header("   Welcome to \nDeath 'N' Derby!"));
             panel.AddChild(new HorizontalLine());
-            var richParagraph = new Paragraph("Cars!");
+            var richParagraph = new Paragraph("Reach the end of the track without dying in a blaze of glory!\n\n" +
+                                                "Use A and D to steer side to side to avoid objects.\n\n" +
+                                                "Be careful not to take too much damage or you may find steering difficult...");
             panel.AddChild(richParagraph);
 
             // add a button at the bottom
-            panel.AddChild(new Button("Click Me!", ButtonSkin.Default, Anchor.BottomCenter));
+            panel.AddChild(new Button("Click to hide!", ButtonSkin.Default, Anchor.BottomCenter));
         }
 
         void addGrid()

@@ -2038,3 +2038,9 @@
 /processorParam:TextureFormat=Color
 /build:Images/grid.png
 
+#begin Audio/BGM.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/BGM.mp3
+

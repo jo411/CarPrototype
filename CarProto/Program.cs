@@ -12,7 +12,7 @@ namespace CarProto
         /// </summary>
         [STAThread]
         static void Main()
-        {
+      {
             // execute GeonBit with Game1 instance.
             GeonBit.GeonBitMain.Instance.Run(new Game1());
         }
