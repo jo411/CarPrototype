@@ -18,6 +18,8 @@ namespace CarProto
         GameObject carObject;
         GameObject cameraObject;
         GameObject trackObject;
+        GameObject gameManager;
+        gameManager gm;
 
         bool showTutorial = true; 
         /// <summary>
@@ -46,7 +48,10 @@ namespace CarProto
             }
             else
             {
-                
+                if(gm.isGameOver())
+                {
+                    //ActiveScene.Root.Find("ui").GetComponent<uiUpdate>().DisplayGameOver();
+                }
                 /// TBD add any custom Update functionality here.
             }
         }
@@ -56,12 +61,10 @@ namespace CarProto
         /// </summary>
         override public void Initialize()
         {
-            /// TBD create your scene, components and init resources here.
-            /// The code below contains a simple example of how to use UI, camera, and basic entity renderer.
-
-            /// Example 1: create UI text
-            //ActiveScene.UserInterface.AddEntity(new GeonBit.UI.Entities.Paragraph("Welcome to GeonBit! Here's a sphere:"));
-
+            gameManager = new GameObject("gameManager");
+            gm = new gameManager();
+            gameManager.AddComponent(gm);
+            
             /// Example 3: add 3d shape to scene
             carObject = new GameObject("player");
             Model carModel = Resources.GetModel("Models/MuscleCar");
@@ -124,24 +127,32 @@ namespace CarProto
         void addGameGui()
         {
            
-            Panel panel = new Panel(new Vector2(600, 100), PanelSkin.Golden, Anchor.TopCenter);           
+            Panel statPanel = new Panel(new Vector2(600, 100), PanelSkin.Golden, Anchor.TopCenter);           
 
             Paragraph timeDisplay = new Paragraph("", Anchor.Center);
             Paragraph speedDisplay = new Paragraph("", Anchor.CenterLeft);
             Paragraph damageDisplay = new Paragraph("", Anchor.CenterRight);
 
-            panel.AddChild(timeDisplay);
-            panel.AddChild(speedDisplay);
-            panel.AddChild(damageDisplay);
+            statPanel.AddChild(timeDisplay);
+            statPanel.AddChild(speedDisplay);
+            statPanel.AddChild(damageDisplay);
+
+
+            Panel gameOverPanel = new Panel(new Vector2(500, 500), PanelSkin.Fancy, Anchor.Center);
+            Paragraph gameOverText = new Paragraph("Oh no thats a Game Over for you! \n" +
+                                                   "Someone may want to call the medics...");
+            gameOverPanel.AddChild(gameOverText);
+            gameOverPanel.Visible = false;
 
             GameObject uiManager = new GameObject("ui");
-            uiUpdate ui = new uiUpdate(timeDisplay, damageDisplay, speedDisplay);
+            uiUpdate ui = new uiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
             uiManager.AddComponent(ui);
             uiManager.Parent = ActiveScene.Root;
 
+            
 
-            UserInterface.Active.AddEntity(panel);            
-
+            UserInterface.Active.AddEntity(statPanel);
+            UserInterface.Active.AddEntity(gameOverPanel);
         }
 
         void addSound()

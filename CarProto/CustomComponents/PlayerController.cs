@@ -23,6 +23,7 @@ namespace CarProto.CustomComponents
 
         public bool freeControl = false;
 
+        public bool dead = false;
         /// <summary>
         /// Clone this component.
         /// </summary>
@@ -37,6 +38,11 @@ namespace CarProto.CustomComponents
         /// </summary>
         protected override void OnUpdate()
         {
+            if(dead)
+            {
+                return;
+            }
+
             if(freeControl)
             {
                 // Move up
@@ -78,8 +84,7 @@ namespace CarProto.CustomComponents
 
             if (Managers.GameInput.IsKeyPressed(GeonBit.Input.GameKeys.Jump))
             {
-                addDamage(10);
-                damage = Math.Min(99, damage);
+                addDamage(10);               
                 
             }
 
@@ -160,6 +165,10 @@ namespace CarProto.CustomComponents
         void  addDamage(int damage)
         {
             this.damage += damage;
+            if(this.damage>=100)
+            {
+                dead = true;
+            }
         }
     }
 }

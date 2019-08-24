@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="CustomComponents\AudioManager.cs" />
     <Compile Include="CustomComponents\CameraFollow.cs" />
+    <Compile Include="CustomComponents\gameManager.cs" />
     <Compile Include="CustomComponents\PlayerController.cs" />
     <Compile Include="CustomComponents\uiUpdate.cs" />
     <Compile Include="Game1.cs" />

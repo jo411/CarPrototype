@@ -12,13 +12,15 @@ namespace CarProto.CustomComponents
 {
     class uiUpdate : BaseComponent
     {
-        public Paragraph timeDisplay { get; set; }
-        public Paragraph damageDisplay { get; set; }
-        public Paragraph speedDisplay { get; set;}
-        
+        public Paragraph timeDisplay;
+        public Paragraph damageDisplay;
+        public Paragraph speedDisplay;
+        public Panel gameOver;
+
+
         PlayerController pc;
 
-        public uiUpdate(Paragraph timeDisplay, Paragraph damageDisplay, Paragraph speedDisplay)
+        public uiUpdate(Paragraph timeDisplay, Paragraph damageDisplay, Paragraph speedDisplay, Panel gameOver)
         {                                      
             this.timeDisplay = timeDisplay;
             this.damageDisplay = damageDisplay;
@@ -31,7 +33,7 @@ namespace CarProto.CustomComponents
 
         public override BaseComponent Clone()
         {
-            return new uiUpdate(timeDisplay, damageDisplay, speedDisplay);
+            return new uiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOver);
         }
 
         /// <summary>
@@ -80,5 +82,11 @@ namespace CarProto.CustomComponents
 
             damageDisplay.MarkAsDirty();
         }
+
+       public void DisplayGameOver()
+        {
+            gameOver.Visible = true;
+        }
+
     }
 }
