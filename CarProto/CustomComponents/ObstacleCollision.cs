@@ -32,7 +32,7 @@ namespace CarProto.CustomComponents
                 player.SceneNode.PositionY - _GameObject.SceneNode.PositionY > -10)
             {
                 player.GetComponent<PlayerController>().addDamage(10);
-                _GameObject.Destroy();
+                _GameObject.Destroy();              
             }
         }
     }

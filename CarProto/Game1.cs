@@ -23,7 +23,8 @@ namespace CarProto
         GameObject gameManager;
         gameManager gm;
 
-        bool showTutorial = true; 
+        bool showTutorial = true;
+        bool showDebug =true;
         /// <summary>
         /// Initialize your GeonBitGame properties here.
         /// </summary>
@@ -57,7 +58,6 @@ namespace CarProto
                 {
                     ActiveScene.Root.Find("ui").GetComponent<uiUpdate>().DisplayGameOver();
                 }
-                /// TBD add any custom Update functionality here.
             }
         }
 
@@ -65,32 +65,78 @@ namespace CarProto
         /// Initialize to implement per main type.
         /// </summary>
         override public void Initialize()
-        {
-            // Draw physics shapes
-            Managers.Diagnostic.DebugRenderPhysics = true;
+        {          
+            
+            addPlayer();
+            addObstacles();
+            addTrack();
+            addCamera();  
+            addTutorialGui();
+            addSound();
+            addGameGui();
+            
+        }
 
+        void createGameManager()
+        {
             gameManager = new GameObject("gameManager");
             gm = new gameManager();
             gameManager.AddComponent(gm);
-            
-            /// Example 3: add 3d shape to scene
-            carObject = new GameObject("player");
-            Model carModel = Resources.GetModel("Models/MuscleCar");
-            carObject.AddComponent(new ModelRenderer(carModel));
-            PlayerController pc = new PlayerController();
-            pc.weight = 10;
+        }
 
-            gm.pc = pc;
+        void addDebug()
+        {
+            if(showDebug)
+            {
+                var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f, scale: 0.7f);
+                diagnosticData.BeforeDraw = (GeonBit.UI.Entities.Entity entity) =>
+                {
+                    diagnosticData.Text = Managers.Diagnostic.GetReportString();
+                };
+                ActiveScene.UserInterface.AddEntity(diagnosticData);
 
-            carObject.AddComponent(pc);
-            carObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
-            carObject.Parent = ActiveScene.Root;
+                Managers.Diagnostic.DebugRenderPhysics = true;
 
-            // Add body just for visual diagnostics
-            KinematicBody playerBody = new KinematicBody(new BoxInfo(new Vector3(8, 8, 5)));
-            playerBody.InvokeCollisionEvents = true;
-            carObject.AddComponent(playerBody);
+            }
+        }
 
+        void addCamera()
+        {
+            cameraObject = new GameObject("camera", SceneNodeType.Simple);
+            cameraObject.AddComponent(new Camera());
+            cameraObject.AddComponent(new CameraFollow());
+            cameraObject.SceneNode.Rotation = new Vector3(util.degToRad(60), util.degToRad(0), util.degToRad(0));
+
+            CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
+            cf.offset = new Vector3(0, -35, 30);
+            cf.dampingStrength = .07f;
+
+            cameraObject.Parent = ActiveScene.Root;
+
+        }
+
+        void addTrack()
+        {
+            trackObject = new GameObject("track");
+            Model trackModel = Resources.GetModel("Models/Track");
+            trackObject.AddComponent(new ModelRenderer(trackModel));
+            trackObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
+            trackObject.SceneNode.Scale = new Vector3(.50f, .25f, .25f);
+            trackObject.Parent = ActiveScene.Root;
+            trackObject.SceneNode.Position = new Vector3(25f, -60f, 0f);
+
+            GameObject backgroundObject = new GameObject("background");
+            Texture2D backgroundimage = Resources.GetTexture("Images/SpyHunter");
+            SceneBackground background = new SceneBackground(backgroundimage)
+            {
+                DrawMode = BackgroundDrawMode.Tiled
+            };
+            backgroundObject.AddComponent(background);
+            backgroundObject.Parent = ActiveScene.Root;
+
+        }
+        void addObstacles()
+        {
             // Add obstacle
             Obstacle obstacle1 = new Obstacle(5, 100, carObject);
             Obstacle obstacle2 = new Obstacle(-5, 150, carObject);
@@ -110,52 +156,25 @@ namespace CarProto
             obstacle7.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
             obstacle8.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
 
-            trackObject = new GameObject("track");
-            Model trackModel = Resources.GetModel("Models/Track");
-            trackObject.AddComponent(new ModelRenderer(trackModel));
-            trackObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
-            trackObject.SceneNode.Scale = new Vector3(.50f, .25f, .25f);
-            trackObject.Parent = ActiveScene.Root;
-            trackObject.SceneNode.Position = new Vector3(25f, -60f, 0f);
+        }
+        void addPlayer()
+        {
+            carObject = new GameObject("player");
+            Model carModel = Resources.GetModel("Models/MuscleCar");
+            carObject.AddComponent(new ModelRenderer(carModel));
+            PlayerController pc = new PlayerController();
+            pc.weight = 10;
 
-            GameObject backgroundObject = new GameObject("background");
-            Texture2D backgroundimage = Resources.GetTexture("Images/SpyHunter");
-            SceneBackground background = new SceneBackground(backgroundimage)
-            {
-                DrawMode = BackgroundDrawMode.Tiled
-            };
-            backgroundObject.AddComponent(background);
-            backgroundObject.Parent = ActiveScene.Root;
+            gm.pc = pc;
 
-            cameraObject = new GameObject("camera", SceneNodeType.Simple);
-            cameraObject.AddComponent(new Camera());
-            cameraObject.AddComponent(new CameraFollow());
-            cameraObject.SceneNode.Rotation = new Vector3(util.degToRad(60), util.degToRad(0), util.degToRad(0));
+            carObject.AddComponent(pc);
+            carObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
+            carObject.Parent = ActiveScene.Root;
 
-            CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
-            cf.offset = new Vector3(0, -35, 30);
-            cf.dampingStrength = .07f;
-
-            cameraObject.Parent = ActiveScene.Root;
-
-            // cameraObject.AddComponent(new PlayerController());
-            // add diagnostic data paragraph to scene
-            var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f, scale: 0.7f);
-            diagnosticData.BeforeDraw = (GeonBit.UI.Entities.Entity entity) =>
-            {
-                diagnosticData.Text = Managers.Diagnostic.GetReportString();
-            };
-            ActiveScene.UserInterface.AddEntity(diagnosticData);
-
-            //addGrid();
-            if(showTutorial)
-            {
-                addTutorialGui();
-            }
-
-            addSound();
-            addGameGui();
-            
+            // Add body just for visual diagnostics
+            KinematicBody playerBody = new KinematicBody(new BoxInfo(new Vector3(8, 8, 5)));
+            playerBody.InvokeCollisionEvents = true;
+            carObject.AddComponent(playerBody);
         }
 
         void addGameGui()
@@ -206,6 +225,11 @@ namespace CarProto
         }
         void addTutorialGui()
         {
+
+            if(!showTutorial)
+            {
+                return;
+            }
             // create a panel and position in center of screen
             Panel panel = new Panel(new Vector2(400, 600), PanelSkin.Default, Anchor.CenterLeft);
             UserInterface.Active.AddEntity(panel);
