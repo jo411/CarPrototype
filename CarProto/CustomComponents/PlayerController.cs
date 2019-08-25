@@ -162,7 +162,7 @@ namespace CarProto.CustomComponents
             }
             
         }
-        void  addDamage(int damage)
+        public void addDamage(int damage)
         {
             this.damage += damage;
             if(this.damage>=100)

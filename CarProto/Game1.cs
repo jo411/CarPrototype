@@ -1,8 +1,10 @@
 ﻿using CarProto.CustomComponents;
+using CarProto.CustomGameObjects;
 using GeonBit;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
 using GeonBit.ECS.Components.Sound;
+using GeonBit.ECS.Components.Physics;
 using GeonBit.UI;
 using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
@@ -64,6 +66,9 @@ namespace CarProto
         /// </summary>
         override public void Initialize()
         {
+            // Draw physics shapes
+            Managers.Diagnostic.DebugRenderPhysics = true;
+
             gameManager = new GameObject("gameManager");
             gm = new gameManager();
             gameManager.AddComponent(gm);
@@ -80,6 +85,30 @@ namespace CarProto
             carObject.AddComponent(pc);
             carObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
             carObject.Parent = ActiveScene.Root;
+
+            // Add body just for visual diagnostics
+            KinematicBody playerBody = new KinematicBody(new BoxInfo(new Vector3(8, 8, 5)));
+            playerBody.InvokeCollisionEvents = true;
+            carObject.AddComponent(playerBody);
+
+            // Add obstacle
+            Obstacle obstacle1 = new Obstacle(5, 100, carObject);
+            Obstacle obstacle2 = new Obstacle(-5, 150, carObject);
+            Obstacle obstacle3 = new Obstacle(10, 200, carObject);
+            Obstacle obstacle4 = new Obstacle(8, 250, carObject);
+            Obstacle obstacle5 = new Obstacle(6, 230, carObject);
+            Obstacle obstacle6 = new Obstacle(-10, 350, carObject);
+            Obstacle obstacle7 = new Obstacle(10, 350, carObject);
+            Obstacle obstacle8 = new Obstacle(0, 400, carObject);
+            // Add body just for visual diagnostics
+            obstacle1.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
+            obstacle2.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
+            obstacle3.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
+            obstacle4.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
+            obstacle5.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
+            obstacle6.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
+            obstacle7.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
+            obstacle8.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
 
             trackObject = new GameObject("track");
             Model trackModel = Resources.GetModel("Models/Track");
