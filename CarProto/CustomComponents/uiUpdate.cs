@@ -25,6 +25,7 @@ namespace CarProto.CustomComponents
             this.timeDisplay = timeDisplay;
             this.damageDisplay = damageDisplay;
             this.speedDisplay = speedDisplay;
+            this.gameOver = gameOver;
         }
         protected override void OnAddToScene()
         {
@@ -85,6 +86,7 @@ namespace CarProto.CustomComponents
 
        public void DisplayGameOver()
         {
+            gameOver.Find<Paragraph>("gameover").Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");            
             gameOver.Visible = true;
         }
 

@@ -42,15 +42,18 @@ namespace CarProto
         override public void Update(GameTime gameTime)
         {
             /// exit application on escape
-            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))
+            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape) || gm.quitFlag)
             {
                 Exit();
             }
             else
             {
+                
+                if (!gm.gameIsRunning) { return; }
+
                 if(gm.isGameOver())
                 {
-                    //ActiveScene.Root.Find("ui").GetComponent<uiUpdate>().DisplayGameOver();
+                    ActiveScene.Root.Find("ui").GetComponent<uiUpdate>().DisplayGameOver();
                 }
                 /// TBD add any custom Update functionality here.
             }
@@ -71,7 +74,9 @@ namespace CarProto
             carObject.AddComponent(new ModelRenderer(carModel));
             PlayerController pc = new PlayerController();
             pc.weight = 10;
-            
+
+            gm.pc = pc;
+
             carObject.AddComponent(pc);
             carObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
             carObject.Parent = ActiveScene.Root;
@@ -140,9 +145,17 @@ namespace CarProto
 
             Panel gameOverPanel = new Panel(new Vector2(500, 500), PanelSkin.Fancy, Anchor.Center);
             Paragraph gameOverText = new Paragraph("Oh no thats a Game Over for you! \n" +
-                                                   "Someone may want to call the medics...");
+                                                   "Someone may want to call the medics...\n");            
+            gameOverText.Identifier = "gameover";
             gameOverPanel.AddChild(gameOverText);
             gameOverPanel.Visible = false;
+
+            Button quitButton = new Button("Quit", ButtonSkin.Fancy, Anchor.BottomCenter);
+            quitButton.OnClick = (Entity btn) =>
+            {
+                gm.quitFlag = true;
+            };
+            gameOverPanel.AddChild(quitButton);
 
             GameObject uiManager = new GameObject("ui");
             uiUpdate ui = new uiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);

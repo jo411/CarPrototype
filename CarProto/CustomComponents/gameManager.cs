@@ -9,9 +9,9 @@ namespace CarProto.CustomComponents
 {
     class gameManager : BaseComponent
     {
-        PlayerController pc;
-        public bool gameIsRunning = false;
-
+        public PlayerController pc { get; set; }
+        public bool gameIsRunning = true;
+        public bool quitFlag { get; set; } = false;
 
         protected override void OnAddToScene()
         {
@@ -20,7 +20,20 @@ namespace CarProto.CustomComponents
 
         public bool isGameOver()
         {
-            return pc==null?false:pc.dead;
+           
+            if(pc==null)
+            {
+               return false;
+            }
+            else
+            {
+                if(pc.dead)
+                {
+                    gameIsRunning = false;
+                    return true;
+                }
+                return false;
+            }
         }
 
         public override BaseComponent Clone()

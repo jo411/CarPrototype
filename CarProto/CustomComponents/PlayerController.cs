@@ -167,7 +167,7 @@ namespace CarProto.CustomComponents
             this.damage += damage;
             if(this.damage>=100)
             {
-                dead = true;
+                 dead = true;
             }
         }
     }
