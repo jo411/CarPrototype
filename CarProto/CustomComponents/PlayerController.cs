@@ -24,6 +24,15 @@ namespace CarProto.CustomComponents
         public bool freeControl = false;
 
         public bool dead = false;
+
+
+        int maxWeight = 20;
+        int minWeight = 8;
+        public PlayerController()
+        {
+            weight = util.randomBetween(minWeight, maxWeight);
+        }
+
         /// <summary>
         /// Clone this component.
         /// </summary>
@@ -96,7 +105,7 @@ namespace CarProto.CustomComponents
         /// </summary>
         void updateSpeed()
         {
-            movingSpeed += weight / 1000;
+            movingSpeed += weight / 500;
         }
 
         /// <summary>
@@ -164,6 +173,10 @@ namespace CarProto.CustomComponents
         }
         public void addDamage(int damage)
         {
+            float shift = (-1*((weight-minWeight)-maxWeight))/maxWeight;//(-1*((X-8)-20))/20
+
+
+            damage =(int) (damage * shift);
             this.damage += damage;
             if(this.damage>=100)
             {

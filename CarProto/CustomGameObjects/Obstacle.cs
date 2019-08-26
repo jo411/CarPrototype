@@ -13,9 +13,9 @@ namespace CarProto.CustomGameObjects
 {
     class Obstacle : GameObject
     {
-        public Obstacle(float x, float y, GameObject p)
+        public Obstacle(float x, float y, GameObject p, GameScene parent)
         {
-            Parent = ActiveScene.Root;
+            Parent = parent.Root;
             AddComponent(new ObstacleCollision(p));
             SceneNode.Position += y * Vector3.Up;
             SceneNode.Position += x * Vector3.Left;

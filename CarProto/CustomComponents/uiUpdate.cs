@@ -86,7 +86,7 @@ namespace CarProto.CustomComponents
 
        public void DisplayGameOver()
         {
-            gameOver.Find<Paragraph>("gameover").Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");            
+             gameOver.Find<Paragraph>("gameover").Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");            
             gameOver.Visible = true;
         }
 

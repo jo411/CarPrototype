@@ -80,6 +80,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Scenes\CarBuilder.cs" />
+    <Compile Include="Scenes\CarGame.cs" />
     <Compile Include="CustomComponents\AudioManager.cs" />
     <Compile Include="CustomComponents\CameraFollow.cs" />
     <Compile Include="CustomComponents\ObstacleCollision.cs" />
@@ -88,6 +90,8 @@
     <Compile Include="CustomComponents\uiUpdate.cs" />
     <Compile Include="CustomGameObjects\Obstacle.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GameState.cs" />
+    <Compile Include="Scenes\MainMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util.cs" />
