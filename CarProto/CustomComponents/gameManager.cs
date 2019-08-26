@@ -1,13 +1,8 @@
 ﻿using GeonBit.ECS.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarProto.CustomComponents
 {
-    class gameManager : BaseComponent
+    class GameManager : BaseComponent
     {
         public PlayerController pc { get; set; }
         public bool gameIsRunning = true;
@@ -20,14 +15,13 @@ namespace CarProto.CustomComponents
 
         public bool isGameOver()
         {
-           
-            if(pc==null)
+            if (pc == null)
             {
-               return false;
+                return false;
             }
             else
             {
-                if(pc.dead)
+                if (pc.dead)
                 {
                     gameIsRunning = false;
                     return true;
@@ -38,7 +32,7 @@ namespace CarProto.CustomComponents
 
         public override BaseComponent Clone()
         {
-            return new gameManager();
+            return new GameManager();
         }
     }
 }

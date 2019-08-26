@@ -1,16 +1,10 @@
 ﻿using GeonBit.ECS.Components;
-using GeonBit.Managers;
 using GeonBit.UI.Entities;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarProto.CustomComponents
 {
-    class uiUpdate : BaseComponent
+    class UiUpdate : BaseComponent
     {
         public Paragraph timeDisplay;
         public Paragraph damageDisplay;
@@ -20,8 +14,8 @@ namespace CarProto.CustomComponents
 
         PlayerController pc;
 
-        public uiUpdate(Paragraph timeDisplay, Paragraph damageDisplay, Paragraph speedDisplay, Panel gameOver)
-        {                                      
+        public UiUpdate(Paragraph timeDisplay, Paragraph damageDisplay, Paragraph speedDisplay, Panel gameOver)
+        {
             this.timeDisplay = timeDisplay;
             this.damageDisplay = damageDisplay;
             this.speedDisplay = speedDisplay;
@@ -34,7 +28,7 @@ namespace CarProto.CustomComponents
 
         public override BaseComponent Clone()
         {
-            return new uiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOver);
+            return new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOver);
         }
 
         /// <summary>
@@ -44,8 +38,8 @@ namespace CarProto.CustomComponents
         {
             updateSpeedDisplay();
             updateTimeDisplay();
-            updateDamageDisplay();    
-            
+            updateDamageDisplay();
+
         }
 
         private void updateTimeDisplay()
@@ -63,16 +57,16 @@ namespace CarProto.CustomComponents
         }
 
         private void updateDamageDisplay()
-        {            
+        {
             float damage = pc.damage;
-            damageDisplay.Text =damage.ToString() + "% Damaged";
-            
+            damageDisplay.Text = damage.ToString() + "% Damaged";
 
-            if(damage<50)
+
+            if (damage < 50)
             {
                 damageDisplay.FillColor = Microsoft.Xna.Framework.Color.Green;
             }
-            else if(damage <75)
+            else if (damage < 75)
             {
                 damageDisplay.FillColor = Microsoft.Xna.Framework.Color.Yellow;
             }
@@ -84,9 +78,9 @@ namespace CarProto.CustomComponents
             damageDisplay.MarkAsDirty();
         }
 
-       public void DisplayGameOver()
+        public void DisplayGameOver()
         {
-             gameOver.Find<Paragraph>("gameover").Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");            
+            gameOver.Find<Paragraph>("gameover").Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");
             gameOver.Visible = true;
         }
 

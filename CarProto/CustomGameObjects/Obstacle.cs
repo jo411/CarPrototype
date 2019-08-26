@@ -1,13 +1,6 @@
 ﻿using CarProto.CustomComponents;
-using GeonBit;
 using GeonBit.ECS;
-using GeonBit.ECS.Components;
-using GeonBit.ECS.Components.Physics;
-using GeonBit.Managers;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace CarProto.CustomGameObjects
 {
@@ -19,6 +12,7 @@ namespace CarProto.CustomGameObjects
             AddComponent(new ObstacleCollision(p));
             SceneNode.Position += y * Vector3.Up;
             SceneNode.Position += x * Vector3.Left;
+            SceneNode.PositionZ = 1.5f;
         }
     }
 }

@@ -1,13 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace CarProto
 {
-    static class util
+    static class Util
     {
         static Random randomSingleton;
         /// <summary>
@@ -15,14 +10,14 @@ namespace CarProto
         /// </summary>
         /// <param name="degrees"></param>
         /// <returns></returns>
-          public static float degToRad(float degrees)
+        public static float degToRad(float degrees)
         {
             return degrees * ((float)Math.PI / 180);
         }
 
         public static int randomBetween(int min, int max)
         {
-            if(randomSingleton==null)
+            if (randomSingleton == null)
             {
                 randomSingleton = new Random(System.DateTime.Now.Millisecond);
             }

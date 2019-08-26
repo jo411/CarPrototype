@@ -1,21 +1,16 @@
 ﻿using CarProto.CustomComponents;
 using CarProto.CustomGameObjects;
+using GeonBit.Core;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
+using GeonBit.ECS.Components.Physics;
+using GeonBit.ECS.Components.Sound;
+using GeonBit.Managers;
 using GeonBit.UI;
 using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GeonBit;
-using GeonBit.ECS.Components.Physics;
-using GeonBit.ECS.Components.Sound;
-using GeonBit.Core;
-using GeonBit.Managers;
 
 namespace CarProto
 {
@@ -27,9 +22,9 @@ namespace CarProto
         GameObject cameraObject;
         GameObject trackObject;
         GameObject gameManager;
-        gameManager gm;
+        GameManager gm;
 
-        uiUpdate UIUpdater;
+        UiUpdate UIUpdater;
 
         bool showTutorial = true;
         bool showDebug = true;
@@ -40,22 +35,21 @@ namespace CarProto
             init();
         }
 
-
         public void doUpdate()
         {
-           checkQuit();
+            checkQuit();
         }
-      
+
         void checkQuit()
         {
             if (!gm.gameIsRunning) { return; }
 
             if (gm.isGameOver())
             {
-               UIUpdater.DisplayGameOver();
+                UIUpdater.DisplayGameOver();
             }
-
         }
+
         void init()
         {
             addGameManager();
@@ -67,13 +61,12 @@ namespace CarProto
             addSound();
             addGameGui();
             addDebug();
-
         }
 
         void addGameManager()
         {
             gameManager = new GameObject("gameManager");
-            gm = new gameManager();
+            gm = new GameManager();
             gameManager.AddComponent(gm);
         }
 
@@ -84,12 +77,11 @@ namespace CarProto
                 var diagnosticData = new GeonBit.UI.Entities.Paragraph("", GeonBit.UI.Entities.Anchor.BottomLeft, offset: Vector2.One * 10f, scale: 0.7f);
                 diagnosticData.BeforeDraw = (GeonBit.UI.Entities.Entity entity) =>
                 {
-                    diagnosticData.Text =  Diagnostic.Instance.GetReportString();
+                    diagnosticData.Text = Diagnostic.Instance.GetReportString();
                 };
                 UserInterface.AddEntity(diagnosticData);
 
                 Diagnostic.Instance.DebugRenderPhysics = true;
-
             }
         }
 
@@ -98,14 +90,13 @@ namespace CarProto
             cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
             cameraObject.AddComponent(new CameraFollow());
-            cameraObject.SceneNode.Rotation = new Vector3(util.degToRad(60), util.degToRad(0), util.degToRad(0));
+            cameraObject.SceneNode.Rotation = new Vector3(Util.degToRad(60), Util.degToRad(0), Util.degToRad(0));
 
             CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
             cf.offset = new Vector3(0, -35, 30);
             cf.dampingStrength = .07f;
 
             cameraObject.Parent = Root;
-
         }
 
         void addTrack()
@@ -113,7 +104,7 @@ namespace CarProto
             trackObject = new GameObject("track");
             Model trackModel = ResourcesManager.Instance.GetModel("Models/Track");
             trackObject.AddComponent(new ModelRenderer(trackModel));
-            trackObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
+            trackObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
             trackObject.SceneNode.Scale = new Vector3(.50f, .25f, .25f);
             trackObject.Parent = Root;
             trackObject.SceneNode.Position = new Vector3(25f, -60f, 0f);
@@ -126,41 +117,41 @@ namespace CarProto
             };
             backgroundObject.AddComponent(background);
             backgroundObject.Parent = Root;
-
         }
         void addObstacles()
         {
             // Add obstacle
-            Obstacle obstacle1 = new Obstacle(5, 100, carObject,this);
-            Obstacle obstacle2 = new Obstacle(-5, 150, carObject, this);
-            Obstacle obstacle3 = new Obstacle(10, 200, carObject, this);
-            Obstacle obstacle4 = new Obstacle(8, 250, carObject, this);
-            Obstacle obstacle5 = new Obstacle(6, 230, carObject, this);
-            Obstacle obstacle6 = new Obstacle(-10, 350, carObject, this);
-            Obstacle obstacle7 = new Obstacle(10, 350, carObject, this);
-            Obstacle obstacle8 = new Obstacle(0, 400, carObject, this);
+            List<Obstacle> obstacles = new List<Obstacle>();
+            obstacles.Add(new Obstacle(10, 100, carObject, this));
+            obstacles.Add(new Obstacle(-5, 150, carObject, this));
+            obstacles.Add(new Obstacle(10, 200, carObject, this));
+            obstacles.Add(new Obstacle(8, 250, carObject, this));
+            obstacles.Add(new Obstacle(6, 230, carObject, this));
+            obstacles.Add(new Obstacle(-10, 350, carObject, this));
+            obstacles.Add(new Obstacle(10, 350, carObject, this));
+            obstacles.Add(new Obstacle(0, 400, carObject, this));
             // Add body just for visual diagnostics
-            obstacle1.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
-            obstacle2.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
-            obstacle3.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
-            obstacle4.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
-            obstacle5.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
-            obstacle6.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
-            obstacle7.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
-            obstacle8.AddComponent(new StaticBody(new BoxInfo(new Vector3(8, 8, 8))));
+            Model rockModel = ResourcesManager.Instance.GetModel("Models/Rock");
+            ModelRenderer rockModelrender = new ModelRenderer(rockModel);
 
+            foreach (Obstacle obstacle in obstacles)
+            {
+                obstacle.AddComponent(new ModelRenderer(rockModel));
+                obstacle.SceneNode.Scale = new Vector3(4, 4, 4);
+                obstacle.AddComponent(new StaticBody(new BoxInfo(new Vector3(1, 1, 1))));
+            }
         }
         void addPlayer()
         {
             carObject = new GameObject("player");
             Model carModel = ResourcesManager.Instance.GetModel("Models/MuscleCar");
             carObject.AddComponent(new ModelRenderer(carModel));
-            PlayerController pc = new PlayerController();           
+            PlayerController pc = new PlayerController();
 
             gm.pc = pc;
 
             carObject.AddComponent(pc);
-            carObject.SceneNode.Rotation = new Vector3(util.degToRad(0f), util.degToRad(270f), util.degToRad(270f));
+            carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
             carObject.Parent = Root;
 
             // Add body just for visual diagnostics
@@ -171,7 +162,6 @@ namespace CarProto
 
         void addGameGui()
         {
-
             Panel statPanel = new Panel(new Vector2(600, 100), PanelSkin.Golden, Anchor.TopCenter);
 
             Paragraph timeDisplay = new Paragraph("", Anchor.Center);
@@ -181,7 +171,6 @@ namespace CarProto
             statPanel.AddChild(timeDisplay);
             statPanel.AddChild(speedDisplay);
             statPanel.AddChild(damageDisplay);
-
 
             Panel gameOverPanel = new Panel(new Vector2(500, 500), PanelSkin.Fancy, Anchor.Center);
             Paragraph gameOverText = new Paragraph("Oh no thats a Game Over for you! \n" +
@@ -198,11 +187,9 @@ namespace CarProto
             gameOverPanel.AddChild(quitButton);
 
             GameObject uiManager = new GameObject("ui");
-             UIUpdater = new uiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
+            UIUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
             uiManager.AddComponent(UIUpdater);
             uiManager.Parent = Root;
-
-
 
             UserInterface.AddEntity(statPanel);
             UserInterface.AddEntity(gameOverPanel);
@@ -211,17 +198,23 @@ namespace CarProto
         void addSound()
         {
             GameObject backMusic = new GameObject("background_music");
-            backMusic.AddComponent(new BackgroundMusic("Audio/BGM"));
+            BackgroundMusic backgroundMusic = new BackgroundMusic("Audio/BGM");
+            backgroundMusic.Volume = 100;
+            backgroundMusic.Play();
+            backgroundMusic.IsRepeating = true;
+
+            backMusic.AddComponent(backgroundMusic);
             backMusic.Parent = Root;
             backMusic.GetComponent<BackgroundMusic>().Play();
         }
+
         void addTutorialGui()
         {
-
             if (!showTutorial)
             {
                 return;
             }
+
             // create a panel and position in center of screen
             Panel panel = new Panel(new Vector2(400, 600), PanelSkin.Default, Anchor.CenterLeft);
             UserInterface.AddEntity(panel);
@@ -235,7 +228,6 @@ namespace CarProto
             panel.AddChild(tutorialText);
 
             // add a button at the bottom
-
             Button closeTut = new Button("Click to hide!", ButtonSkin.Fancy, Anchor.BottomCenter);
             closeTut.OnClick = (Entity btn) =>
             {
@@ -253,7 +245,7 @@ namespace CarProto
             Texture2D gridTex = ResourcesManager.Instance.GetTexture("Images/grid");
             gridObject.GetComponent<ModelRenderer>().GetMaterials()[0].Texture = gridTex;
             gridObject.GetComponent<ModelRenderer>().GetMaterials()[0].TextureEnabled = true;
-            gridObject.SceneNode.Rotation = new Vector3(util.degToRad(0), util.degToRad(0), util.degToRad(0));
+            gridObject.SceneNode.Rotation = new Vector3(Util.degToRad(0), Util.degToRad(0), Util.degToRad(0));
             gridObject.SceneNode.Scale = new Vector3(100, 100, 1);
             gridObject.Parent = Root;
         }

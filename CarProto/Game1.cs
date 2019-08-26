@@ -1,14 +1,5 @@
-﻿using CarProto.CustomComponents;
-using CarProto.CustomGameObjects;
-using GeonBit;
-using GeonBit.ECS;
-using GeonBit.ECS.Components.Graphics;
-using GeonBit.ECS.Components.Physics;
-using GeonBit.ECS.Components.Sound;
-using GeonBit.UI;
-using GeonBit.UI.Entities;
+﻿using GeonBit;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace CarProto
 {
@@ -17,8 +8,8 @@ namespace CarProto
     /// </summary>
     internal class Game1 : GeonBitGame
     {
-        GameState gameState;      
-        
+        GameState gameState;
+
         /// <summary>
         /// Initialize your GeonBitGame properties here.
         /// </summary>
@@ -41,10 +32,10 @@ namespace CarProto
             switch (gameState.currentState)//Handle updates for each scene seperately. 
             {
                 case State.MAIN_MENU:
-                    if(ActiveScene.GetType() != typeof(MainMenu))//If the scene state has change begin the load to the correct scene
+                    if (ActiveScene.GetType() != typeof(MainMenu))//If the scene state has change begin the load to the correct scene
                     {
                         gameState.loadNewScene();
-                    }                    
+                    }
                     break;
                 case State.CAR_BUILDER:
                     if (ActiveScene.GetType() != typeof(CarBuilder))
@@ -60,7 +51,7 @@ namespace CarProto
                     else
                     {
                         ((CarGame)gameState.currentScene).doUpdate();
-                    }                  
+                    }
                     break;
             }
 
@@ -69,24 +60,22 @@ namespace CarProto
                 Exit();
 
             }
-                    }
+        }
 
         /// <summary>
         /// Initialize to implement per main type.
         /// </summary>
         override public void Initialize()
         {
-            CreateGameStateMachine();         
-       
+            CreateGameStateMachine();
         }
 
 
         void CreateGameStateMachine()
         {
             gameState = new GameState();
-           
         }
-       
+
 
         /// <summary>
         /// Draw function to implement per main type.

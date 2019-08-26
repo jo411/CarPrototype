@@ -1,9 +1,4 @@
 ﻿using GeonBit.ECS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarProto
 {
@@ -13,6 +8,7 @@ namespace CarProto
         CAR_BUILDER,
         GAME,
     }
+
     class GameState
     {
         public State currentState { get; private set; }
@@ -23,8 +19,6 @@ namespace CarProto
             currentScene = new GameScene();
         }
 
-
-     
         public void changeScene(State newState)
         {
             currentState = newState;
@@ -33,8 +27,8 @@ namespace CarProto
         public void loadNewScene()
         {
             GameScene old = currentScene;
-            
-            switch(currentState)
+
+            switch (currentState)
             {
                 case State.MAIN_MENU:
                     currentScene = new MainMenu(this);

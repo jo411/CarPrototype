@@ -1,10 +1,4 @@
-﻿using GeonBit;
-using GeonBit.ECS.Components;
-using GeonBit.Managers;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using GeonBit.ECS.Components;
 
 namespace CarProto.CustomComponents
 {
@@ -13,24 +7,24 @@ namespace CarProto.CustomComponents
     /// </summary>
     class PlayerController : BaseComponent
     {
-         
+
         private float turningAngle = 25f;
         private int turnState = 1; //0 Left | 1 Straight | 2 Right
 
         public float movingSpeed { get; private set; } = 20f;
-        public float damage {  get;  set; }
+        public float damage { get; set; }
         public float weight { get; set; }
 
         public bool freeControl = false;
 
         public bool dead = false;
 
+        private int maxWeight = 20;
+        private int minWeight = 8;
 
-        int maxWeight = 20;
-        int minWeight = 8;
         public PlayerController()
         {
-            weight = util.randomBetween(minWeight, maxWeight);
+            weight = Util.randomBetween(minWeight, maxWeight);
         }
 
         /// <summary>
@@ -47,12 +41,12 @@ namespace CarProto.CustomComponents
         /// </summary>
         protected override void OnUpdate()
         {
-            if(dead)
+            if (dead)
             {
                 return;
             }
 
-            if(freeControl)
+            if (freeControl)
             {
                 // Move up
                 if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Forward))
@@ -65,11 +59,12 @@ namespace CarProto.CustomComponents
                     _GameObject.SceneNode.PositionY -= Managers.TimeManager.TimeFactor * movingSpeed;
                 }
             }
+            //AutoForward
             else
             {
-                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * (movingSpeed * damageShift());//AutoForward
+                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * (movingSpeed * damageShift());
             }
-        
+
             // Move left
             if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Left))
             {
@@ -93,8 +88,8 @@ namespace CarProto.CustomComponents
 
             if (Managers.GameInput.IsKeyPressed(GeonBit.Input.GameKeys.Jump))
             {
-                addDamage(10);               
-                
+                addDamage(10);
+
             }
 
             updateSpeed();
@@ -115,27 +110,25 @@ namespace CarProto.CustomComponents
         {
             if (turnState == 1 && right)//Straight turning right
             {
-                _GameObject.SceneNode.RotationX -= util.degToRad(turningAngle);
+                _GameObject.SceneNode.RotationX -= Util.degToRad(turningAngle);
                 turnState = 2;
             }
             else if (turnState == 1 && !right) // Straight turning left
             {
-                _GameObject.SceneNode.RotationX += util.degToRad(turningAngle);
+                _GameObject.SceneNode.RotationX += Util.degToRad(turningAngle);
                 turnState = 0;
             }
             else if (turnState == 2 && !right) //Right turning left
             {
-                _GameObject.SceneNode.RotationX += util.degToRad(turningAngle);
+                _GameObject.SceneNode.RotationX += Util.degToRad(turningAngle);
                 turnState = 1;
             }
             else if (turnState == 0 && right)//Left turning right
             {
-                _GameObject.SceneNode.RotationX -= util.degToRad(turningAngle);
+                _GameObject.SceneNode.RotationX -= Util.degToRad(turningAngle);
                 turnState = 1;
             }
-
         }
-
 
         /// <summary>
         /// Returns a multiplier to movespeed based on damage thresholds
@@ -143,10 +136,10 @@ namespace CarProto.CustomComponents
         /// <returns></returns>
         float damageShift()
         {
-            float[] shift = { 1, 1.2f, 1.8f, 2.3f, 2.5f};
-            bool malfunction = util.randomBetween(0, 100) <= 40;
+            float[] shift = { 1, 1.2f, 1.8f, 2.3f, 2.5f };
+            bool malfunction = Util.randomBetween(0, 100) <= 40;
             if (!malfunction) { return 1; }
-          
+
             if (damage <= 0)
             {
                 return shift[0];
@@ -157,30 +150,27 @@ namespace CarProto.CustomComponents
             }
             else if (damage <= 50)
             {
-              
-                    return shift[2];
-               
+                return shift[2];
             }
             else if (damage <= 75)
             {
                 return shift[3];
             }
-            else 
+            else
             {
                 return shift[4];
             }
-            
         }
+
         public void addDamage(int damage)
         {
-            float shift = (-1*((weight-minWeight)-maxWeight))/maxWeight;//(-1*((X-8)-20))/20
+            float shift = (-1 * ((weight - minWeight) - maxWeight)) / maxWeight;//(-1*((X-8)-20))/20
 
-
-            damage =(int) (damage * shift);
+            damage = (int)(damage * shift);
             this.damage += damage;
-            if(this.damage>=100)
+            if (this.damage >= 100)
             {
-                 dead = true;
+                dead = true;
             }
         }
     }

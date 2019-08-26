@@ -1,12 +1,5 @@
-﻿using GeonBit;
-using GeonBit.ECS;
+﻿using GeonBit.ECS;
 using GeonBit.ECS.Components;
-using GeonBit.ECS.Components.Physics;
-using GeonBit.Managers;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace CarProto.CustomComponents
 {
@@ -21,7 +14,7 @@ namespace CarProto.CustomComponents
 
         public override BaseComponent Clone()
         {
-            return this;
+            return new ObstacleCollision(this.player);
         }
 
         protected override void OnUpdate()
@@ -32,7 +25,7 @@ namespace CarProto.CustomComponents
                 player.SceneNode.PositionY - _GameObject.SceneNode.PositionY > -10)
             {
                 player.GetComponent<PlayerController>().addDamage(10);
-                _GameObject.Destroy();              
+                _GameObject.Destroy();
             }
         }
     }
