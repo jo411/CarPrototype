@@ -8,11 +8,13 @@ namespace CarProto
         CAR_BUILDER,
         GAME,
     }
-
+   
     class GameState
     {
         public State currentState { get; private set; }
         public GameScene currentScene;
+
+        public bool quitFlag { get; set; } = false;
         public GameState()
         {
             currentState = State.MAIN_MENU;

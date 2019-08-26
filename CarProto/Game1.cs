@@ -55,7 +55,7 @@ namespace CarProto
                     break;
             }
 
-            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape))//Escape to quit from any scene
+            if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape) || gameState.quitFlag)//Escape to quit from any scene
             {
                 Exit();
 

@@ -46,7 +46,7 @@ namespace CarProto
 
             if (gm.isGameOver())
             {
-                UIUpdater.DisplayGameOver();
+                UIUpdater.DisplayGameOver(gm.winFlag);
             }
         }
 
@@ -173,18 +173,25 @@ namespace CarProto
             statPanel.AddChild(damageDisplay);
 
             Panel gameOverPanel = new Panel(new Vector2(500, 500), PanelSkin.Fancy, Anchor.Center);
-            Paragraph gameOverText = new Paragraph("Oh no thats a Game Over for you! \n" +
-                                                   "Someone may want to call the medics...\n");
+            Paragraph gameOverText = new Paragraph("");
             gameOverText.Identifier = "gameover";
             gameOverPanel.AddChild(gameOverText);
             gameOverPanel.Visible = false;
 
-            Button quitButton = new Button("Return to Menu", ButtonSkin.Fancy, Anchor.BottomCenter);
-            quitButton.OnClick = (Entity btn) =>
+            Button menuButton = new Button("Return to Menu", ButtonSkin.Fancy, Anchor.BottomCenter);
+            menuButton.OnClick = (Entity btn) =>
             {
                 gameState.changeScene(State.MAIN_MENU);
             };
+
+            Button quitButton = new Button("Quit", ButtonSkin.Fancy, Anchor.Center);
+            quitButton.OnClick = (Entity btn) =>
+            {
+                gameState.quitFlag = true;
+            };
+
             gameOverPanel.AddChild(quitButton);
+            gameOverPanel.AddChild(menuButton);
 
             GameObject uiManager = new GameObject("ui");
             UIUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);

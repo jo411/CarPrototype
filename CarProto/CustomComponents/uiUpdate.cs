@@ -78,9 +78,20 @@ namespace CarProto.CustomComponents
             damageDisplay.MarkAsDirty();
         }
 
-        public void DisplayGameOver()
+        public void DisplayGameOver(bool gameWon)
         {
-            gameOver.Find<Paragraph>("gameover").Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");
+
+            Paragraph gameOverText = gameOver.Find<Paragraph>("gameover");
+            if(gameWon)
+            {
+                gameOverText.Text ="Hey you survived to the end; congratulations are in order I suppose...";
+            }
+            else
+            {
+                gameOverText.Text = "Oh no thats a Game Over for you! \n" +
+                                                   "Someone may want to call the medics...\n";
+            }
+            gameOverText.Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");
             gameOver.Visible = true;
         }
 

@@ -6,8 +6,9 @@ namespace CarProto.CustomComponents
     {
         public PlayerController pc { get; set; }
         public bool gameIsRunning = true;
-        public bool quitFlag { get; set; } = false;
+       
 
+        public bool winFlag { get; private set; } = false;
         protected override void OnAddToScene()
         {
             pc = _GameObject.ParentScene.Root.Find("player").GetComponent<PlayerController>();
@@ -28,6 +29,11 @@ namespace CarProto.CustomComponents
                 }
                 return false;
             }
+        }
+
+        public void setWin(bool playerWon)
+        {
+            winFlag = playerWon;
         }
 
         public override BaseComponent Clone()
