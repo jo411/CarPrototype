@@ -29,6 +29,9 @@ namespace CarProto.CustomComponents
         private bool knockedDirLeft;
         private float distanceCounter;
 
+        private float damageReductionFactor = 0.5f;
+        private float currentDamageReductionFactor = 1;
+
         public PlayerController()
         {
             weight = Util.randomBetween(minWeight, maxWeight);
@@ -72,28 +75,7 @@ namespace CarProto.CustomComponents
                 _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * movingSpeed * (Math.Max(damageShift() / 1.5f, 1));
             }
 
-            if (knocked)
-            {
-                float frameDis = Managers.TimeManager.TimeFactor * (knockBackSpeed * damageShift());
-                if (knockedDirLeft)
-                {
-                    _GameObject.SceneNode.PositionX -= frameDis;
-                    
-                }
-                else
-                {
-                    _GameObject.SceneNode.PositionX += frameDis;
-                }
-                distanceCounter += frameDis;
-
-                if (distanceCounter > knockBackDistance)
-                {
-                    knocked = false;
-                    distanceCounter = 0;
-                    resetRotation();
-                }
-                return;
-            }
+            updateKnockedBack();
 
             // Move left
             if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Left))
@@ -201,11 +183,40 @@ namespace CarProto.CustomComponents
             }
         }
 
+        private void updateKnockedBack()
+        {
+            if (knocked)
+            {
+                float frameDis = Managers.TimeManager.TimeFactor * (knockBackSpeed * damageShift());
+                if (knockedDirLeft)
+                {
+                    _GameObject.SceneNode.PositionX -= frameDis;
+
+                }
+                else
+                {
+                    _GameObject.SceneNode.PositionX += frameDis;
+                }
+                distanceCounter += frameDis;
+
+                if (distanceCounter > knockBackDistance)
+                {
+                    knocked = false;
+                    distanceCounter = 0;
+                    resetRotation();
+                    currentDamageReductionFactor = 1;
+                }
+                return;
+            }
+        }
+
         public void addDamage(int damage)
         {
             float shift = (-1 * ((weight - minWeight) - maxWeight)) / maxWeight;//(-1*((X-8)-20))/20
 
-            damage = (int)(damage * shift);
+            damage = (int)((damage * shift) * currentDamageReductionFactor);
+            currentDamageReductionFactor *= damageReductionFactor;
+
             this.damage += damage;
             if (this.damage >= 100)
             {

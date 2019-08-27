@@ -226,8 +226,17 @@ namespace CarProto
             int damage = 75;
             for(int i=0;i<numRocks;i++)
             {
-                obstacles.Add(new Obstacle(farRight, top+i*width, carObject, this,damage));
-                obstacles.Add(new Obstacle(farLeft, top + i * width, carObject, this,damage));
+                Obstacle ob1 = new Obstacle(farRight, top + i * width, carObject, this, damage);
+                Obstacle ob2 = new Obstacle(farLeft, top + i * width, carObject, this, damage);
+
+                obstacles.Add(ob1);
+                obstacles.Add(ob2);
+
+                if (i % 4 == 0)
+                {
+                    ob1.AddComponent(new ObstacleMove());
+                    ob2.AddComponent(new ObstacleMove());
+                }
             }
             
 
