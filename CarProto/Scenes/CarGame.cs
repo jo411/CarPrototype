@@ -25,7 +25,7 @@ namespace CarProto
         GameObject finishLine;
         public GameManager gm { get; private set; }
 
-        UiUpdate UIUpdater;
+        UiUpdate uiUpdater;
 
         bool showTutorial = false;
         bool showDebug = false;
@@ -44,9 +44,9 @@ namespace CarProto
 
         void checkQuit()
         {
-            if (gm.isGameOver())
+            if (gm.isGameOver() && !uiUpdater.gameOverPanel.Visible)
             {
-                UIUpdater.DisplayGameOver(gm.winFlag);
+                uiUpdater.DisplayGameOver(gm.winFlag);
             }
         }
 
@@ -317,8 +317,8 @@ namespace CarProto
             gameOverPanel.AddChild(quitButton);
 
             GameObject uiManager = new GameObject("ui");
-            UIUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
-            uiManager.AddComponent(UIUpdater);
+            uiUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
+            uiManager.AddComponent(uiUpdater);
             uiManager.Parent = Root;
 
             UserInterface.AddEntity(statPanel);
