@@ -232,7 +232,7 @@ namespace CarProto
             
 
             // Add body just for visual diagnostics
-            Model rockModel = ResourcesManager.Instance.GetModel("Models/Rock");
+            Model rockModel = ResourcesManager.Instance.GetModel("Models/obstacle");
             ModelRenderer rockModelrender = new ModelRenderer(rockModel);
 
             foreach (Obstacle obstacle in obstacles)
