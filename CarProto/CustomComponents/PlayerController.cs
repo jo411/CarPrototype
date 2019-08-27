@@ -1,4 +1,5 @@
 ﻿using GeonBit.ECS.Components;
+using System;
 
 namespace CarProto.CustomComponents
 {
@@ -62,7 +63,7 @@ namespace CarProto.CustomComponents
             //AutoForward
             else
             {
-                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * (movingSpeed * damageShift());
+                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * movingSpeed*(Math.Max(damageShift()/1.5f,1));
             }
 
             // Move left
@@ -100,7 +101,7 @@ namespace CarProto.CustomComponents
         /// </summary>
         void updateSpeed()
         {
-            movingSpeed += weight / 500;
+            movingSpeed += weight / 350;
         }
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace CarProto.CustomComponents
         /// <returns></returns>
         float damageShift()
         {
-            float[] shift = { 1, 1.2f, 1.8f, 2.3f, 2.5f };
+            float[] shift = { 1, 1.4f, 1.8f, 2f, 2.2f };
             bool malfunction = Util.randomBetween(0, 100) <= 40;
             if (!malfunction) { return 1; }
 
@@ -144,7 +145,7 @@ namespace CarProto.CustomComponents
             {
                 return shift[0];
             }
-            else if (damage <= 25)
+            else if (damage <= 12)
             {
                 return shift[1];
             }

@@ -59,7 +59,7 @@ namespace CarProto.CustomComponents
         private void updateDamageDisplay()
         {
             float damage = pc.damage;
-            damageDisplay.Text = damage.ToString() + "% Damaged";
+            damageDisplay.Text = "  "+damage.ToString() + "% Damaged";
 
 
             if (damage < 50)
