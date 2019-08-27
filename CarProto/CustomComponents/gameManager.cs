@@ -22,7 +22,7 @@ namespace CarProto.CustomComponents
             }
             else
             {
-                if (pc.dead)
+                if (pc.dead || winFlag)
                 {
                     gameIsRunning = false;
                     return true;

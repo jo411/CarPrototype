@@ -29,7 +29,7 @@ namespace CarProto
 
         bool showTutorial = true;
         bool showDebug = true;
-        bool quited = false;
+        //bool quited = false;
 
         public CarGame(GameState gameState)
         {
@@ -38,8 +38,7 @@ namespace CarProto
         }
 
         public void doUpdate()
-        {
-            if (!quited)
+        {          
                 checkQuit();
         }
 
@@ -47,10 +46,10 @@ namespace CarProto
         {
             if (!gm.gameIsRunning) { return; }
 
-            if (gm.isGameOver() || gm.winFlag)
+            if (gm.isGameOver())
             {
                 UIUpdater.DisplayGameOver(gm.winFlag);
-                quited = true;
+               
             }
         }
 
