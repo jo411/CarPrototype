@@ -26,8 +26,21 @@ namespace CarProto.CustomComponents
                 player.SceneNode.PositionY - _GameObject.SceneNode.PositionY < 5 &&
                 player.SceneNode.PositionY - _GameObject.SceneNode.PositionY > -5)
             {
-                player.GetComponent<PlayerController>().addDamage(damage);
+                fakeKnock();
                 _GameObject.Destroy();
+            }
+        }
+
+        private void fakeKnock()
+        {
+            player.GetComponent<PlayerController>().addDamage(damage);
+            if (player.SceneNode.PositionX > _GameObject.SceneNode.PositionX)
+            {
+                player.GetComponent<PlayerController>().AddFakeForce(false);
+            }
+            else
+            {
+                player.GetComponent<PlayerController>().AddFakeForce(true);
             }
         }
     }

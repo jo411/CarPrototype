@@ -13,6 +13,8 @@ namespace CarProto.CustomComponents
         private int turnState = 1; //0 Left | 1 Straight | 2 Right
 
         public float movingSpeed { get; private set; } = 20f;
+        public float knockBackSpeed = 20f;
+        public float knockBackDistance = 5f;
         public float damage { get; set; }
         public float weight { get; set; }
 
@@ -22,6 +24,10 @@ namespace CarProto.CustomComponents
 
         private int maxWeight = 20;
         private int minWeight = 8;
+
+        private bool knocked;
+        private bool knockedDirLeft;
+        private float distanceCounter;
 
         public PlayerController()
         {
@@ -63,7 +69,30 @@ namespace CarProto.CustomComponents
             //AutoForward
             else
             {
-                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * movingSpeed*(Math.Max(damageShift()/1.5f,1));
+                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * movingSpeed * (Math.Max(damageShift() / 1.5f, 1));
+            }
+
+            if (knocked)
+            {
+                float frameDis = Managers.TimeManager.TimeFactor * (knockBackSpeed * damageShift());
+                if (knockedDirLeft)
+                {
+                    _GameObject.SceneNode.PositionX -= frameDis;
+                    
+                }
+                else
+                {
+                    _GameObject.SceneNode.PositionX += frameDis;
+                }
+                distanceCounter += frameDis;
+
+                if (distanceCounter > knockBackDistance)
+                {
+                    knocked = false;
+                    distanceCounter = 0;
+                    resetRotation();
+                }
+                return;
             }
 
             // Move left
@@ -132,6 +161,15 @@ namespace CarProto.CustomComponents
         }
 
         /// <summary>
+        /// Reset the rotation of the car
+        /// </summary>
+        void resetRotation()
+        {
+            turnState = 1;
+            _GameObject.SceneNode.RotationX = 0;
+        }
+
+        /// <summary>
         /// Returns a multiplier to movespeed based on damage thresholds
         /// </summary>
         /// <returns></returns>
@@ -173,6 +211,12 @@ namespace CarProto.CustomComponents
             {
                 dead = true;
             }
+        }
+
+        public void AddFakeForce(bool left)
+        {
+            knockedDirLeft = left;
+            knocked = true;
         }
     }
 }
