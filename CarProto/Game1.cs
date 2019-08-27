@@ -48,6 +48,10 @@ namespace CarProto
                     {
                         gameState.loadNewScene();
                     }
+                    else if(((CarGame)gameState.currentScene).gm.isGameOver() && gameState.requestedChangeState)
+                    {
+                        gameState.loadNewScene();
+                    }
                     else
                     {
                         ((CarGame)gameState.currentScene).doUpdate();
@@ -58,7 +62,6 @@ namespace CarProto
             if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Escape) || gameState.quitFlag)//Escape to quit from any scene
             {
                 Exit();
-
             }
         }
 

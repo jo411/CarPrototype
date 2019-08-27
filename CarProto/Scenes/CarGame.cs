@@ -23,7 +23,7 @@ namespace CarProto
         GameObject trackObject;
         GameObject gameManager;
         GameObject finishLine;
-        GameManager gm;
+        public GameManager gm { get; private set; }
 
         UiUpdate UIUpdater;
 
@@ -38,18 +38,15 @@ namespace CarProto
         }
 
         public void doUpdate()
-        {          
-                checkQuit();
+        {
+            checkQuit();
         }
 
         void checkQuit()
         {
-            if (!gm.gameIsRunning) { return; }
-
             if (gm.isGameOver())
             {
                 UIUpdater.DisplayGameOver(gm.winFlag);
-               
             }
         }
 
@@ -122,15 +119,16 @@ namespace CarProto
             backgroundObject.AddComponent(background);
             backgroundObject.Parent = Root;
         }
+
         void addObstacles()
         {
             //Don't look below. Dear lord I and a level editor. 
             // Add obstacle
-            int baseDamage=30;
+            int baseDamage = 30;
 
             List<Obstacle> obstacles = new List<Obstacle>();
-            obstacles.Add(new Obstacle(10, 100, carObject, this,baseDamage));            
-            obstacles.Add(new Obstacle(-5, 150, carObject, this,baseDamage));
+            obstacles.Add(new Obstacle(10, 100, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-5, 150, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(10, 200, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(8, 250, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(6, 230, carObject, this, baseDamage));
@@ -175,7 +173,7 @@ namespace CarProto
 
             obstacles.Add(new Obstacle(-30, 180, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-25, 180, carObject, this, baseDamage));
-            
+
             obstacles.Add(new Obstacle(10, 180, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(20, 180, carObject, this, baseDamage));
 
@@ -200,7 +198,7 @@ namespace CarProto
             obstacles.Add(new Obstacle(-15, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-10, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-5, 400, carObject, this, baseDamage));
-            
+
             obstacles.Add(new Obstacle(20, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(25, 400, carObject, this, baseDamage));
 
@@ -209,7 +207,7 @@ namespace CarProto
             obstacles.Add(new Obstacle(-20, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-15, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-10, 450, carObject, this, baseDamage));
-           
+
             obstacles.Add(new Obstacle(10, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(15, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(20, 450, carObject, this, baseDamage));
@@ -224,12 +222,12 @@ namespace CarProto
             int numRocks = 30;
             int width = 20;
             int damage = 75;
-            for(int i=0;i<numRocks;i++)
+            for (int i = 0; i < numRocks; i++)
             {
-                obstacles.Add(new Obstacle(farRight, top+i*width, carObject, this,damage));
-                obstacles.Add(new Obstacle(farLeft, top + i * width, carObject, this,damage));
+                obstacles.Add(new Obstacle(farRight, top + i * width, carObject, this, damage));
+                obstacles.Add(new Obstacle(farLeft, top + i * width, carObject, this, damage));
             }
-            
+
 
             // Add body just for visual diagnostics
             Model rockModel = ResourcesManager.Instance.GetModel("Models/obstacle");
@@ -242,6 +240,7 @@ namespace CarProto
                 obstacle.AddComponent(new StaticBody(new BoxInfo(new Vector3(1, 1, 1))));
             }
         }
+
         void addPlayer()
         {
             carObject = new GameObject("player");
@@ -260,6 +259,7 @@ namespace CarProto
             playerBody.InvokeCollisionEvents = true;
             carObject.AddComponent(playerBody);
         }
+
         void addFinishLine()
         {
             finishLine = new FinishLine(550, carObject, this, gameManager);
@@ -286,20 +286,35 @@ namespace CarProto
             gameOverPanel.AddChild(gameOverText);
             gameOverPanel.Visible = false;
 
-            Button menuButton = new Button("Return to Menu", ButtonSkin.Fancy, Anchor.BottomCenter);
-            menuButton.OnClick = (Entity btn) =>
+            Button retryButton = new Button("Retry", ButtonSkin.Fancy, Anchor.Center)
             {
-                gameState.changeScene(State.MAIN_MENU);
+                OnClick = (Entity btn) =>
+                {
+                    gameState.changeScene(State.GAME);
+                }
             };
 
-            Button quitButton = new Button("Quit", ButtonSkin.Fancy, Anchor.Center);
-            quitButton.OnClick = (Entity btn) =>
+            // 80 down from the Center
+            Vector2 menuLocationOffset = new Vector2(0f, 95f);
+            Button menuButton = new Button("Return to Menu", ButtonSkin.Fancy, Anchor.Center, null, menuLocationOffset)
             {
-                gameState.quitFlag = true;
+                OnClick = (Entity btn) =>
+                {
+                    gameState.changeScene(State.MAIN_MENU);
+                }
             };
 
-            gameOverPanel.AddChild(quitButton);
+            Button quitButton = new Button("Quit", ButtonSkin.Fancy, Anchor.BottomCenter)
+            {
+                OnClick = (Entity btn) =>
+                {
+                    gameState.quitFlag = true;
+                }
+            };
+
+            gameOverPanel.AddChild(retryButton);
             gameOverPanel.AddChild(menuButton);
+            gameOverPanel.AddChild(quitButton);
 
             GameObject uiManager = new GameObject("ui");
             UIUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
