@@ -6,25 +6,27 @@ namespace CarProto.CustomComponents
     class ObstacleCollision : BaseComponent
     {
         GameObject player;
+        int damage;
 
-        public ObstacleCollision(GameObject p)
+        public ObstacleCollision(GameObject p, int damage)
         {
             player = p;
+            this.damage = damage;
         }
 
         public override BaseComponent Clone()
         {
-            return new ObstacleCollision(this.player);
+            return new ObstacleCollision(this.player, this.damage);
         }
 
         protected override void OnUpdate()
         {
-            if (player.SceneNode.PositionX - _GameObject.SceneNode.PositionX < 7.5 &&
-                player.SceneNode.PositionX - _GameObject.SceneNode.PositionX > -7.5 &&
-                player.SceneNode.PositionY - _GameObject.SceneNode.PositionY < 10 &&
-                player.SceneNode.PositionY - _GameObject.SceneNode.PositionY > -10)
+            if (player.SceneNode.PositionX - _GameObject.SceneNode.PositionX < 4 &&
+                player.SceneNode.PositionX - _GameObject.SceneNode.PositionX > -4 &&
+                player.SceneNode.PositionY - _GameObject.SceneNode.PositionY < 5 &&
+                player.SceneNode.PositionY - _GameObject.SceneNode.PositionY > -5)
             {
-                player.GetComponent<PlayerController>().addDamage(10);
+                player.GetComponent<PlayerController>().addDamage(damage);
                 _GameObject.Destroy();
             }
         }

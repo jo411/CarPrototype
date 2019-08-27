@@ -26,7 +26,7 @@ namespace CarProto
             // add title and text
             panel.AddChild(new Header("CAR BUILDER"));
             panel.AddChild(new HorizontalLine());
-            var tutorialText = new Paragraph("Combine different car parts together to create your racer.\n\n These stats will determine how your car handles and takes damage. \n\n Editor Coming soon for now your car is randomized!", Anchor.Center);
+            var tutorialText = new Paragraph("Combine different car parts together to create your racer.\n\n These stats will determine how your car handles and takes damage. \n\n Editor coming soon for now your car is randomized!", Anchor.Center);
             panel.AddChild(tutorialText);
 
             // add a button at the bottom

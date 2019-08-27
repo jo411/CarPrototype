@@ -62,7 +62,7 @@ namespace CarProto
             addCamera();
             addFinishLine();
             //addTutorialGui();
-            addSound();
+            //addSound();
             addGameGui();
             addDebug();
         }
@@ -126,14 +126,29 @@ namespace CarProto
         {
             // Add obstacle
             List<Obstacle> obstacles = new List<Obstacle>();
-            obstacles.Add(new Obstacle(10, 100, carObject, this));
-            obstacles.Add(new Obstacle(-5, 150, carObject, this));
-            obstacles.Add(new Obstacle(10, 200, carObject, this));
-            obstacles.Add(new Obstacle(8, 250, carObject, this));
-            obstacles.Add(new Obstacle(6, 230, carObject, this));
-            obstacles.Add(new Obstacle(-10, 350, carObject, this));
-            obstacles.Add(new Obstacle(10, 350, carObject, this));
-            obstacles.Add(new Obstacle(0, 400, carObject, this));
+            obstacles.Add(new Obstacle(10, 100, carObject, this,10));            
+            obstacles.Add(new Obstacle(-5, 150, carObject, this,10));
+            obstacles.Add(new Obstacle(10, 200, carObject, this, 10));
+            obstacles.Add(new Obstacle(8, 250, carObject, this, 10));
+            obstacles.Add(new Obstacle(6, 230, carObject, this, 10));
+            obstacles.Add(new Obstacle(-10, 350, carObject, this, 10));
+            obstacles.Add(new Obstacle(10, 350, carObject, this, 10));
+            obstacles.Add(new Obstacle(0, 400, carObject, this, 10));
+
+            //add borders
+            int farRight = 35;
+            int farLeft = -35;
+            int top = 0;
+            int numRocks = 30;
+            int width = 20;
+            int damage = 50;
+            for(int i=0;i<numRocks;i++)
+            {
+                obstacles.Add(new Obstacle(farRight, top+i*width, carObject, this,damage));
+                obstacles.Add(new Obstacle(farLeft, top + i * width, carObject, this,damage));
+            }
+            
+
             // Add body just for visual diagnostics
             Model rockModel = ResourcesManager.Instance.GetModel("Models/Rock");
             ModelRenderer rockModelrender = new ModelRenderer(rockModel);
