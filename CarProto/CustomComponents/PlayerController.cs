@@ -101,7 +101,6 @@ namespace CarProto.CustomComponents
             if (Managers.GameInput.IsKeyPressed(GeonBit.Input.GameKeys.Jump))
             {
                 addDamage(10);
-
             }
 
             updateSpeed();

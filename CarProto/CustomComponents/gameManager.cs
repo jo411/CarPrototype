@@ -7,7 +7,6 @@ namespace CarProto.CustomComponents
         public PlayerController pc { get; set; }
         public bool gameIsRunning = true;
        
-
         public bool winFlag { get; private set; } = false;
         protected override void OnAddToScene()
         {

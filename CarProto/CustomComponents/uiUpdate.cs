@@ -9,8 +9,7 @@ namespace CarProto.CustomComponents
         public Paragraph timeDisplay;
         public Paragraph damageDisplay;
         public Paragraph speedDisplay;
-        public Panel gameOver;
-
+        public Panel gameOverPanel;
 
         PlayerController pc;
 
@@ -19,8 +18,9 @@ namespace CarProto.CustomComponents
             this.timeDisplay = timeDisplay;
             this.damageDisplay = damageDisplay;
             this.speedDisplay = speedDisplay;
-            this.gameOver = gameOver;
+            this.gameOverPanel = gameOver;
         }
+
         protected override void OnAddToScene()
         {
             pc = _GameObject.ParentScene.Root.Find("player").GetComponent<PlayerController>();
@@ -28,7 +28,7 @@ namespace CarProto.CustomComponents
 
         public override BaseComponent Clone()
         {
-            return new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOver);
+            return new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
         }
 
         /// <summary>
@@ -39,7 +39,6 @@ namespace CarProto.CustomComponents
             updateSpeedDisplay();
             updateTimeDisplay();
             updateDamageDisplay();
-
         }
 
         private void updateTimeDisplay()
@@ -59,7 +58,7 @@ namespace CarProto.CustomComponents
         private void updateDamageDisplay()
         {
             float damage = pc.damage;
-            damageDisplay.Text = "  "+damage.ToString() + "% Damaged";
+            damageDisplay.Text = "  " + damage.ToString() + "% Damaged";
 
 
             if (damage < 50)
@@ -80,11 +79,10 @@ namespace CarProto.CustomComponents
 
         public void DisplayGameOver(bool gameWon)
         {
-
-            Paragraph gameOverText = gameOver.Find<Paragraph>("gameover");
-            if(gameWon)
+            Paragraph gameOverText = gameOverPanel.Find<Paragraph>("gameover");
+            if (gameWon)
             {
-                gameOverText.Text ="Hey you survived to the end; congratulations are in order I suppose...";
+                gameOverText.Text = "Hey you survived to the end; congratulations are in order I suppose...";
             }
             else
             {
@@ -92,8 +90,7 @@ namespace CarProto.CustomComponents
                                                    "Someone may want to call the medics...\n";
             }
             gameOverText.Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");
-            gameOver.Visible = true;
+            gameOverPanel.Visible = true;
         }
-
     }
 }

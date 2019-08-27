@@ -15,6 +15,7 @@ namespace CarProto
         public GameScene currentScene;
 
         public bool quitFlag { get; set; } = false;
+        public bool requestedChangeState { get; set; } = false;
         public GameState()
         {
             currentState = State.MAIN_MENU;
@@ -24,6 +25,7 @@ namespace CarProto
         public void changeScene(State newState)
         {
             currentState = newState;
+            requestedChangeState = true;
         }
 
         public void loadNewScene()
@@ -44,6 +46,8 @@ namespace CarProto
                     currentScene = new CarGame(this);
                     break;
             }
+
+            requestedChangeState = false;
 
             currentScene.Load();
             old.Destroy();

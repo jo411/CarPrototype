@@ -3,6 +3,7 @@ using CarProto.CustomGameObjects;
 using GeonBit.Core;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
+using GeonBit.ECS.Components.Misc;
 using GeonBit.ECS.Components.Physics;
 using GeonBit.ECS.Components.Sound;
 using GeonBit.Managers;
@@ -23,9 +24,9 @@ namespace CarProto
         GameObject trackObject;
         GameObject gameManager;
         GameObject finishLine;
-        GameManager gm;
+        public GameManager gm { get; private set; }
 
-        UiUpdate UIUpdater;
+        UiUpdate uiUpdater;
 
         bool showTutorial = false;
         bool showDebug = false;
@@ -38,18 +39,15 @@ namespace CarProto
         }
 
         public void doUpdate()
-        {          
-                checkQuit();
+        {
+            checkQuit();
         }
 
         void checkQuit()
         {
-            if (!gm.gameIsRunning) { return; }
-
-            if (gm.isGameOver())
+            if (gm.isGameOver() && !uiUpdater.gameOverPanel.Visible)
             {
-                UIUpdater.DisplayGameOver(gm.winFlag);
-               
+                uiUpdater.DisplayGameOver(gm.winFlag);
             }
         }
 
@@ -100,18 +98,21 @@ namespace CarProto
             cf.offset = new Vector3(0, -35, 30);
             cf.dampingStrength = .07f;
 
+            //cameraObject.AddComponent(new CameraEditorController());
+           
+
             cameraObject.Parent = Root;
         }
 
         void addTrack()
         {
             trackObject = new GameObject("track");
-            Model trackModel = ResourcesManager.Instance.GetModel("Models/Track");
+            Model trackModel = ResourcesManager.Instance.GetModel("Models/track_03");
             trackObject.AddComponent(new ModelRenderer(trackModel));
-            trackObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
-            trackObject.SceneNode.Scale = new Vector3(.50f, .25f, .25f);
+            trackObject.SceneNode.Rotation = new Vector3(Util.degToRad(90f), Util.degToRad(0f), Util.degToRad(0f));
+          trackObject.SceneNode.Scale = new Vector3(.050f, .05f, .05f);
             trackObject.Parent = Root;
-            trackObject.SceneNode.Position = new Vector3(25f, -60f, 0f);
+            trackObject.SceneNode.Position = new Vector3(0f, 0f, 0f);
 
             GameObject backgroundObject = new GameObject("background");
             Texture2D backgroundimage = ResourcesManager.Instance.GetTexture("Images/SpyHunter");
@@ -122,15 +123,16 @@ namespace CarProto
             backgroundObject.AddComponent(background);
             backgroundObject.Parent = Root;
         }
+
         void addObstacles()
         {
             //Don't look below. Dear lord I and a level editor. 
             // Add obstacle
-            int baseDamage=30;
+            int baseDamage = 30;
 
             List<Obstacle> obstacles = new List<Obstacle>();
-            obstacles.Add(new Obstacle(10, 100, carObject, this,baseDamage));            
-            obstacles.Add(new Obstacle(-5, 150, carObject, this,baseDamage));
+            obstacles.Add(new Obstacle(10, 100, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-5, 150, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(10, 200, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(8, 250, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(6, 230, carObject, this, baseDamage));
@@ -175,7 +177,7 @@ namespace CarProto
 
             obstacles.Add(new Obstacle(-30, 180, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-25, 180, carObject, this, baseDamage));
-            
+
             obstacles.Add(new Obstacle(10, 180, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(20, 180, carObject, this, baseDamage));
 
@@ -200,7 +202,7 @@ namespace CarProto
             obstacles.Add(new Obstacle(-15, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-10, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-5, 400, carObject, this, baseDamage));
-            
+
             obstacles.Add(new Obstacle(20, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(25, 400, carObject, this, baseDamage));
 
@@ -209,7 +211,7 @@ namespace CarProto
             obstacles.Add(new Obstacle(-20, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-15, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-10, 450, carObject, this, baseDamage));
-           
+
             obstacles.Add(new Obstacle(10, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(15, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(20, 450, carObject, this, baseDamage));
@@ -218,30 +220,21 @@ namespace CarProto
 
 
             //add borders
-            int farRight = 35;
-            int farLeft = -35;
+            int farRight = 30;
+            int farLeft = -30;
             int top = 0;
             int numRocks = 30;
             int width = 20;
             int damage = 75;
-            for(int i=0;i<numRocks;i++)
+            for (int i = 0; i < numRocks; i++)
             {
-                Obstacle ob1 = new Obstacle(farRight, top + i * width, carObject, this, damage);
-                Obstacle ob2 = new Obstacle(farLeft, top + i * width, carObject, this, damage);
-
-                obstacles.Add(ob1);
-                obstacles.Add(ob2);
-
-                if (i % 4 == 0)
-                {
-                    ob1.AddComponent(new ObstacleMove());
-                    ob2.AddComponent(new ObstacleMove());
-                }
+                obstacles.Add(new Obstacle(farRight, top + i * width, carObject, this, damage));
+                obstacles.Add(new Obstacle(farLeft, top + i * width, carObject, this, damage));
             }
-            
+
 
             // Add body just for visual diagnostics
-            Model rockModel = ResourcesManager.Instance.GetModel("Models/Rock");
+            Model rockModel = ResourcesManager.Instance.GetModel("Models/obstacle");
             ModelRenderer rockModelrender = new ModelRenderer(rockModel);
 
             foreach (Obstacle obstacle in obstacles)
@@ -251,6 +244,7 @@ namespace CarProto
                 obstacle.AddComponent(new StaticBody(new BoxInfo(new Vector3(1, 1, 1))));
             }
         }
+
         void addPlayer()
         {
             carObject = new GameObject("player");
@@ -269,6 +263,7 @@ namespace CarProto
             playerBody.InvokeCollisionEvents = true;
             carObject.AddComponent(playerBody);
         }
+
         void addFinishLine()
         {
             finishLine = new FinishLine(550, carObject, this, gameManager);
@@ -295,24 +290,39 @@ namespace CarProto
             gameOverPanel.AddChild(gameOverText);
             gameOverPanel.Visible = false;
 
-            Button menuButton = new Button("Return to Menu", ButtonSkin.Fancy, Anchor.BottomCenter);
-            menuButton.OnClick = (Entity btn) =>
+            Button retryButton = new Button("Retry", ButtonSkin.Fancy, Anchor.Center)
             {
-                gameState.changeScene(State.MAIN_MENU);
+                OnClick = (Entity btn) =>
+                {
+                    gameState.changeScene(State.GAME);
+                }
             };
 
-            Button quitButton = new Button("Quit", ButtonSkin.Fancy, Anchor.Center);
-            quitButton.OnClick = (Entity btn) =>
+            // 80 down from the Center
+            Vector2 menuLocationOffset = new Vector2(0f, 95f);
+            Button menuButton = new Button("Return to Menu", ButtonSkin.Fancy, Anchor.Center, null, menuLocationOffset)
             {
-                gameState.quitFlag = true;
+                OnClick = (Entity btn) =>
+                {
+                    gameState.changeScene(State.MAIN_MENU);
+                }
             };
 
-            gameOverPanel.AddChild(quitButton);
+            Button quitButton = new Button("Quit", ButtonSkin.Fancy, Anchor.BottomCenter)
+            {
+                OnClick = (Entity btn) =>
+                {
+                    gameState.quitFlag = true;
+                }
+            };
+
+            gameOverPanel.AddChild(retryButton);
             gameOverPanel.AddChild(menuButton);
+            gameOverPanel.AddChild(quitButton);
 
             GameObject uiManager = new GameObject("ui");
-            UIUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
-            uiManager.AddComponent(UIUpdater);
+            uiUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
+            uiManager.AddComponent(uiUpdater);
             uiManager.Parent = Root;
 
             UserInterface.AddEntity(statPanel);
