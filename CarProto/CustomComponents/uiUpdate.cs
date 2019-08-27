@@ -11,7 +11,6 @@ namespace CarProto.CustomComponents
         public Paragraph speedDisplay;
         public Panel gameOver;
 
-
         PlayerController pc;
 
         public UiUpdate(Paragraph timeDisplay, Paragraph damageDisplay, Paragraph speedDisplay, Panel gameOver)
@@ -21,6 +20,7 @@ namespace CarProto.CustomComponents
             this.speedDisplay = speedDisplay;
             this.gameOver = gameOver;
         }
+
         protected override void OnAddToScene()
         {
             pc = _GameObject.ParentScene.Root.Find("player").GetComponent<PlayerController>();
@@ -39,7 +39,6 @@ namespace CarProto.CustomComponents
             updateSpeedDisplay();
             updateTimeDisplay();
             updateDamageDisplay();
-
         }
 
         private void updateTimeDisplay()
@@ -59,7 +58,7 @@ namespace CarProto.CustomComponents
         private void updateDamageDisplay()
         {
             float damage = pc.damage;
-            damageDisplay.Text = "  "+damage.ToString() + "% Damaged";
+            damageDisplay.Text = "  " + damage.ToString() + "% Damaged";
 
 
             if (damage < 50)
@@ -80,11 +79,10 @@ namespace CarProto.CustomComponents
 
         public void DisplayGameOver(bool gameWon)
         {
-
             Paragraph gameOverText = gameOver.Find<Paragraph>("gameover");
-            if(gameWon)
+            if (gameWon)
             {
-                gameOverText.Text ="Hey you survived to the end; congratulations are in order I suppose...";
+                gameOverText.Text = "Hey you survived to the end; congratulations are in order I suppose...";
             }
             else
             {
@@ -94,6 +92,5 @@ namespace CarProto.CustomComponents
             gameOverText.Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");
             gameOver.Visible = true;
         }
-
     }
 }
