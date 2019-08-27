@@ -80,6 +80,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CustomComponents\FinishLineCollision.cs" />
+    <Compile Include="CustomGameObjects\FinishLine.cs" />
     <Compile Include="Scenes\CarBuilder.cs" />
     <Compile Include="Scenes\CarGame.cs" />
     <Compile Include="CustomComponents\AudioManager.cs" />

@@ -22,12 +22,14 @@ namespace CarProto
         GameObject cameraObject;
         GameObject trackObject;
         GameObject gameManager;
+        GameObject finishLine;
         GameManager gm;
 
         UiUpdate UIUpdater;
 
         bool showTutorial = true;
         bool showDebug = true;
+        bool quited = false;
 
         public CarGame(GameState gameState)
         {
@@ -37,16 +39,18 @@ namespace CarProto
 
         public void doUpdate()
         {
-            checkQuit();
+            if (!quited)
+                checkQuit();
         }
 
         void checkQuit()
         {
             if (!gm.gameIsRunning) { return; }
 
-            if (gm.isGameOver())
+            if (gm.isGameOver() || gm.winFlag)
             {
                 UIUpdater.DisplayGameOver(gm.winFlag);
+                quited = true;
             }
         }
 
@@ -57,6 +61,7 @@ namespace CarProto
             addObstacles();
             addTrack();
             addCamera();
+            addFinishLine();
             //addTutorialGui();
             addSound();
             addGameGui();
@@ -158,6 +163,13 @@ namespace CarProto
             KinematicBody playerBody = new KinematicBody(new BoxInfo(new Vector3(8, 8, 5)));
             playerBody.InvokeCollisionEvents = true;
             carObject.AddComponent(playerBody);
+        }
+        void addFinishLine()
+        {
+            finishLine = new FinishLine(550, carObject, this, gameManager);
+
+            // Add body just for visual diagnostics
+            finishLine.AddComponent(new KinematicBody(new BoxInfo(new Vector3(200, 8, 5))));
         }
 
         void addGameGui()
