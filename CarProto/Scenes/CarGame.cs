@@ -3,6 +3,7 @@ using CarProto.CustomGameObjects;
 using GeonBit.Core;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
+using GeonBit.ECS.Components.Misc;
 using GeonBit.ECS.Components.Physics;
 using GeonBit.ECS.Components.Sound;
 using GeonBit.Managers;
@@ -97,18 +98,21 @@ namespace CarProto
             cf.offset = new Vector3(0, -35, 30);
             cf.dampingStrength = .07f;
 
+            //cameraObject.AddComponent(new CameraEditorController());
+           
+
             cameraObject.Parent = Root;
         }
 
         void addTrack()
         {
             trackObject = new GameObject("track");
-            Model trackModel = ResourcesManager.Instance.GetModel("Models/Track");
+            Model trackModel = ResourcesManager.Instance.GetModel("Models/track_03");
             trackObject.AddComponent(new ModelRenderer(trackModel));
-            trackObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
-            trackObject.SceneNode.Scale = new Vector3(.50f, .25f, .25f);
+            trackObject.SceneNode.Rotation = new Vector3(Util.degToRad(90f), Util.degToRad(0f), Util.degToRad(0f));
+          trackObject.SceneNode.Scale = new Vector3(.050f, .05f, .05f);
             trackObject.Parent = Root;
-            trackObject.SceneNode.Position = new Vector3(25f, -60f, 0f);
+            trackObject.SceneNode.Position = new Vector3(0f, 0f, 0f);
 
             GameObject backgroundObject = new GameObject("background");
             Texture2D backgroundimage = ResourcesManager.Instance.GetTexture("Images/SpyHunter");
@@ -216,8 +220,8 @@ namespace CarProto
 
 
             //add borders
-            int farRight = 35;
-            int farLeft = -35;
+            int farRight = 30;
+            int farLeft = -30;
             int top = 0;
             int numRocks = 30;
             int width = 20;

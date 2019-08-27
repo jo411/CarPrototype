@@ -113,7 +113,7 @@ namespace CarProto
             };
             panel.AddChild(closeTut);
 
-            Panel wip = new Panel(new Vector2(700, 450),PanelSkin.Default, Anchor.CenterLeft,new Vector2(0,-50));
+            Panel wip = new Panel(new Vector2(700, 450),PanelSkin.Default, Anchor.CenterLeft,new Vector2(0,-100));
 
             wip.AddChild(new Header("--Woah slow down there!--"));
             panel.AddChild(new HorizontalLine());
