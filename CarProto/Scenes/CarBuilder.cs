@@ -66,22 +66,25 @@ namespace CarProto
             panel.AddChild(new Header("CAR BUILDER"));
            
           
-            SelectList bodySelect = new SelectList(new Vector2(300, 150), Anchor.Center, new Vector2(0, 0));
+            SelectList bodySelect = new SelectList(new Vector2(350, 150), Anchor.Center, new Vector2(0, 0));
             //bodyDrop.DefaultText = ("Choose a Body");
             bodySelect.AddItem("Shopping Cart");
             bodySelect.AddItem("Uranium Hull");
+            bodySelect.AddItem("Sticks and Stones");
             bodySelect.ToolTipText = ("Choose a Body");
 
             SelectList frontWheelSelect = new SelectList(new Vector2(300, 150), Anchor.CenterLeft, new Vector2(0, 0));
             //frontWheelDrop.DefaultText = ("Choose Front Wheels");
             frontWheelSelect.AddItem("Wooden Wheels");
             frontWheelSelect.AddItem("Stone Wheels");
+            frontWheelSelect.AddItem("Coconut Wheels");
             frontWheelSelect.ToolTipText = ("Choose Front Wheels");
 
             SelectList backWheelSelect = new SelectList(new Vector2(300, 150), Anchor.CenterRight, new Vector2(0, 0));
             //backWheelDrop.DefaultText = ("Choose Back Wheels");
             backWheelSelect.AddItem("Wooden Wheels");
             backWheelSelect.AddItem("Stone Wheels");
+            backWheelSelect.AddItem("Coconut Wheels");
             backWheelSelect.ToolTipText = ("Choose Back Wheels");
 
             int labelOffsetY = -100;

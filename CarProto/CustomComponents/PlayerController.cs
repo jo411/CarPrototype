@@ -13,7 +13,7 @@ namespace CarProto.CustomComponents
         private int turnState = 1; //0 Left | 1 Straight | 2 Right
 
         public float movingSpeed { get; private set; } = 20f;
-        public float knockBackSpeed = 20f;
+        public float knockBackSpeed = 15f;
         public float knockBackDistance = 5f;
         public float damage { get; set; }
         public float weight { get; set; }
