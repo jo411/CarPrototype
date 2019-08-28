@@ -29,7 +29,7 @@ namespace CarProto
         UiUpdate uiUpdater;
 
         bool showTutorial = false;
-        bool showDebug = false;
+        bool showDebug = true;
         //bool quited = false;
 
         public CarGame(GameState gameState)
@@ -55,10 +55,12 @@ namespace CarProto
         {
             addGameManager();
             addPlayer();
-            addObstacles();
+            //addObstacles();
             addTrack();
             addCamera();
             addFinishLine();
+
+            addBoundary();
             //addTutorialGui();
             addSound();
             addGameGui();
@@ -110,7 +112,7 @@ namespace CarProto
             Model trackModel = ResourcesManager.Instance.GetModel("Models/track_03");
             trackObject.AddComponent(new ModelRenderer(trackModel));
             trackObject.SceneNode.Rotation = new Vector3(Util.degToRad(90f), Util.degToRad(0f), Util.degToRad(0f));
-          trackObject.SceneNode.Scale = new Vector3(.050f, .05f, .05f);
+            trackObject.SceneNode.Scale = new Vector3(.050f, .05f, .05f);
             trackObject.Parent = Root;
             trackObject.SceneNode.Position = new Vector3(0f, 0f, 0f);
 
@@ -266,7 +268,7 @@ namespace CarProto
 
         void addFinishLine()
         {
-            finishLine = new FinishLine(550, carObject, this, gameManager);
+            finishLine = new FinishLine(900, carObject, this, gameManager);
 
             // Add body just for visual diagnostics
             finishLine.AddComponent(new KinematicBody(new BoxInfo(new Vector3(200, 8, 5))));
@@ -382,6 +384,11 @@ namespace CarProto
             gridObject.SceneNode.Rotation = new Vector3(Util.degToRad(0), Util.degToRad(0), Util.degToRad(0));
             gridObject.SceneNode.Scale = new Vector3(100, 100, 1);
             gridObject.Parent = Root;
+        }
+
+        void addBoundary()
+        {
+            GameObject bound1 = new Boundary(new Vector3(-30, -100, 0), new Vector3(-30, 500, 0), carObject, this);
         }
     }
 }

@@ -75,7 +75,29 @@ namespace CarProto.CustomComponents
                 _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * movingSpeed * (Math.Max(damageShift() / 1.5f, 1));
             }
 
-            updateKnockedBack();
+            if (knocked)
+            {
+                float frameDis = Managers.TimeManager.TimeFactor * (knockBackSpeed * damageShift());
+                if (knockedDirLeft)
+                {
+                    _GameObject.SceneNode.PositionX -= frameDis;
+
+                }
+                else
+                {
+                    _GameObject.SceneNode.PositionX += frameDis;
+                }
+                distanceCounter += frameDis;
+
+                if (distanceCounter > knockBackDistance)
+                {
+                    knocked = false;
+                    distanceCounter = 0;
+                    resetRotation();
+                    currentDamageReductionFactor = 1;
+                }
+                return;
+            }
 
             // Move left
             if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Left))
@@ -179,33 +201,6 @@ namespace CarProto.CustomComponents
             else
             {
                 return shift[4];
-            }
-        }
-
-        private void updateKnockedBack()
-        {
-            if (knocked)
-            {
-                float frameDis = Managers.TimeManager.TimeFactor * (knockBackSpeed * damageShift());
-                if (knockedDirLeft)
-                {
-                    _GameObject.SceneNode.PositionX -= frameDis;
-
-                }
-                else
-                {
-                    _GameObject.SceneNode.PositionX += frameDis;
-                }
-                distanceCounter += frameDis;
-
-                if (distanceCounter > knockBackDistance)
-                {
-                    knocked = false;
-                    distanceCounter = 0;
-                    resetRotation();
-                    currentDamageReductionFactor = 1;
-                }
-                return;
             }
         }
 
