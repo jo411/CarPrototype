@@ -1,6 +1,7 @@
 ﻿using CarProto.CustomComponents;
 using CarProto.CustomGameObjects;
 using GeonBit.Core;
+using GeonBit.Core.Graphics.Materials;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
 using GeonBit.ECS.Components.Misc;
@@ -317,7 +318,7 @@ namespace CarProto
             {
                 obstacle.AddComponent(new ModelRenderer(rockModel));
                 obstacle.SceneNode.Scale = new Vector3(4, 4, 4);
-                obstacle.AddComponent(new StaticBody(new BoxInfo(new Vector3(1, 1, 1))));
+                //obstacle.AddComponent(new StaticBody(new BoxInfo(new Vector3(1, 1, 1))));
             }
         }
 
@@ -326,6 +327,10 @@ namespace CarProto
             carObject = new GameObject("player");
             Model carModel = ResourcesManager.Instance.GetModel("Models/MuscleCar");
             carObject.AddComponent(new ModelRenderer(carModel));
+            foreach(MaterialAPI material in carObject.GetComponent<ModelRenderer>().GetMaterials())
+            {
+                material.DiffuseColor = Color.Red;
+            }
             PlayerController pc = new PlayerController();
 
             gm.pc = pc;
@@ -335,9 +340,11 @@ namespace CarProto
             carObject.Parent = Root;
 
             // Add body just for visual diagnostics
-            KinematicBody playerBody = new KinematicBody(new BoxInfo(new Vector3(8, 8, 5)));
-            playerBody.InvokeCollisionEvents = true;
-            carObject.AddComponent(playerBody);
+            //KinematicBody playerBody = new KinematicBody(new BoxInfo(new Vector3(8, 8, 5)))
+            //{
+            //    InvokeCollisionEvents = true
+            //};
+            //carObject.AddComponent(playerBody);
         }
 
         void addFinishLine()

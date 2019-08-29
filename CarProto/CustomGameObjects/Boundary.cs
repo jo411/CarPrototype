@@ -30,8 +30,8 @@ namespace CarProto.CustomGameObjects
             pos1.SceneNode.PositionZ = 1.5f;
             pos2.SceneNode.PositionZ = 1.5f;
             
-            pos1.AddComponent(new StaticBody(new BoxInfo(new Vector3(5, 5, 5))));
-            pos2.AddComponent(new StaticBody(new BoxInfo(new Vector3(5, 5, 5))));
+            //pos1.AddComponent(new StaticBody(new BoxInfo(new Vector3(5, 5, 5))));
+            //pos2.AddComponent(new StaticBody(new BoxInfo(new Vector3(5, 5, 5))));
         }
     }
 }

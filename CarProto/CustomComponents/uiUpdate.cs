@@ -11,6 +11,8 @@ namespace CarProto.CustomComponents
         public Paragraph speedDisplay;
         public Panel gameOverPanel;
 
+        private TimeSpan current;
+
         PlayerController pc;
 
         public UiUpdate(Paragraph timeDisplay, Paragraph damageDisplay, Paragraph speedDisplay, Panel gameOver)
@@ -19,6 +21,7 @@ namespace CarProto.CustomComponents
             this.damageDisplay = damageDisplay;
             this.speedDisplay = speedDisplay;
             this.gameOverPanel = gameOver;
+            current = new TimeSpan();
         }
 
         protected override void OnAddToScene()
@@ -43,7 +46,7 @@ namespace CarProto.CustomComponents
 
         private void updateTimeDisplay()
         {
-            TimeSpan current = Managers.TimeManager.TotalTime;
+            current = current.Add(Managers.TimeManager.ElapsedTime);
             timeDisplay.Text = current.ToString(@"mm\:ss\:ff");
 
             timeDisplay.MarkAsDirty();
@@ -89,7 +92,7 @@ namespace CarProto.CustomComponents
                 gameOverText.Text = "Oh no thats a Game Over for you! \n" +
                                                    "Someone may want to call the medics...\n";
             }
-            gameOverText.Text += "\n Final Time: " + Managers.TimeManager.TotalTime.ToString(@"mm\:ss\:ff");
+            gameOverText.Text += "\n Final Time: " + current.ToString(@"mm\:ss\:ff");
             gameOverPanel.Visible = true;
         }
     }

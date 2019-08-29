@@ -1,5 +1,6 @@
 ﻿using CarProto.CustomComponents;
 using GeonBit.Core;
+using GeonBit.Core.Graphics.Materials;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
 using GeonBit.UI.Entities;
@@ -52,6 +53,10 @@ namespace CarProto
             carObject = new GameObject("player");
             Model carModel = ResourcesManager.Instance.GetModel("Models/MuscleCar");
             carObject.AddComponent(new ModelRenderer(carModel));
+            foreach (MaterialAPI material in carObject.GetComponent<ModelRenderer>().GetMaterials())
+            {
+                material.DiffuseColor = Color.Red;
+            }
             carObject.AddComponent(new RotatingObject(.5f, 0, 0));
 
             carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
