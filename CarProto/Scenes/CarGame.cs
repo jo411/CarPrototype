@@ -55,7 +55,7 @@ namespace CarProto
         {
             addGameManager();
             addPlayer();
-            //addObstacles();
+            addObstacles();
             addTrack();
             addCamera();
             addFinishLine();
@@ -93,16 +93,15 @@ namespace CarProto
         {
             cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
-            //cameraObject.AddComponent(new CameraFollow());
+            cameraObject.AddComponent(new CameraFollow());
             cameraObject.SceneNode.Rotation = new Vector3(Util.degToRad(60), Util.degToRad(0), Util.degToRad(0));
 
-            //CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
-            //cf.offset = new Vector3(0, -35, 30);
-            //cf.dampingStrength = .07f;
+            CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
+            cf.offset = new Vector3(0, -35, 30);
+            cf.dampingStrength = .07f;
 
-            cameraObject.AddComponent(new CameraEditorController());
+            //cameraObject.AddComponent(new CameraEditorController());
            
-
             cameraObject.Parent = Root;
         }
 
@@ -134,110 +133,185 @@ namespace CarProto
 
             List<Obstacle> obstacles = new List<Obstacle>();
             obstacles.Add(new Obstacle(10, 100, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-5, 150, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-5, 150, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(10, 200, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(8, 250, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(6, 230, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(6, 230, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-10, 350, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(10, 350, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(0, 400, carObject, this, baseDamage));
 
             obstacles.Add(new Obstacle(-15, 95, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(0, 140, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(0, 140, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(14, 195, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(16, 235, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(16, 235, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-12, 240, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-35, 344, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-35, 344, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(15, 356, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(0, 452, carObject, this, baseDamage));
 
-            obstacles.Add(new Obstacle(10, 25, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-10, 25, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(10, 25, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-10, 25, carObject, this, baseDamage));
 
-            obstacles.Add(new Obstacle(0, 45, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(0, 45, carObject, this, baseDamage));
 
-            obstacles.Add(new Obstacle(-25, 60, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-15, 60, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-5, 60, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-25, 60, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-15, 60, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-5, 60, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(5, 60, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(10, 60, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(10, 60, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(20, 60, carObject, this, baseDamage));
 
-            obstacles.Add(new Obstacle(20, 80, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(15, 80, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(10, 80, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(20, 80, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(15, 80, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(10, 80, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-10, 80, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-25, 80, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-25, 80, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-30, 80, carObject, this, baseDamage));
 
             obstacles.Add(new Obstacle(25, 100, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(20, 100, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(20, 100, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(10, 100, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-15, 100, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-15, 100, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-20, 100, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-25, 100, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-25, 100, carObject, this, baseDamage));
 
             obstacles.Add(new Obstacle(-30, 180, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-25, 180, carObject, this, baseDamage));
 
-            obstacles.Add(new Obstacle(10, 180, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(10, 180, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(20, 180, carObject, this, baseDamage));
 
 
-            obstacles.Add(new Obstacle(-30, 200, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-30, 200, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-25, 200, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-10, 200, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-10, 200, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(5, 200, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(10, 200, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(20, 200, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(20, 200, carObject, this, baseDamage));
 
             obstacles.Add(new Obstacle(-15, 305, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(0, 340, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(14, 395, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(16, 335, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(16, 335, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-12, 340, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-35, 315, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(15, 312, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(0, 306, carObject, this, baseDamage));
 
             obstacles.Add(new Obstacle(-25, 400, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-15, 400, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-15, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-10, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-5, 400, carObject, this, baseDamage));
 
-            obstacles.Add(new Obstacle(20, 400, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(20, 400, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(25, 400, carObject, this, baseDamage));
 
             obstacles.Add(new Obstacle(-30, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-25, 450, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-20, 450, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-20, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(-15, 450, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-10, 450, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-10, 450, carObject, this, baseDamage));
 
             obstacles.Add(new Obstacle(10, 450, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(15, 450, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(15, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(20, 450, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(25, 450, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(20, 450, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(20, 450, carObject, this, baseDamage));
 
+            obstacles.Add(new Obstacle(-15, 500, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-40, 510, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-13, 520, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-23, 530, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-40, 540, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(0, 540, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-50, 550, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-75, 550, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-26, 550, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(10, 580, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-5, 580, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(15, 580, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-18, 590, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(0, 600, carObject, this, baseDamage));
 
-            //add borders
-            int farRight = 30;
-            int farLeft = -30;
-            int top = 0;
-            int numRocks = 30;
-            int width = 20;
-            int damage = 75;
-            for (int i = 0; i < numRocks; i++)
-            {
-                obstacles.Add(new Obstacle(farRight, top + i * width, carObject, this, damage));
-                obstacles.Add(new Obstacle(farLeft, top + i * width, carObject, this, damage));
-            }
+            obstacles.Add(new Obstacle(-25, 610, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-50, 620, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-25, 630, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-30, 630, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-40, 640, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(0, 650, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-50, 660, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-75, 660, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-30, 670, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(10, 680, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-5, 690, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(15, 700, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-18, 710, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(0, 710, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(0, 680, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(5, 690, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(3, 700, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-3, 710, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(3, 710, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-5, 660, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(2, 670, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(0, 690, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(24, 700, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(10, 710, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(13, 680, carObject, this, baseDamage));
 
+            obstacles.Add(new Obstacle(15, 710, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-20, 720, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-5, 730, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(15, 730, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(-5, 740, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(0, 750, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(20, 760, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(5, 760, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(13, 770, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(15, 780, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(17, 790, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(25, 800, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(6, 810, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(15, 810, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(30, 780, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(30, 790, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(35, 800, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(30, 810, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(47, 810, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(26, 810, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(55, 810, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(70, 780, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(60, 790, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(55, 800, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(50, 810, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(57, 810, carObject, this, baseDamage));
 
             // Add body just for visual diagnostics
             Model rockModel = ResourcesManager.Instance.GetModel("Models/obstacle");
             ModelRenderer rockModelrender = new ModelRenderer(rockModel);
+
+            Obstacle movingob1 = new Obstacle(7, 150, carObject, this, baseDamage);
+            movingob1.AddComponent(new ObstacleMove(8, 20));
+            obstacles.Add(movingob1);
+            Obstacle movingob7 = new Obstacle(-7, 130, carObject, this, baseDamage);
+            movingob7.AddComponent(new ObstacleMove(8, 20));
+            obstacles.Add(movingob7);
+            Obstacle movingob2 = new Obstacle(-10, 200, carObject, this, baseDamage);
+            movingob2.AddComponent(new ObstacleMove(12, 24));
+            obstacles.Add(movingob2);
+            Obstacle movingob3 = new Obstacle(16, 340, carObject, this, baseDamage);
+            movingob3.AddComponent(new ObstacleMove(12, 24));
+            obstacles.Add(movingob3);
+            Obstacle movingob4 = new Obstacle(10, 430, carObject, this, baseDamage);
+            movingob4.AddComponent(new ObstacleMove(12, 24));
+            obstacles.Add(movingob4);
+            Obstacle movingob5 = new Obstacle(-3, 450, carObject, this, baseDamage);
+            movingob5.AddComponent(new ObstacleMove(12, 24));
+            obstacles.Add(movingob5);
+            Obstacle movingob6 = new Obstacle(-30, 550, carObject, this, baseDamage);
+            movingob6.AddComponent(new ObstacleMove(12, 24));
+            obstacles.Add(movingob6);
 
             foreach (Obstacle obstacle in obstacles)
             {
