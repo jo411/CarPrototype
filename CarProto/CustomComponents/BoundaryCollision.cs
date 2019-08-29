@@ -61,7 +61,7 @@ namespace CarProto.CustomComponents
             if (slope == -1)
                 currentX = from.X;
             else
-                currentX = (player.SceneNode.PositionY - from.Y) * slope + from.X;
+                currentX = from.X + (player.SceneNode.PositionY - from.Y) * slope ;
 
             if (player.SceneNode.PositionX - currentX < 4 &&
                 player.SceneNode.PositionX - currentX > -4)

@@ -93,14 +93,14 @@ namespace CarProto
         {
             cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
-            cameraObject.AddComponent(new CameraFollow());
+            //cameraObject.AddComponent(new CameraFollow());
             cameraObject.SceneNode.Rotation = new Vector3(Util.degToRad(60), Util.degToRad(0), Util.degToRad(0));
 
-            CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
-            cf.offset = new Vector3(0, -35, 30);
-            cf.dampingStrength = .07f;
+            //CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
+            //cf.offset = new Vector3(0, -35, 30);
+            //cf.dampingStrength = .07f;
 
-            //cameraObject.AddComponent(new CameraEditorController());
+            cameraObject.AddComponent(new CameraEditorController());
            
 
             cameraObject.Parent = Root;
@@ -388,7 +388,26 @@ namespace CarProto
 
         void addBoundary()
         {
-            GameObject bound1 = new Boundary(new Vector3(-30, -100, 0), new Vector3(-30, 500, 0), carObject, this);
+            GameObject bound1 = new Boundary(new Vector3(-30, -100, 0), new Vector3(-30, 420, 0), carObject, this);
+            GameObject bound2 = new Boundary(new Vector3(27, -100, 0), new Vector3(27, 420, 0), carObject, this);
+            GameObject bound3 = new Boundary(new Vector3(-30, 419, 0), new Vector3(-18, 467, 0), carObject, this);
+            GameObject bound4 = new Boundary(new Vector3(27, 419, 0), new Vector3(37, 467, 0), carObject, this);
+            GameObject bound5 = new Boundary(new Vector3(-18, 467, 0), new Vector3(10, 527, 0), carObject, this);
+            GameObject bound6 = new Boundary(new Vector3(37, 467, 0), new Vector3(65, 527, 0), carObject, this);
+            GameObject bound7 = new Boundary(new Vector3(10, 527, 0), new Vector3(7, 580, 0), carObject, this);
+            GameObject bound8 = new Boundary(new Vector3(65, 527, 0), new Vector3(63, 580, 0), carObject, this);
+            GameObject bound9 = new Boundary(new Vector3(7, 580, 0), new Vector3(-16, 630, 0), carObject, this);
+            GameObject bound10 = new Boundary(new Vector3(63, 580, 0), new Vector3(40, 630, 0), carObject, this);
+            GameObject bound11 = new Boundary(new Vector3(-16, 630, 0), new Vector3(-29, 680, 0), carObject, this);
+            GameObject bound12 = new Boundary(new Vector3(40, 630, 0), new Vector3(25, 680, 0), carObject, this);
+            GameObject bound13 = new Boundary(new Vector3(-29, 680, 0), new Vector3(-42, 730, 0), carObject, this);
+            GameObject bound14 = new Boundary(new Vector3(25, 680, 0), new Vector3(12, 730, 0), carObject, this);
+            GameObject bound15 = new Boundary(new Vector3(-42, 730, 0), new Vector3(-70, 780, 0), carObject, this);
+            GameObject bound16 = new Boundary(new Vector3(12, 730, 0), new Vector3(-16, 780, 0), carObject, this);
+            GameObject bound17 = new Boundary(new Vector3(-70, 780, 0), new Vector3(-58, 840, 0), carObject, this);
+            GameObject bound18 = new Boundary(new Vector3(-16, 780, 0), new Vector3(-8, 840, 0), carObject, this);
+            GameObject bound19 = new Boundary(new Vector3(-58, 840, 0), new Vector3(-33, 890, 0), carObject, this);
+            GameObject bound20 = new Boundary(new Vector3(-8, 840, 0), new Vector3(17, 890, 0), carObject, this);
         }
     }
 }
