@@ -1,4 +1,5 @@
 ﻿using GeonBit.ECS.Components;
+using Microsoft.Xna.Framework;
 using System;
 
 namespace CarProto.CustomComponents
@@ -32,9 +33,15 @@ namespace CarProto.CustomComponents
         private float damageReductionFactor = 0.5f;
         private float currentDamageReductionFactor = 1;
 
+        float zOffset = .5f;
+        float carBounceSpeed = 0f;
+        private int offsetDir = 1;
+        private float maxZoffset;
+        
         public PlayerController()
         {
             weight = Util.randomBetween(minWeight, maxWeight);
+            maxZoffset = zOffset;
         }
 
         /// <summary>
@@ -97,6 +104,19 @@ namespace CarProto.CustomComponents
                     currentDamageReductionFactor = 1;
                 }
                 return;
+            }
+            //shift up and down
+
+            _GameObject.SceneNode.PositionZ += Managers.TimeManager.TimeFactor* carBounceSpeed* offsetDir;
+            if(_GameObject.SceneNode.PositionZ <=0)
+            {
+                zOffset = maxZoffset;
+                offsetDir = 1;
+            }
+            else if (_GameObject.SceneNode.PositionZ>= zOffset)
+            {
+                zOffset = -maxZoffset;               
+                offsetDir = -1;
             }
 
             // Move left
@@ -215,6 +235,14 @@ namespace CarProto.CustomComponents
             if (this.damage >= 100)
             {
                 dead = true;
+            }
+
+            if(this.damage>50)
+            {
+                carBounceSpeed = 1.5f;
+            }else if(this.damage>75)
+            {
+                carBounceSpeed = 2.5f;
             }
         }
 
