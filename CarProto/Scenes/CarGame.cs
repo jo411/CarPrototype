@@ -112,7 +112,7 @@ namespace CarProto
             Model trackModel = ResourcesManager.Instance.GetModel("Models/track_03");
             trackObject.AddComponent(new ModelRenderer(trackModel));
             trackObject.SceneNode.Rotation = new Vector3(Util.degToRad(90f), Util.degToRad(0f), Util.degToRad(0f));
-            trackObject.SceneNode.Scale = new Vector3(.050f, .05f, .05f);
+            trackObject.SceneNode.Scale = new Vector3(.05f, .05f, .05f);
             trackObject.Parent = Root;
             trackObject.SceneNode.Position = new Vector3(0f, 0f, 0f);
 
@@ -324,16 +324,20 @@ namespace CarProto
 
         void addPlayer()
         {
-            carObject = new GameObject("player");
-            Model carModel = ResourcesManager.Instance.GetModel("Models/MuscleCar");
-            carObject.AddComponent(new ModelRenderer(carModel));
-            foreach(MaterialAPI material in carObject.GetComponent<ModelRenderer>().GetMaterials())
-            {
-                material.DiffuseColor = Color.Red;
-            }
+            //carObject = new GameObject("player");
+            //Model carModel = ResourcesManager.Instance.GetModel("Models/MuscleCar");
+            //carObject.AddComponent(new ModelRenderer(carModel));
+
+            carObject = gameState.carState.getCarGameObject();
+
+
             PlayerController pc = new PlayerController();
 
             gm.pc = pc;
+            pc.minWeight = gameState.carState.getMinWeight();
+            pc.maxWeight = gameState.carState.getMaxWeight();
+
+            pc.weight = gameState.carState.getCarWeight();
 
             carObject.AddComponent(pc);
             carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));

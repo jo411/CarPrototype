@@ -15,7 +15,7 @@ namespace CarProto.CustomComponents
 
         public float movingSpeed { get; private set; } = 20f;
         public float knockBackSpeed = 30f;
-        public float knockBackDistance = 7f;
+        public float knockBackDistance = 4f;
         public float damage { get; set; }
         public float weight { get; set; }
 
@@ -23,8 +23,8 @@ namespace CarProto.CustomComponents
 
         public bool dead = false;
 
-        private int maxWeight = 20;
-        private int minWeight = 8;
+        public int maxWeight;
+        public int minWeight;
 
         private bool knocked;
         private bool knockedDirLeft;
@@ -40,7 +40,7 @@ namespace CarProto.CustomComponents
         
         public PlayerController()
         {
-            weight = Util.randomBetween(minWeight, maxWeight);
+           // weight = Util.randomBetween(minWeight, maxWeight);
             maxZoffset = zOffset;
         }
 

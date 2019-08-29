@@ -14,10 +14,13 @@ namespace CarProto
         public State currentState { get; private set; }
         public GameScene currentScene;
 
+        public CarGameObjectBuilder carState;
+
         public bool quitFlag { get; set; } = false;
         public bool requestedChangeState { get; set; } = false;
         public GameState()
         {
+            carState = new CarGameObjectBuilder();
             currentState = State.MAIN_MENU;
             currentScene = new GameScene();
         }
@@ -52,5 +55,6 @@ namespace CarProto
             currentScene.Load();
             old.Destroy();
         }
+
     }
 }
