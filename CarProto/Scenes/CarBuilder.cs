@@ -48,6 +48,7 @@ namespace CarProto
 
             cameraObject.Parent = Root;           
         }
+
         void addCarModelAndCamera()
         {
             if(carObject!=null)
@@ -63,6 +64,7 @@ namespace CarProto
 
             addCamera();
         }
+
         void addSelectorUI()
         {
             Panel panel = new Panel(new Vector2(1200, 450), PanelSkin.Default, Anchor.BottomCenter);
@@ -121,7 +123,6 @@ namespace CarProto
             Paragraph bodyLabel = new Paragraph("Body", Anchor.Center, new Vector2(80, 20), new Vector2(0, labelOffsetY));
             bodyLabel.FillColor = labelColor;
             
-
             Paragraph fwLabel = new Paragraph("Front Wheels", Anchor.CenterLeft, new Vector2(200, 20), new Vector2(labelOffsetX, labelOffsetY));
             fwLabel.FillColor = labelColor;
 
@@ -135,7 +136,6 @@ namespace CarProto
             panel.AddChild(bodySelect);
             panel.AddChild(frontWheelSelect);
             panel.AddChild(backWheelSelect);
-
 
             Button closeTut = new Button("Click to play!", ButtonSkin.Fancy, Anchor.BottomCenter);
             closeTut.OnClick = (Entity btn) =>

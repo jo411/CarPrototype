@@ -20,7 +20,7 @@ namespace CarProto
     {
         private GameState gameState;
 
-        GameObject carObject;
+        CarObject carObject;
         GameObject cameraObject;
         GameObject trackObject;
         GameObject gameManager;
@@ -324,12 +324,12 @@ namespace CarProto
 
         void addPlayer()
         {
-            //carObject = new GameObject("player");
-            //Model carModel = ResourcesManager.Instance.GetModel("Models/MuscleCar");
-            //carObject.AddComponent(new ModelRenderer(carModel));
-
             carObject = gameState.carState.getCarGameObject();
 
+            foreach (GameObject wheelObject in carObject.getWheelObjects())
+            {
+                wheelObject.AddComponent(new RotatingObject(0, 0, 4f));
+            }
 
             PlayerController pc = new PlayerController();
 

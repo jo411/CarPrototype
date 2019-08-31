@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarProto.CustomComponents;
+﻿using CarProto.CustomComponents;
+using CarProto.CustomGameObjects;
 using GeonBit.Core;
-using GeonBit.Core.Graphics.Materials;
 using GeonBit.ECS;
 using GeonBit.ECS.Components.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 
 namespace CarProto
 {
-   
+
     public enum BodyTypes
     {
         SHOPPING_CART,
@@ -38,25 +35,26 @@ namespace CarProto
         List<String> bodies;
         List<String> wheels;
 
-        Dictionary<BodyTypes, int> bodyWeights=new Dictionary<BodyTypes, int>();
+        Dictionary<BodyTypes, int> bodyWeights = new Dictionary<BodyTypes, int>();
         Dictionary<WheelTypes, int> wheelWeights = new Dictionary<WheelTypes, int>();
         public CarGameObjectBuilder()
         {
             initLists();
-            body = (BodyTypes)1;
-            frontWheels = (WheelTypes)4;
-            backWheels = (WheelTypes)4;
+            body = BodyTypes.STONE;
+            frontWheels = WheelTypes.PUMPKIN;
+            backWheels = WheelTypes.PUMPKIN;
         }
 
         public int getMaxWeight()
         {
-            return bodyWeights[BodyTypes.STONE]+wheelWeights[WheelTypes.STONE]*2;
+            return bodyWeights[BodyTypes.STONE] + wheelWeights[WheelTypes.STONE] * 2;
         }
 
         public int getMinWeight()
         {
-            return bodyWeights [BodyTypes.PAPER]+wheelWeights [WheelTypes.PAPER]*2;
+            return bodyWeights[BodyTypes.PAPER] + wheelWeights[WheelTypes.PAPER] * 2;
         }
+
         void initLists()
         {
             bodies = new List<string>();
@@ -66,26 +64,23 @@ namespace CarProto
             bodies.Add("Shopping Cart");
 
             bodyWeights.Add(BodyTypes.STONE, 8);
-            bodies.Add("Moai");
+            bodies.Add("Stone");
 
             bodyWeights.Add(BodyTypes.WOOD, 4);
-            bodies.Add("Wood");
+            bodies.Add("Wood(not implemented)");
 
             bodyWeights.Add(BodyTypes.PAPER, 2);
             bodies.Add("Paper");
 
 
-
-
-
             wheelWeights.Add(WheelTypes.SHOPPING_CART, 4);
-            wheels.Add("Shopping Cart");
+            wheels.Add("Shopping Cart(not implemented)");
 
             wheelWeights.Add(WheelTypes.STONE, 6);
             wheels.Add("Stone");
 
             wheelWeights.Add(WheelTypes.WOOD, 2);
-            wheels.Add("Wood");
+            wheels.Add("Wood(not implemented)");
 
             wheelWeights.Add(WheelTypes.PAPER, 1);
             wheels.Add("Paper");
@@ -93,23 +88,25 @@ namespace CarProto
             wheelWeights.Add(WheelTypes.PUMPKIN, 3);
             wheels.Add("Pumpkin");
         }
+
         public List<String> getBodyStrings()
-        {           
+        {
             return bodies;
         }
+
         public List<String> getWheelStrings()
         {
             return wheels;
         }
 
-       public void updateSelectedBody(int index)
+        public void updateSelectedBody(int index)
         {
             body = (BodyTypes)index;
         }
 
-       public void updateSelectedWheel(int index,bool front)
+        public void updateSelectedWheel(int index, bool front)
         {
-            if(front)
+            if (front)
             {
                 frontWheels = (WheelTypes)index;
             }
@@ -119,89 +116,141 @@ namespace CarProto
             }
         }
 
-       public GameObject getCarGameObject()
+        public CarObject getCarGameObject()
         {
-            GameObject carObject = new GameObject("player");
-            GameObject bodyObject = new GameObject();
-            GameObject frontWheelsObj = new GameObject();
-            GameObject backWheelsObj = new GameObject();
+            CarObject carObject = new CarObject("player");
+            //TODO: figure out culling of paper model
+            carObject.SceneNode.DisableCulling = true;
+            carObject.SceneNode.PositionZ += 2;
+
+            GameObject bodyObject = new GameObject("Body", SceneNodeType.Simple);
+            bodyObject.SceneNode.DisableCulling = true;
+
+            GameObject rightFrontWheelsObj = new GameObject("Wheel");
+            GameObject leftFrontWheelsObj = new GameObject("Wheel");
+
+            GameObject rightBackWheelsObj = new GameObject("Wheel");
+            GameObject leftBackWheelsObj = new GameObject("Wheel");
 
             if (body == BodyTypes.STONE)
-            {                
-                Model carModel = ResourcesManager.Instance.GetModel("Models/Moai_Body");
+            {
+                Model carModel = ResourcesManager.Instance.GetModel("Models/rockCar/rockCar");
                 bodyObject.AddComponent(new ModelRenderer(carModel));
                 bodyObject.SceneNode.Scale = new Vector3(2f, 2f, 2f);
                 bodyObject.SceneNode.Rotation = new Vector3(Util.degToRad(270f), Util.degToRad(270f), Util.degToRad(0f));
                 bodyObject.SceneNode.PositionY += 3f;
             }
-            else if(body == BodyTypes.SHOPPING_CART)
-            {                
+            else if (body == BodyTypes.SHOPPING_CART)
+            {
                 Model carModel = ResourcesManager.Instance.GetModel("Models/cart");
                 bodyObject.AddComponent(new ModelRenderer(carModel));
+            }
+            else if (body == BodyTypes.PAPER)
+            {
+                Model carModel = ResourcesManager.Instance.GetModel("Models/paperCar/paperRollCar");
+                bodyObject.AddComponent(new ModelRenderer(carModel));
+                bodyObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(90f), Util.degToRad(0f));
+                bodyObject.SceneNode.Scale = new Vector3(1.33f, 1.33f, 1.33f);
+                bodyObject.SceneNode.PositionY += 1.5f;
             }
             else//default
             {
                 Model carModel = ResourcesManager.Instance.GetModel("Models/MuscleCar");
                 bodyObject.AddComponent(new ModelRenderer(carModel));
             }
-         
-            
 
-            
+
             if (frontWheels == WheelTypes.PUMPKIN)
             {
-                
-                Model fWheelModel = ResourcesManager.Instance.GetModel("Models/Pumpkin");
-                frontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
-                frontWheelsObj.Parent = carObject;
-                frontWheelsObj.SceneNode.PositionX -= 2;
-                frontWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
+                Model fWheelModel = ResourcesManager.Instance.GetModel("Models/extraWheels/pumpkin");
+
+                rightFrontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
+                rightFrontWheelsObj.SceneNode.PositionX -= 2;
+                rightFrontWheelsObj.SceneNode.PositionY += .5f;
+                rightFrontWheelsObj.SceneNode.PositionZ -= 2.5f;
+                rightFrontWheelsObj.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
+
+                leftFrontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
+                leftFrontWheelsObj.SceneNode.PositionX -= 2;
+                leftFrontWheelsObj.SceneNode.PositionY += .5f;
+                leftFrontWheelsObj.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
             }
             else if (frontWheels == WheelTypes.STONE)
             {
+                Model fWheelModel = ResourcesManager.Instance.GetModel("Models/rockCar/rockWheel");
 
-                Model fWheelModel = ResourcesManager.Instance.GetModel("Models/stoneFront");
-                frontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
-                frontWheelsObj.Parent = carObject;
-                //frontWheelsObj.SceneNode.PositionX -= 2;
-                // frontWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
+                rightFrontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
+                rightFrontWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
+                rightFrontWheelsObj.SceneNode.PositionX -= 2f;
+                rightFrontWheelsObj.SceneNode.PositionY += .5f;
+                rightFrontWheelsObj.SceneNode.PositionZ -= 1.25f;
+
+                leftFrontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
+                leftFrontWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
+                leftFrontWheelsObj.SceneNode.PositionX -= 2f;
+                leftFrontWheelsObj.SceneNode.PositionY += .5f;
+                leftFrontWheelsObj.SceneNode.PositionZ += 1.25f;
             }
-            else
+            else if(frontWheels == WheelTypes.PAPER)
             {
+                Model fWheelModel = ResourcesManager.Instance.GetModel("Models/paperCar/paperRollWheel");
 
-                Model fWheelModel = ResourcesManager.Instance.GetModel("Models/stoneFront");
-                frontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
-                frontWheelsObj.Parent = carObject;
+                rightFrontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
+                rightFrontWheelsObj.SceneNode.PositionX -= 1.75f;
+                rightFrontWheelsObj.SceneNode.PositionY += .5f;
+                rightFrontWheelsObj.SceneNode.PositionZ += .4f;
+
+                leftFrontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
+                leftFrontWheelsObj.SceneNode.PositionX -= 1.75f;
+                leftFrontWheelsObj.SceneNode.PositionY += .5f;
+                leftFrontWheelsObj.SceneNode.PositionZ += 3f;
             }
-
 
 
             if (backWheels == WheelTypes.PUMPKIN)
             {
-                
-                Model bWheelModel = ResourcesManager.Instance.GetModel("Models/Pumpkin");
-                backWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
-                backWheelsObj.Parent = carObject;
-                backWheelsObj.SceneNode.PositionX += 4;
-                backWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
+                Model bWheelModel = ResourcesManager.Instance.GetModel("Models/extraWheels/pumpkin");
+                rightBackWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
+                rightBackWheelsObj.SceneNode.PositionX += 2;
+                rightBackWheelsObj.SceneNode.PositionY += .5f;
+                rightBackWheelsObj.SceneNode.PositionZ -= 2.5f;
+                rightBackWheelsObj.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
+
+                leftBackWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
+                leftBackWheelsObj.SceneNode.PositionX += 2;
+                leftBackWheelsObj.SceneNode.PositionY += .5f;
+                leftBackWheelsObj.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
             }
             else if (backWheels == WheelTypes.STONE)
             {
+                Model bWheelModel = ResourcesManager.Instance.GetModel("Models/rockCar/rockWheel");
 
-                Model bWheelModel = ResourcesManager.Instance.GetModel("Models/stoneFront");
-                backWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
-                backWheelsObj.Parent = carObject;
-                backWheelsObj.SceneNode.PositionX += 8;
+                rightBackWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
+                rightBackWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
+                rightBackWheelsObj.SceneNode.PositionX += 2f;
+                rightBackWheelsObj.SceneNode.PositionY += .5f;
+                rightBackWheelsObj.SceneNode.PositionZ -= 1.25f;
+
+                leftBackWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
+                leftBackWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
+                leftBackWheelsObj.SceneNode.PositionX += 2f;
+                leftBackWheelsObj.SceneNode.PositionY += .5f;
+                leftBackWheelsObj.SceneNode.PositionZ += 1.25f;
             }
-            else
+            else if(backWheels == WheelTypes.PAPER)
             {
-                Model bWheelModel = ResourcesManager.Instance.GetModel("Models/stoneFront");
-                backWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
-                backWheelsObj.Parent = carObject;
-                backWheelsObj.SceneNode.PositionX += 8;
+                Model bWheelModel = ResourcesManager.Instance.GetModel("Models/paperCar/paperRollWheel");
+
+                rightBackWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
+                rightBackWheelsObj.SceneNode.PositionX += 1.75f;
+                rightBackWheelsObj.SceneNode.PositionY += .5f;
+                rightBackWheelsObj.SceneNode.PositionZ += .4f;
+
+                leftBackWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
+                leftBackWheelsObj.SceneNode.PositionX += 1.75f;
+                leftBackWheelsObj.SceneNode.PositionY += .5f;
+                leftBackWheelsObj.SceneNode.PositionZ += 3f;
             }
-
-
 
             //causes a crash
             //foreach (MaterialAPI material in carObject.GetComponent<ModelRenderer>().GetMaterials())
@@ -211,8 +260,12 @@ namespace CarProto
 
 
             bodyObject.Parent = carObject;
-            frontWheelsObj.Parent = carObject;
-            backWheelsObj.Parent = carObject;            
+
+            rightFrontWheelsObj.Parent = carObject;
+            leftFrontWheelsObj.Parent = carObject;
+
+            rightBackWheelsObj.Parent = carObject;
+            leftBackWheelsObj.Parent = carObject;
 
             return carObject;
         }
