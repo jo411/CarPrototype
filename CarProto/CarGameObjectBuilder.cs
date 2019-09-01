@@ -28,9 +28,9 @@ namespace CarProto
     }
     class CarGameObjectBuilder
     {
-        BodyTypes body;
-        WheelTypes frontWheels;
-        WheelTypes backWheels;
+       public BodyTypes body{get; private set;}
+       public WheelTypes frontWheels { get; private set; }
+       public WheelTypes backWheels { get; private set; }
 
         List<String> bodies;
         List<String> wheels;
@@ -72,20 +72,20 @@ namespace CarProto
 
         public float getMinTurningSpeed()
         {
-            return wheelTurnSpeeds[WheelTypes.PAPER];
+            return wheelTurnSpeeds[WheelTypes.STONE];
         }
         public float getMaxTurningSpeed()
         {
-            return wheelTurnSpeeds[WheelTypes.STONE];
+            return wheelTurnSpeeds[WheelTypes.PAPER];
         }
 
         public float getMaxDamageReduction()
         {
-            return bodyDR[BodyTypes.STONE] * wheelDR[WheelTypes.STONE] * wheelDR[WheelTypes.STONE];
+            return (bodyDR[BodyTypes.STONE] + wheelDR[WheelTypes.STONE] + wheelDR[WheelTypes.STONE])/3;
         }
         public float getMinDamageReduction()
         {
-            return bodyDR[BodyTypes.PAPER] * wheelDR[WheelTypes.PAPER] * wheelDR[WheelTypes.PAPER];
+            return (bodyDR[BodyTypes.PAPER] + wheelDR[WheelTypes.PAPER] + wheelDR[WheelTypes.PAPER])/3;
         }
         void initLists()
         {
@@ -105,7 +105,7 @@ namespace CarProto
             bodies.Add("Wood(not implemented)");
 
             bodyWeights.Add(BodyTypes.PAPER, 2);
-            bodyDR.Add(BodyTypes.PAPER, 1.07f);
+            bodyDR.Add(BodyTypes.PAPER, 1.15f);
             bodies.Add("Toilet Paper");
 
 
@@ -126,7 +126,7 @@ namespace CarProto
 
             wheelWeights.Add(WheelTypes.PAPER, 1);
             wheelTurnSpeeds.Add(WheelTypes.PAPER, 32);
-            wheelDR.Add(WheelTypes.PAPER, 1.02f);
+            wheelDR.Add(WheelTypes.PAPER, 1.1f);
             wheels.Add("Toilet Paper");
 
             wheelWeights.Add(WheelTypes.PUMPKIN, 3);
@@ -328,7 +328,7 @@ namespace CarProto
 
         public float getCarDamageReduction()
         {
-            return bodyDR[body] * wheelDR[frontWheels] * wheelDR[backWheels];
+            return (bodyDR[body] + wheelDR[frontWheels] + wheelDR[backWheels])/3;
         }
     }
 

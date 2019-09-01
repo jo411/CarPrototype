@@ -20,7 +20,10 @@ namespace CarProto
         private GameObject cameraObject;
         private GameObject carObject;
 
-       // private CarGameObjectBuilder carBuilder;
+        private ProgressBar handling;
+        private ProgressBar weight;
+        private ProgressBar damageReduction;
+        // private CarGameObjectBuilder carBuilder;
         public CarBuilder(GameState gameState)
         {            
             this.gameState = gameState;
@@ -32,7 +35,7 @@ namespace CarProto
             addSelectorUI();
             addStatDisplay();
             addCarModelAndCamera();
-         
+            updateStatDisplay();
         }
 
         void addCamera()
@@ -75,11 +78,44 @@ namespace CarProto
         }
         void updateStatDisplay()
         {
+            handling.Min = (uint)(gameState.carState.getMinTurningSpeed())-10;
+            handling.Max = (uint)(gameState.carState.getMaxTurningSpeed() );
+            handling.Value = (int)(gameState.carState.getCarTurnSpeed() );
+
+            damageReduction.Max = (uint)(gameState.carState.getMinDamageReduction() * 100);
+            damageReduction.Min = (uint)(gameState.carState.getMaxDamageReduction() * 100)-10;
+            damageReduction.Value = (int)(gameState.carState.getCarDamageReduction() * 100);
+
+            weight.Min = (uint)(gameState.carState.getMinWeight() * 100)-10;
+            weight.Max = (uint)(gameState.carState.getMaxWeight() * 100);
+            weight.Value = (int)(gameState.carState.getCarWeight() * 100);
 
         }
         void addStatDisplay()
         {
+            Vector2 size = new Vector2(600, 50);
+            Panel panel = new Panel(new Vector2(650, 500), PanelSkin.Default, Anchor.TopLeft);
+            handling= new ProgressBar(0, 10, size,Anchor.TopCenter,new Vector2(0,50));
+            weight = new ProgressBar(0, 10,size, Anchor.Center);
+            damageReduction = new ProgressBar(0, 10, size, Anchor.BottomCenter, new Vector2(0, 50));
+            panel.AddChild(weight);
+            panel.AddChild(damageReduction);
+            panel.AddChild(handling);
 
+            Paragraph handlingLabel = new Paragraph("Handling", Anchor.TopCenter, new Vector2(350, 100), new Vector2(0, 0));
+            Paragraph weightLabel = new Paragraph("Weight", Anchor.Center, new Vector2(350, 100), new Vector2(0, -70));
+            Paragraph damageReductionLabel = new Paragraph("Damage Taken", Anchor.BottomCenter, new Vector2(350, 100), new Vector2(0, 100));
+
+            handling.Locked = true;
+            weight.Locked = true;
+            damageReduction.Locked = true;
+
+
+            panel.AddChild(weightLabel);
+            panel.AddChild(damageReductionLabel);
+            panel.AddChild(handlingLabel);
+
+            this.UserInterface.AddEntity(panel);
         }     
         void addSelectorUI()
         {
@@ -163,6 +199,17 @@ namespace CarProto
                 gameState.changeScene(State.GAME);
             };
             panel.AddChild(closeTut);
+            Button randomButton = new Button("Random Car", ButtonSkin.Fancy, Anchor.TopLeft, new Vector2(350,50));
+            randomButton.OnClick = (Entity btn) =>
+            {               
+                gameState.carState.buildRandomCar();
+                bodySelect.SelectedIndex = (int)gameState.carState.body;
+                frontWheelSelect.SelectedIndex = (int)gameState.carState.frontWheels;
+                backWheelSelect.SelectedIndex = (int)gameState.carState.backWheels;
+                addCarModelAndCamera();
+                updateStatDisplay();
+            };
+            panel.AddChild(randomButton);
 
             //Panel wip = new Panel(new Vector2(700, 450),PanelSkin.Default, Anchor.CenterLeft,new Vector2(0,-100));
 
