@@ -78,22 +78,33 @@ namespace CarProto
         }
         void updateStatDisplay()
         {
-            handling.Min = (uint)(gameState.carState.getMinTurningSpeed())-10;
-            handling.Max = (uint)(gameState.carState.getMaxTurningSpeed() );
-            handling.Value = (int)(gameState.carState.getCarTurnSpeed() );
+
+            float handleMin =Math.Max(0, gameState.carState.getMinTurningSpeed()-10);
+            float handleMax = gameState.carState.getMaxTurningSpeed();
+            float handleRange = handleMax - handleMin;
+            float currentHandle = gameState.carState.getCarTurnSpeed()-handleMin;
+
+            handling.Min = 0;
+            handling.Max = 100;
+            handling.Value = (int)((currentHandle/handleRange)*100);
 
 
             float drMin = ((gameState.carState.getMaxDamageReduction()) * 100);//reversed to convert from reduction to durability
             float drMax =((gameState.carState.getMinDamageReduction()) * 100);
             float drRange = drMax - drMin;
             float currentDR = (gameState.carState.getCarDamageReduction() * 100);
+            currentDR -= drMin;
+            currentDR = drRange - currentDR;
+            currentDR = Math.Max((int)currentDR, 2);
+
             damageReduction.Min = 0;
             damageReduction.Max =  (uint)drRange;
-            damageReduction.Value = (int)(currentDR-drMin);
+            damageReduction.Value = (int)(currentDR);
 
-            weight.Min = (uint)(gameState.carState.getMinWeight() * 100)-10;
-            weight.Max = (uint)(gameState.carState.getMaxWeight() * 100);
-            weight.Value = (int)(gameState.carState.getCarWeight() * 100);
+            weight.Min = 0;// (uint)(gameState.carState.getMinWeight() )-20;
+            weight.Max = 100;// (uint)(gameState.carState.getMaxWeight() );
+            weight.Value = (int)((gameState.carState.getCarWeight() / gameState.carState.getMaxWeight())*100);
+            
 
         }
         void addStatDisplay()
