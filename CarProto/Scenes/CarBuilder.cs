@@ -82,9 +82,14 @@ namespace CarProto
             handling.Max = (uint)(gameState.carState.getMaxTurningSpeed() );
             handling.Value = (int)(gameState.carState.getCarTurnSpeed() );
 
-            damageReduction.Max = (uint)(gameState.carState.getMinDamageReduction() * 100);
-            damageReduction.Min = (uint)(gameState.carState.getMaxDamageReduction() * 100)-10;
-            damageReduction.Value = (int)(gameState.carState.getCarDamageReduction() * 100);
+
+            float drMin = ((gameState.carState.getMaxDamageReduction()) * 100);//reversed to convert from reduction to durability
+            float drMax =((gameState.carState.getMinDamageReduction()) * 100);
+            float drRange = drMax - drMin;
+            float currentDR = (gameState.carState.getCarDamageReduction() * 100);
+            damageReduction.Min = 0;
+            damageReduction.Max =  (uint)drRange;
+            damageReduction.Value = (int)(currentDR-drMin);
 
             weight.Min = (uint)(gameState.carState.getMinWeight() * 100)-10;
             weight.Max = (uint)(gameState.carState.getMaxWeight() * 100);
@@ -104,7 +109,7 @@ namespace CarProto
 
             Paragraph handlingLabel = new Paragraph("Handling", Anchor.TopCenter, new Vector2(350, 100), new Vector2(0, 0));
             Paragraph weightLabel = new Paragraph("Weight", Anchor.Center, new Vector2(350, 100), new Vector2(0, -70));
-            Paragraph damageReductionLabel = new Paragraph("Damage Taken", Anchor.BottomCenter, new Vector2(350, 100), new Vector2(0, 100));
+            Paragraph damageReductionLabel = new Paragraph("Durability", Anchor.BottomCenter, new Vector2(350, 100), new Vector2(0, 100));
 
             handling.Locked = true;
             weight.Locked = true;
