@@ -12,6 +12,7 @@ namespace CarProto.CustomComponents
         float speedX;
         float speedY;
         float speedZ;
+
         public RotatingObject(float speedX, float speedY, float speedZ)
         {
             this.speedX = speedX;

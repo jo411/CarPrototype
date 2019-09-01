@@ -20,7 +20,7 @@ namespace CarProto
     {
         private GameState gameState;
 
-        GameObject carObject;
+        CarObject carObject;
         GameObject cameraObject;
         GameObject trackObject;
         GameObject gameManager;
@@ -324,12 +324,12 @@ namespace CarProto
 
         void addPlayer()
         {
-            //carObject = new GameObject("player");
-            //Model carModel = ResourcesManager.Instance.GetModel("Models/MuscleCar");
-            //carObject.AddComponent(new ModelRenderer(carModel));
-
             carObject = gameState.carState.getCarGameObject();
 
+            foreach (GameObject wheelObject in carObject.getWheelObjects())
+            {
+                wheelObject.AddComponent(new RotatingObject(0, 0, 4f));
+            }
 
             PlayerController pc = new PlayerController();
 
@@ -338,7 +338,8 @@ namespace CarProto
             pc.maxWeight = gameState.carState.getMaxWeight();
 
             pc.weight = gameState.carState.getCarWeight();
-
+            pc.turningSpeed = gameState.carState.getCarTurnSpeed();
+            pc.carPartDamageReduction = gameState.carState.getCarDamageReduction();
             carObject.AddComponent(pc);
             carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
             carObject.Parent = Root;
