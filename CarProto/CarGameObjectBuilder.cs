@@ -70,6 +70,23 @@ namespace CarProto
             return bodyWeights[BodyTypes.PAPER] + wheelWeights[WheelTypes.PAPER] * 2;
         }
 
+        public float getMinTurningSpeed()
+        {
+            return wheelTurnSpeeds[WheelTypes.PAPER];
+        }
+        public float getMaxTurningSpeed()
+        {
+            return wheelTurnSpeeds[WheelTypes.STONE];
+        }
+
+        public float getMaxDamageReduction()
+        {
+            return bodyDR[BodyTypes.STONE] * wheelDR[WheelTypes.STONE] * wheelDR[WheelTypes.STONE];
+        }
+        public float getMinDamageReduction()
+        {
+            return bodyDR[BodyTypes.PAPER] * wheelDR[WheelTypes.PAPER] * wheelDR[WheelTypes.PAPER];
+        }
         void initLists()
         {
             bodies = new List<string>();

@@ -29,8 +29,10 @@ namespace CarProto
 
         void init()
         {
-            addSelectorUI();           
-            addCarModelAndCamera();           
+            addSelectorUI();
+            addStatDisplay();
+            addCarModelAndCamera();
+         
         }
 
         void addCamera()
@@ -51,20 +53,34 @@ namespace CarProto
 
         void addCarModelAndCamera()
         {
+            Vector3 savedRotation = new Vector3(0, 0, 0);
             if(carObject!=null)
             {
+                savedRotation = carObject.SceneNode.Rotation;
                 carObject.Destroy();
-            }           
+            }else
+            {
+                savedRotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
+            }
+            
+           
             carObject = gameState.carState.getCarGameObject();
-
+           
             carObject.AddComponent(new RotatingObject(.5f, 0, 0));
 
-            carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
+            carObject.SceneNode.Rotation = savedRotation;
             carObject.Parent = Root;
 
             addCamera();
         }
+        void updateStatDisplay()
+        {
 
+        }
+        void addStatDisplay()
+        {
+
+        }     
         void addSelectorUI()
         {
             Panel panel = new Panel(new Vector2(1200, 450), PanelSkin.Default, Anchor.BottomCenter);
@@ -86,7 +102,9 @@ namespace CarProto
             {
                 gameState.carState.updateSelectedBody(bodySelect.SelectedIndex);
                 addCarModelAndCamera();
+                updateStatDisplay();
             };
+            
 
             SelectList frontWheelSelect = new SelectList(new Vector2(300, 150), Anchor.CenterLeft, new Vector2(0, 0));
             //frontWheelDrop.DefaultText = ("Choose Front Wheels");
@@ -100,14 +118,14 @@ namespace CarProto
             {
                 gameState.carState.updateSelectedWheel(frontWheelSelect.SelectedIndex,true);
                 addCarModelAndCamera();
+                updateStatDisplay();
             };
 
             SelectList backWheelSelect = new SelectList(new Vector2(300, 150), Anchor.CenterRight, new Vector2(0, 0));
             //backWheelDrop.DefaultText = ("Choose Back Wheels");
             foreach (string text in gameState.carState.getWheelStrings())
             {
-                backWheelSelect.AddItem(text);
-                addCarModelAndCamera();
+                backWheelSelect.AddItem(text);                   
             }
             backWheelSelect.ToolTipText = ("Choose Back Wheels");
 
@@ -115,6 +133,7 @@ namespace CarProto
             {
                 gameState.carState.updateSelectedWheel(backWheelSelect.SelectedIndex, false);
                 addCarModelAndCamera();
+                updateStatDisplay();
             };
 
             int labelOffsetY = -100;
