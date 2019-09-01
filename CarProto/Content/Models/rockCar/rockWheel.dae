@@ -17,7 +17,7 @@
   </asset>
   <library_images>
     <image id="file4_006-image" name="file4_006">
-      <init_from>file://C:\Users\u0947296\Documents\Visual Studio 2017\Projects\CarPrototype\CarProto\Content\Models\file4.003.png</init_from>
+      <init_from>file://../file4.003.png</init_from>
     </image>
   </library_images>
   <library_materials>

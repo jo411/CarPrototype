@@ -338,7 +338,8 @@ namespace CarProto
             pc.maxWeight = gameState.carState.getMaxWeight();
 
             pc.weight = gameState.carState.getCarWeight();
-
+            pc.turningSpeed = gameState.carState.getCarTurnSpeed();
+            pc.carPartDamageReduction = gameState.carState.getCarDamageReduction();
             carObject.AddComponent(pc);
             carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
             carObject.Parent = Root;
