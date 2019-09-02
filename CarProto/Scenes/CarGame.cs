@@ -114,7 +114,6 @@ namespace CarProto
             trackObject.SceneNode.Rotation = new Vector3(Util.degToRad(90f), Util.degToRad(0f), Util.degToRad(0f));
             trackObject.SceneNode.Scale = new Vector3(.05f, .05f, .05f);
             trackObject.Parent = Root;
-            trackObject.SceneNode.Position = new Vector3(0f, 0f, 0f);
 
             GameObject backgroundObject = new GameObject("background");
             Texture2D backgroundimage = ResourcesManager.Instance.GetTexture("Images/SpyHunter");
@@ -328,7 +327,7 @@ namespace CarProto
 
             foreach (GameObject wheelObject in carObject.getWheelObjects())
             {
-                wheelObject.AddComponent(new RotatingObject(0, 0, 4f));
+                wheelObject.AddComponent(new RotatingObject(0, 0, 0f));
             }
 
             PlayerController pc = new PlayerController(gameState.carState);
@@ -349,6 +348,9 @@ namespace CarProto
         void addFinishLine()
         {
             finishLine = new FinishLine(900, carObject, this, gameManager);
+            Model finishLineModel = ResourcesManager.Instance.GetModel("Models/finalLine");
+            finishLine.AddComponent(new ModelRenderer(finishLineModel));
+            finishLine.Parent = Root;
 
             // Add body just for visual diagnostics
             finishLine.AddComponent(new KinematicBody(new BoxInfo(new Vector3(200, 8, 5))));

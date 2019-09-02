@@ -17,14 +17,19 @@ namespace CarProto.CustomGameObjects
         public List<GameObject> getWheelObjects()
         {
             string name = "Wheel";
+            // search for wheel objects in all children game objects
+            // example being lfWheel, rfWheel
             return this._children.FindAll(FindNamedObjects(name));
         }
 
+        /// <summary>
+        /// Search for a name being in a selction of gameobjects
+        /// </summary>
         static Predicate<GameObject> FindNamedObjects(string name)
         {
             return delegate (GameObject gameObject)
             {
-                return name.Equals(gameObject.Name);
+                return gameObject.Name.Contains(name);
             };
         }
     }

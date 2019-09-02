@@ -1,6 +1,6 @@
-﻿using GeonBit.ECS;
+﻿using CarProto.CustomGameObjects;
+using GeonBit.ECS;
 using GeonBit.ECS.Components;
-using Microsoft.Xna.Framework;
 using System;
 
 namespace CarProto.CustomComponents
@@ -143,15 +143,15 @@ namespace CarProto.CustomComponents
             }
             //shift up and down
 
-            _GameObject.SceneNode.PositionZ += Managers.TimeManager.TimeFactor* carBounceSpeed* offsetDir;
-            if(_GameObject.SceneNode.PositionZ <=0)
+            _GameObject.SceneNode.PositionZ += Managers.TimeManager.TimeFactor * carBounceSpeed * offsetDir;
+            if (_GameObject.SceneNode.PositionZ <= 0)
             {
                 zOffset = maxZoffset;
                 offsetDir = 1;
             }
-            else if (_GameObject.SceneNode.PositionZ>= zOffset)
+            else if (_GameObject.SceneNode.PositionZ >= zOffset)
             {
-                zOffset = -maxZoffset;               
+                zOffset = -maxZoffset;
                 offsetDir = -1;
             }
 
@@ -181,15 +181,21 @@ namespace CarProto.CustomComponents
                 addDamage(10);
             }
 
-            updateSpeed();         
+            updateSpeed((CarObject)_GameObject);
         }
 
         /// <summary>
-        /// Slowly increase speed
+        /// Slowly increase speed and make wheels rotate more as speed increases
         /// </summary>
-        void updateSpeed()
+        void updateSpeed(CarObject carObject)
         {
             movingSpeed += weight / 350;
+
+            foreach (GameObject wheelObject in carObject.getWheelObjects())
+            {
+                RotatingObject rotatingObject = wheelObject.GetComponent<RotatingObject>();
+                rotatingObject.UpdateSpeed(0f, 0f, movingSpeed / 10f);
+            }
         }
 
         /// <summary>
@@ -310,9 +316,6 @@ namespace CarProto.CustomComponents
                 wheels[(int)wheel].Parent = holder;
                 wheels[(int)wheel] = null;
             }
-            
-           
-
         }
     }
 }
