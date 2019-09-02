@@ -103,7 +103,7 @@ namespace CarProto
 
             bodyWeights.Add(BodyTypes.WOOD, 4);
             bodyDR.Add(BodyTypes.WOOD, .98f);
-            bodies.Add("Wood(not implemented)");
+            bodies.Add("Wood");
 
             bodyWeights.Add(BodyTypes.PAPER, 2);
             bodyDR.Add(BodyTypes.PAPER, 1.2f);
@@ -117,7 +117,7 @@ namespace CarProto
             wheelWeights.Add(WheelTypes.SHOPPING_CART, 4);
             wheelTurnSpeeds.Add(WheelTypes.SHOPPING_CART, 28);
             wheelDR.Add(WheelTypes.SHOPPING_CART, .98f);
-            wheels.Add("Shopping Cart(not implemented)");
+            wheels.Add("Shopping Cart");
 
             wheelWeights.Add(WheelTypes.STONE, 6);
             wheelTurnSpeeds.Add(WheelTypes.STONE, 14);
@@ -127,7 +127,7 @@ namespace CarProto
             wheelWeights.Add(WheelTypes.WOOD, 2);
             wheelTurnSpeeds.Add(WheelTypes.WOOD, 24);
             wheelDR.Add(WheelTypes.WOOD, .99f);
-            wheels.Add("Wood(not implemented)");
+            wheels.Add("Wood");
 
             wheelWeights.Add(WheelTypes.PAPER, 1);
             wheelTurnSpeeds.Add(WheelTypes.PAPER, 32);
