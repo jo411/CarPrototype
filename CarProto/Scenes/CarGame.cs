@@ -31,6 +31,8 @@ namespace CarProto
 
         bool showTutorial = false;
         bool showDebug = true;
+        private bool flyCam=false;
+
         //bool quited = false;
 
         public CarGame(GameState gameState)
@@ -94,14 +96,24 @@ namespace CarProto
         {
             cameraObject = new GameObject("camera", SceneNodeType.Simple);
             cameraObject.AddComponent(new Camera());
-            cameraObject.AddComponent(new CameraFollow());
+           
             cameraObject.SceneNode.Rotation = new Vector3(Util.degToRad(60), Util.degToRad(0), Util.degToRad(0));
 
-            CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
-            cf.offset = new Vector3(0, -35, 30);
-            cf.dampingStrength = .07f;
+           
 
-            //cameraObject.AddComponent(new CameraEditorController());
+            if(flyCam)
+            {
+                cameraObject.AddComponent(new CameraEditorController());
+            }
+            else
+            {
+                cameraObject.AddComponent(new CameraFollow());
+                CameraFollow cf = cameraObject.GetComponent<CameraFollow>();
+                cf.offset = new Vector3(0, -35, 30);
+                cf.dampingStrength = .07f;
+            }
+
+            
            
             cameraObject.Parent = Root;
         }
@@ -349,7 +361,12 @@ namespace CarProto
         {
             finishLine = new FinishLine(900, carObject, this, gameManager);
             Model finishLineModel = ResourcesManager.Instance.GetModel("Models/finalLine");
-            finishLine.AddComponent(new ModelRenderer(finishLineModel));
+            GameObject FinishLineGO = new GameObject();
+            FinishLineGO.AddComponent(new ModelRenderer(finishLineModel));
+            FinishLineGO.SceneNode.Scale = new Vector3(.05f, .03f, .05f);
+            FinishLineGO.SceneNode.Rotation = new Vector3(Util.degToRad(270f), Util.degToRad(90f), Util.degToRad(90f));
+            FinishLineGO.SceneNode.Position = new Vector3(-10, 10, 0);
+            FinishLineGO.Parent = finishLine;
             finishLine.Parent = Root;
 
             // Add body just for visual diagnostics

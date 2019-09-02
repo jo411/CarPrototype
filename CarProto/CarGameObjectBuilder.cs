@@ -224,7 +224,7 @@ namespace CarProto
                 characterObject.AddComponent(new ModelRenderer(playerModel));
                 characterObject.SceneNode.Rotation = new Vector3(Util.degToRad(270f), Util.degToRad(180f), Util.degToRad(90f));
                 characterObject.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
-                characterObject.SceneNode.PositionY += 2f;
+                characterObject.SceneNode.PositionY += 3f;
 
             }
             else if (body == BodyTypes.WOOD)
@@ -335,13 +335,15 @@ namespace CarProto
                 rightFrontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
                 rightFrontWheelsObj.SceneNode.PositionX -= 2;
                 rightFrontWheelsObj.SceneNode.PositionY += .5f;
-                rightFrontWheelsObj.SceneNode.PositionZ -= 2.5f;
-                rightFrontWheelsObj.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
+                rightFrontWheelsObj.SceneNode.PositionZ -= 4f;
+                rightFrontWheelsObj.SceneNode.RotationZ = Util.degToRad(108f);
+                rightFrontWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
 
                 leftFrontWheelsObj.AddComponent(new ModelRenderer(fWheelModel));
                 leftFrontWheelsObj.SceneNode.PositionX -= 2;
                 leftFrontWheelsObj.SceneNode.PositionY += .5f;
-                leftFrontWheelsObj.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
+                leftFrontWheelsObj.SceneNode.PositionZ -= 1f;
+                leftFrontWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
             }
 
 
@@ -413,13 +415,17 @@ namespace CarProto
                 rightBackWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
                 rightBackWheelsObj.SceneNode.PositionX += 2;
                 rightBackWheelsObj.SceneNode.PositionY += .5f;
-                rightBackWheelsObj.SceneNode.PositionZ -= 2.5f;
-                rightBackWheelsObj.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
+                rightBackWheelsObj.SceneNode.PositionZ -= 4f;
+                rightBackWheelsObj.SceneNode.RotationZ = Util.degToRad(108f);
+                rightBackWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
 
                 leftBackWheelsObj.AddComponent(new ModelRenderer(bWheelModel));
                 leftBackWheelsObj.SceneNode.PositionX += 2;
                 leftBackWheelsObj.SceneNode.PositionY += .5f;
-                leftBackWheelsObj.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
+                leftBackWheelsObj.SceneNode.PositionZ -= 1f;
+                leftBackWheelsObj.SceneNode.Scale = new Vector3(.5f, .5f, .5f);
+
+
             }
 
 
