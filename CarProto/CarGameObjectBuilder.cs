@@ -172,11 +172,11 @@ namespace CarProto
             GameObject bodyObject = new GameObject("Body", SceneNodeType.Simple);
             bodyObject.SceneNode.DisableCulling = true;
 
-            GameObject rightFrontWheelsObj = new GameObject("Wheel");
-            GameObject leftFrontWheelsObj = new GameObject("Wheel");
+            GameObject rightFrontWheelsObj = new GameObject("rfWheel");
+            GameObject leftFrontWheelsObj = new GameObject("lfWheel");
 
-            GameObject rightBackWheelsObj = new GameObject("Wheel");
-            GameObject leftBackWheelsObj = new GameObject("Wheel");
+            GameObject rightBackWheelsObj = new GameObject("rbWheel");
+            GameObject leftBackWheelsObj = new GameObject("lbWheel");
 
             if (body == BodyTypes.STONE)
             {

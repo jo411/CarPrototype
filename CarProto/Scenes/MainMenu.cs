@@ -19,7 +19,7 @@ namespace CarProto
         {
             Panel titlePanel = new Panel(new Vector2(1920, 1200),PanelSkin.None,Anchor.TopCenter);
             Texture2D titleTex = ResourcesManager.Instance.GetTexture("Images/title");
-            Image titleImage = new Image(titleTex, new Vector2(900,400),ImageDrawMode.Stretch,Anchor.TopCenter);
+            Image titleImage = new Image(titleTex, new Vector2(1200,400),ImageDrawMode.Stretch,Anchor.TopCenter);
             titlePanel.AddChild(titleImage);
 
             Panel panel = new Panel(new Vector2(400, 600), PanelSkin.Default, Anchor.Center,new Vector2(0,200));

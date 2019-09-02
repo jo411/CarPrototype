@@ -1,4 +1,5 @@
-﻿using GeonBit.ECS.Components;
+﻿using GeonBit.ECS;
+using GeonBit.ECS.Components;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -39,20 +40,53 @@ namespace CarProto.CustomComponents
         float carBounceSpeed = 0f;
         private int offsetDir = 1;
         private float maxZoffset;
-        
-        public PlayerController()
+
+        private CarGameObjectBuilder carState;
+
+        private GameObject[] wheels; 
+        private enum wheel
+        {
+            FRONT_LEFT,
+            FRONT_RIGHT,
+            BACK_LEFT,
+            BACK_RIGHT
+        }
+        public PlayerController(CarGameObjectBuilder carState)
         {
            // weight = Util.randomBetween(minWeight, maxWeight);
             maxZoffset = zOffset;
+            this.carState = carState;
+                  
         }
 
+        protected override void OnAddToScene()
+        {
+            init();
+        }
+        
+        void init()
+        {
+            minWeight = carState.getMinWeight();
+            maxWeight =carState.getMaxWeight();
+
+            weight = carState.getCarWeight();
+            turningSpeed = carState.getCarTurnSpeed();
+            carPartDamageReduction = carState.getCarDamageReduction();
+
+            wheels = new GameObject[4];
+
+            wheels[(int)wheel.FRONT_LEFT] = _GameObject.Find("lfWheel",true);
+            wheels[(int)wheel.FRONT_RIGHT] = _GameObject.Find("rfWheel", true);
+            wheels[(int)wheel.BACK_LEFT] = _GameObject.Find("lbWheel", true);
+            wheels[(int)wheel.BACK_RIGHT] = _GameObject.Find("rbWheel", true);            
+        }
         /// <summary>
         /// Clone this component.
         /// </summary>
         /// <returns>Cloned PlayerController instance.</returns>
         public override BaseComponent Clone()
         {
-            return new PlayerController();
+            return new PlayerController(carState);
         }
 
         /// <summary>
@@ -147,7 +181,7 @@ namespace CarProto.CustomComponents
                 addDamage(10);
             }
 
-            updateSpeed();
+            updateSpeed();         
         }
 
         /// <summary>
@@ -238,12 +272,24 @@ namespace CarProto.CustomComponents
                 dead = true;
             }
 
-            if(this.damage>50)
+            if(this.damage>=90)
             {
-                carBounceSpeed = 1.5f;
-            }else if(this.damage>75)
+                detachObjects(wheel.FRONT_LEFT);
+            }
+            else if(this.damage>=75)
             {
                 carBounceSpeed = 2.5f;
+                detachObjects(wheel.BACK_RIGHT);
+            }
+            else if(this.damage>=50)
+            {
+                carBounceSpeed = 1.5f;
+                detachObjects(wheel.FRONT_RIGHT);
+
+            }
+            else if(this.damage>=20)
+            {
+                detachObjects(wheel.BACK_LEFT);
             }
         }
 
@@ -251,6 +297,22 @@ namespace CarProto.CustomComponents
         {
             knockedDirLeft = left;
             knocked = true;
+        }
+
+        void detachObjects(wheel wheel)
+        {
+            if(wheels[(int)wheel]!=null)
+            {
+                //wheels[(int)wheel].SceneNode.PositionZ += 15;
+                GameObject holder = new GameObject();
+                holder.SceneNode.Position = _GameObject.SceneNode.Position;
+                holder.Parent = _GameObject.ActiveScene.Root;
+                wheels[(int)wheel].Parent = holder;
+                wheels[(int)wheel] = null;
+            }
+            
+           
+
         }
     }
 }
