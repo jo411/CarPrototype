@@ -127,7 +127,7 @@ namespace CarProto
 
         void addObstacles()
         {
-            //Don't look below. Dear lord I and a level editor. 
+            //Don't look below. Dear lord I need a level editor. 
             // Add obstacle
             int baseDamage = 30;
 
@@ -330,15 +330,9 @@ namespace CarProto
                 wheelObject.AddComponent(new RotatingObject(0, 0, 0f));
             }
 
-            PlayerController pc = new PlayerController();
+            PlayerController pc = new PlayerController(gameState.carState);
 
             gm.pc = pc;
-            pc.minWeight = gameState.carState.getMinWeight();
-            pc.maxWeight = gameState.carState.getMaxWeight();
-
-            pc.weight = gameState.carState.getCarWeight();
-            pc.turningSpeed = gameState.carState.getCarTurnSpeed();
-            pc.carPartDamageReduction = gameState.carState.getCarDamageReduction();
             carObject.AddComponent(pc);
             carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
             carObject.Parent = Root;
