@@ -15,10 +15,12 @@ namespace CarProto.CustomComponents
         private int turnState = 1; //0 Left | 1 Straight | 2 Right
 
         public float movingSpeed { get; private set; } = 20f;
-        public float knockBackSpeed = 30f;
-        public float knockBackDistance = 4f;
+        public float turningSpeed { get; set; }
+        public float knockBackSpeed = 20f;
+        public float knockBackDistance = 1.7f;
         public float damage { get; set; }
         public float weight { get; set; }
+        public float carPartDamageReduction=1f;
 
         public bool freeControl = false;
 
@@ -80,7 +82,7 @@ namespace CarProto.CustomComponents
             //AutoForward
             else
             {
-                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * movingSpeed * (Math.Max(damageShift() / 1.5f, 1));
+                _GameObject.SceneNode.PositionY += Managers.TimeManager.TimeFactor * movingSpeed;// * (Math.Max(damageShift() / 1.5f, 1
             }
 
             if (knocked)
@@ -123,7 +125,7 @@ namespace CarProto.CustomComponents
             // Move left
             if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Left))
             {
-                _GameObject.SceneNode.PositionX -= Managers.TimeManager.TimeFactor * (movingSpeed * damageShift());
+                _GameObject.SceneNode.PositionX -= Managers.TimeManager.TimeFactor * (turningSpeed * damageShift());
                 addRotation(false);
             }
             else if (Managers.GameInput.IsKeyReleased(GeonBit.Input.GameKeys.Left))
@@ -133,7 +135,7 @@ namespace CarProto.CustomComponents
             // Move right
             if (Managers.GameInput.IsKeyDown(GeonBit.Input.GameKeys.Right))
             {
-                _GameObject.SceneNode.PositionX += Managers.TimeManager.TimeFactor * (movingSpeed * damageShift());
+                _GameObject.SceneNode.PositionX += Managers.TimeManager.TimeFactor * (turningSpeed * damageShift());
                 addRotation(true);
             }
             else if (Managers.GameInput.IsKeyReleased(GeonBit.Input.GameKeys.Right))
@@ -232,10 +234,9 @@ namespace CarProto.CustomComponents
         }
 
         public void addDamage(int damage)
-        {
-            float shift = (-1 * ((weight - minWeight) - maxWeight)) / maxWeight;//(-1*((X-8)-20))/20
+        {           
 
-            damage = (int)((damage * shift) * currentDamageReductionFactor);
+            damage = (int)((damage * carPartDamageReduction) * currentDamageReductionFactor);
             currentDamageReductionFactor *= damageReductionFactor;
 
             this.damage += damage;

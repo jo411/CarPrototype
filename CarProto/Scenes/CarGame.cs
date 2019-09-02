@@ -337,7 +337,8 @@ namespace CarProto
             pc.maxWeight = gameState.carState.getMaxWeight();
 
             pc.weight = gameState.carState.getCarWeight();
-
+            pc.turningSpeed = gameState.carState.getCarTurnSpeed();
+            pc.carPartDamageReduction = gameState.carState.getCarDamageReduction();
             carObject.AddComponent(pc);
             carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
             carObject.Parent = Root;
@@ -379,6 +380,21 @@ namespace CarProto
             gameOverPanel.AddChild(gameOverText);
             gameOverPanel.Visible = false;
 
+            Panel endImagePanel = new Panel(new Vector2(1920, 1200), PanelSkin.None, Anchor.TopCenter);
+            Texture2D winTex = ResourcesManager.Instance.GetTexture("Images/victory");
+            Image winImage = new Image(winTex, new Vector2(400 , 200), ImageDrawMode.Stretch, Anchor.TopCenter, new Vector2(0,70));
+            winImage.Visible = false;
+            winImage.Identifier = "win";
+
+            Texture2D loseTex = ResourcesManager.Instance.GetTexture("Images/lose");
+            Image loseImage = new Image(loseTex, new Vector2(400, 200), ImageDrawMode.Stretch, Anchor.TopCenter, new Vector2(0, 70));
+            loseImage.Visible = false;
+            loseImage.Identifier = "lose";
+
+            endImagePanel.AddChild(winImage);
+            endImagePanel.AddChild(loseImage);
+
+
             Button retryButton = new Button("Retry", ButtonSkin.Fancy, Anchor.Center)
             {
                 OnClick = (Entity btn) =>
@@ -410,12 +426,14 @@ namespace CarProto
             gameOverPanel.AddChild(quitButton);
 
             GameObject uiManager = new GameObject("ui");
-            uiUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
+            uiUpdater = new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel, endImagePanel);
             uiManager.AddComponent(uiUpdater);
             uiManager.Parent = Root;
 
+            UserInterface.AddEntity(endImagePanel);
             UserInterface.AddEntity(statPanel);
             UserInterface.AddEntity(gameOverPanel);
+            
         }
 
         void addSound()

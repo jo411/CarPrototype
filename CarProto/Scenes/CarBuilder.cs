@@ -20,7 +20,10 @@ namespace CarProto
         private GameObject cameraObject;
         private GameObject carObject;
 
-       // private CarGameObjectBuilder carBuilder;
+        private ProgressBar handling;
+        private ProgressBar weight;
+        private ProgressBar damageReduction;
+        // private CarGameObjectBuilder carBuilder;
         public CarBuilder(GameState gameState)
         {            
             this.gameState = gameState;
@@ -29,8 +32,10 @@ namespace CarProto
 
         void init()
         {
-            addSelectorUI();           
-            addCarModelAndCamera();           
+            addSelectorUI();
+            addStatDisplay();
+            addCarModelAndCamera();
+            updateStatDisplay();
         }
 
         void addCamera()
@@ -51,20 +56,83 @@ namespace CarProto
 
         void addCarModelAndCamera()
         {
+            Vector3 savedRotation = new Vector3(0, 0, 0);
             if(carObject!=null)
             {
+                savedRotation = carObject.SceneNode.Rotation;
                 carObject.Destroy();
-            }           
+            }else
+            {
+                savedRotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
+            }
+            
+           
             carObject = gameState.carState.getCarGameObject();
-
+           
             carObject.AddComponent(new RotatingObject(.5f, 0, 0));
 
-            carObject.SceneNode.Rotation = new Vector3(Util.degToRad(0f), Util.degToRad(270f), Util.degToRad(270f));
+            carObject.SceneNode.Rotation = savedRotation;
             carObject.Parent = Root;
 
             addCamera();
         }
+        void updateStatDisplay()
+        {
 
+            float handleMin =Math.Max(0, gameState.carState.getMinTurningSpeed()-10);
+            float handleMax = gameState.carState.getMaxTurningSpeed();
+            float handleRange = handleMax - handleMin;
+            float currentHandle = gameState.carState.getCarTurnSpeed()-handleMin;
+
+            handling.Min = 0;
+            handling.Max = 100;
+            handling.Value = (int)((currentHandle/handleRange)*100);
+
+
+            float drMin = ((gameState.carState.getMaxDamageReduction()) * 100);//reversed to convert from reduction to durability
+            float drMax =((gameState.carState.getMinDamageReduction()) * 100);
+            float drRange = drMax - drMin;
+            float currentDR = (gameState.carState.getCarDamageReduction() * 100);
+            currentDR -= drMin;
+            currentDR = drRange - currentDR;
+            currentDR = Math.Max((int)currentDR, 2);
+
+            damageReduction.Min = 0;
+            damageReduction.Max =  (uint)drRange;
+            damageReduction.Value = (int)(currentDR);
+
+            weight.Min = 0;// (uint)(gameState.carState.getMinWeight() )-20;
+            weight.Max = 100;// (uint)(gameState.carState.getMaxWeight() );
+            weight.Value = (int)((gameState.carState.getCarWeight() / gameState.carState.getMaxWeight())*100);
+            
+
+        }
+        void addStatDisplay()
+        {
+            Vector2 size = new Vector2(600, 50);
+            Panel panel = new Panel(new Vector2(650, 500), PanelSkin.Default, Anchor.TopLeft);
+            handling= new ProgressBar(0, 10, size,Anchor.TopCenter,new Vector2(0,50));
+            weight = new ProgressBar(0, 10,size, Anchor.Center);
+            damageReduction = new ProgressBar(0, 10, size, Anchor.BottomCenter, new Vector2(0, 50));
+            panel.AddChild(weight);
+            panel.AddChild(damageReduction);
+            panel.AddChild(handling);
+
+            Paragraph handlingLabel = new Paragraph("Handling", Anchor.TopCenter, new Vector2(350, 100), new Vector2(0, 0));
+            Paragraph weightLabel = new Paragraph("Weight", Anchor.Center, new Vector2(350, 100), new Vector2(0, -70));
+            Paragraph damageReductionLabel = new Paragraph("Durability", Anchor.BottomCenter, new Vector2(350, 100), new Vector2(0, 100));
+
+            handling.Locked = true;
+            weight.Locked = true;
+            damageReduction.Locked = true;
+
+
+            panel.AddChild(weightLabel);
+            panel.AddChild(damageReductionLabel);
+            panel.AddChild(handlingLabel);
+
+            this.UserInterface.AddEntity(panel);
+        }     
         void addSelectorUI()
         {
             Panel panel = new Panel(new Vector2(1200, 450), PanelSkin.Default, Anchor.BottomCenter);
@@ -86,7 +154,9 @@ namespace CarProto
             {
                 gameState.carState.updateSelectedBody(bodySelect.SelectedIndex);
                 addCarModelAndCamera();
+                updateStatDisplay();
             };
+            
 
             SelectList frontWheelSelect = new SelectList(new Vector2(300, 150), Anchor.CenterLeft, new Vector2(0, 0));
             //frontWheelDrop.DefaultText = ("Choose Front Wheels");
@@ -100,14 +170,14 @@ namespace CarProto
             {
                 gameState.carState.updateSelectedWheel(frontWheelSelect.SelectedIndex,true);
                 addCarModelAndCamera();
+                updateStatDisplay();
             };
 
             SelectList backWheelSelect = new SelectList(new Vector2(300, 150), Anchor.CenterRight, new Vector2(0, 0));
             //backWheelDrop.DefaultText = ("Choose Back Wheels");
             foreach (string text in gameState.carState.getWheelStrings())
             {
-                backWheelSelect.AddItem(text);
-                addCarModelAndCamera();
+                backWheelSelect.AddItem(text);                   
             }
             backWheelSelect.ToolTipText = ("Choose Back Wheels");
 
@@ -115,6 +185,7 @@ namespace CarProto
             {
                 gameState.carState.updateSelectedWheel(backWheelSelect.SelectedIndex, false);
                 addCarModelAndCamera();
+                updateStatDisplay();
             };
 
             int labelOffsetY = -100;
@@ -144,6 +215,17 @@ namespace CarProto
                 gameState.changeScene(State.GAME);
             };
             panel.AddChild(closeTut);
+            Button randomButton = new Button("Random Car", ButtonSkin.Fancy, Anchor.TopLeft, new Vector2(350,50));
+            randomButton.OnClick = (Entity btn) =>
+            {               
+                gameState.carState.buildRandomCar();
+                bodySelect.SelectedIndex = (int)gameState.carState.body;
+                frontWheelSelect.SelectedIndex = (int)gameState.carState.frontWheels;
+                backWheelSelect.SelectedIndex = (int)gameState.carState.backWheels;
+                addCarModelAndCamera();
+                updateStatDisplay();
+            };
+            panel.AddChild(randomButton);
 
             //Panel wip = new Panel(new Vector2(700, 450),PanelSkin.Default, Anchor.CenterLeft,new Vector2(0,-100));
 

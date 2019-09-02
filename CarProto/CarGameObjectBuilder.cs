@@ -29,21 +29,36 @@ namespace CarProto
     }
     class CarGameObjectBuilder
     {
-        BodyTypes body;
-        WheelTypes frontWheels;
-        WheelTypes backWheels;
+       public BodyTypes body{get; private set;}
+       public WheelTypes frontWheels { get; private set; }
+       public WheelTypes backWheels { get; private set; }
 
         List<String> bodies;
         List<String> wheels;
 
         Dictionary<BodyTypes, int> bodyWeights = new Dictionary<BodyTypes, int>();
+        Dictionary<BodyTypes, float> bodyDR = new Dictionary<BodyTypes, float>();
         Dictionary<WheelTypes, int> wheelWeights = new Dictionary<WheelTypes, int>();
+        Dictionary<WheelTypes, float> wheelTurnSpeeds= new Dictionary<WheelTypes, float>();
+        Dictionary<WheelTypes, float> wheelDR = new Dictionary<WheelTypes, float>();
+
         public CarGameObjectBuilder()
         {
             initLists();
-            body = BodyTypes.STONE;
-            frontWheels = WheelTypes.PUMPKIN;
-            backWheels = WheelTypes.PUMPKIN;
+            buildRandomCar();
+
+            //body = BodyTypes.STONE;
+            //frontWheels = WheelTypes.PUMPKIN;
+            //backWheels = WheelTypes.PUMPKIN;
+        }
+
+        public void buildRandomCar()
+        {           
+            Array bodyValues = Enum.GetValues(typeof(BodyTypes));
+            Array wheelValues = Enum.GetValues(typeof(WheelTypes));
+            body = (BodyTypes)bodyValues.GetValue(Util.randomBetween(0,bodyValues.Length));
+            frontWheels = (WheelTypes)wheelValues.GetValue(Util.randomBetween(0, wheelValues.Length));
+            backWheels = (WheelTypes)wheelValues.GetValue(Util.randomBetween(0, wheelValues.Length));
         }
 
         public int getMaxWeight()
@@ -56,40 +71,72 @@ namespace CarProto
             return bodyWeights[BodyTypes.PAPER] + wheelWeights[WheelTypes.PAPER] * 2;
         }
 
+        public float getMinTurningSpeed()
+        {
+            return wheelTurnSpeeds[WheelTypes.STONE];
+        }
+        public float getMaxTurningSpeed()
+        {
+            return wheelTurnSpeeds[WheelTypes.PAPER];
+        }
+
+        public float getMaxDamageReduction()
+        {
+            return (bodyDR[BodyTypes.STONE] + wheelDR[WheelTypes.STONE] + wheelDR[WheelTypes.STONE])/3;
+        }
+        public float getMinDamageReduction()
+        {
+            return (bodyDR[BodyTypes.PAPER] + wheelDR[WheelTypes.PAPER] + wheelDR[WheelTypes.PAPER])/3;
+        }
         void initLists()
         {
             bodies = new List<string>();
             wheels = new List<string>();
 
             bodyWeights.Add(BodyTypes.SHOPPING_CART, 5);
+            bodyDR.Add(BodyTypes.SHOPPING_CART, .89f);
             bodies.Add("Shopping Cart");
 
             bodyWeights.Add(BodyTypes.STONE, 8);
+            bodyDR.Add(BodyTypes.STONE, .5f);
             bodies.Add("Stone");
 
             bodyWeights.Add(BodyTypes.WOOD, 4);
-            bodies.Add("Wood");
+            bodyDR.Add(BodyTypes.WOOD, .98f);
+            bodies.Add("Wood(not implemented)");
 
             bodyWeights.Add(BodyTypes.PAPER, 2);
-            bodies.Add("Paper");
+            bodyDR.Add(BodyTypes.PAPER, 1.2f);
+            bodies.Add("Toilet Paper");
 
-            bodyWeights.Add(BodyTypes.COFFIN, 10);
+            bodyWeights.Add(BodyTypes.COFFIN, 7);
+            bodyDR.Add(BodyTypes.COFFIN, .75f);
             bodies.Add("Coffin");
 
 
             wheelWeights.Add(WheelTypes.SHOPPING_CART, 4);
-            wheels.Add("Shopping Cart");
+            wheelTurnSpeeds.Add(WheelTypes.SHOPPING_CART, 28);
+            wheelDR.Add(WheelTypes.SHOPPING_CART, .98f);
+            wheels.Add("Shopping Cart(not implemented)");
 
             wheelWeights.Add(WheelTypes.STONE, 6);
+            wheelTurnSpeeds.Add(WheelTypes.STONE, 14);
+            wheelDR.Add(WheelTypes.STONE, .5f);
             wheels.Add("Stone");
 
             wheelWeights.Add(WheelTypes.WOOD, 2);
-            wheels.Add("Wood");
+            wheelTurnSpeeds.Add(WheelTypes.WOOD, 24);
+            wheelDR.Add(WheelTypes.WOOD, .99f);
+            wheels.Add("Wood(not implemented)");
 
             wheelWeights.Add(WheelTypes.PAPER, 1);
-            wheels.Add("Paper");
+            wheelTurnSpeeds.Add(WheelTypes.PAPER, 32);
+            wheelDR.Add(WheelTypes.PAPER, 1.1f);
+            wheels.Add("Toilet Paper");
 
             wheelWeights.Add(WheelTypes.PUMPKIN, 3);
+            wheelTurnSpeeds.Add(WheelTypes.PUMPKIN, 24);
+            wheelDR.Add(WheelTypes.PUMPKIN, 1f);
             wheels.Add("Pumpkin");
         }
 
@@ -391,6 +438,16 @@ namespace CarProto
         public float getCarWeight()
         {
             return bodyWeights[body] + wheelWeights[frontWheels] + wheelWeights[backWheels];
+        }
+
+        public float getCarTurnSpeed()
+        {
+            return (wheelTurnSpeeds[backWheels]+ wheelTurnSpeeds[frontWheels])/2;
+        }
+
+        public float getCarDamageReduction()
+        {
+            return (bodyDR[body] + wheelDR[frontWheels] + wheelDR[backWheels])/3;
         }
     }
 

@@ -10,17 +10,18 @@ namespace CarProto.CustomComponents
         public Paragraph damageDisplay;
         public Paragraph speedDisplay;
         public Panel gameOverPanel;
-
+        public Panel gameOverImagePanel;
         private TimeSpan current;
 
         PlayerController pc;
 
-        public UiUpdate(Paragraph timeDisplay, Paragraph damageDisplay, Paragraph speedDisplay, Panel gameOver)
+        public UiUpdate(Paragraph timeDisplay, Paragraph damageDisplay, Paragraph speedDisplay, Panel gameOver, Panel gameOverImagePanel)
         {
             this.timeDisplay = timeDisplay;
             this.damageDisplay = damageDisplay;
             this.speedDisplay = speedDisplay;
             this.gameOverPanel = gameOver;
+            this.gameOverImagePanel = gameOverImagePanel;
             current = new TimeSpan();
         }
 
@@ -31,7 +32,7 @@ namespace CarProto.CustomComponents
 
         public override BaseComponent Clone()
         {
-            return new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel);
+            return new UiUpdate(timeDisplay, damageDisplay, speedDisplay, gameOverPanel, gameOverImagePanel);
         }
 
         /// <summary>
@@ -83,14 +84,19 @@ namespace CarProto.CustomComponents
         public void DisplayGameOver(bool gameWon)
         {
             Paragraph gameOverText = gameOverPanel.Find<Paragraph>("gameover");
+           
             if (gameWon)
             {
                 gameOverText.Text = "Hey you survived to the end; congratulations are in order I suppose...";
+                Image image = gameOverImagePanel.Find<Image>("win");
+                image.Visible = true;
             }
             else
             {
                 gameOverText.Text = "Oh no thats a Game Over for you! \n" +
                                                    "Someone may want to call the medics...\n";
+               Image image = gameOverImagePanel.Find<Image>("lose");
+                image.Visible = true;
             }
             gameOverText.Text += "\n Final Time: " + current.ToString(@"mm\:ss\:ff");
             gameOverPanel.Visible = true;
