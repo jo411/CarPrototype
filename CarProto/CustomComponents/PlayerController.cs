@@ -16,7 +16,7 @@ namespace CarProto.CustomComponents
         public float movingSpeed { get; private set; } = 20f;
         public float turningSpeed { get; set; }
         public float knockBackSpeed = 20f;
-        public float knockBackDistance = 2.3f;
+        public float knockBackDistance = 1.7f;
         public float damage { get; set; }
         public float weight { get; set; }
         public float carPartDamageReduction=1f;

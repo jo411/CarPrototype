@@ -1,6 +1,8 @@
-﻿using GeonBit.ECS;
+﻿using GeonBit.Core;
+using GeonBit.ECS;
 using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace CarProto
 {
@@ -15,9 +17,16 @@ namespace CarProto
 
         void init()
         {
-            Panel panel = new Panel(new Vector2(400, 600), PanelSkin.Default, Anchor.Center);
-            this.UserInterface.AddEntity(panel);
+            Panel titlePanel = new Panel(new Vector2(1920, 1200),PanelSkin.None,Anchor.TopCenter);
+            Texture2D titleTex = ResourcesManager.Instance.GetTexture("Images/title");
+            Image titleImage = new Image(titleTex, new Vector2(900,400),ImageDrawMode.Stretch,Anchor.TopCenter);
+            titlePanel.AddChild(titleImage);
 
+            Panel panel = new Panel(new Vector2(400, 600), PanelSkin.Default, Anchor.Center,new Vector2(0,200));
+
+            this.UserInterface.AddEntity(titlePanel);
+            this.UserInterface.AddEntity(panel);
+            
             // add title and text
             panel.AddChild(new Header("   Welcome to \nDeath 'N' Derby!"));
             panel.AddChild(new HorizontalLine());
@@ -27,7 +36,7 @@ namespace CarProto
             panel.AddChild(tutorialText);
 
             // add a button at the bottom
-            Button closeTut = new Button("Click to Continue!", ButtonSkin.Fancy, Anchor.BottomCenter);
+            Button closeTut = new Button("Click to Start!", ButtonSkin.Fancy, Anchor.BottomCenter);
             closeTut.OnClick = (Entity btn) =>
             {
                 //btn.Parent.Visible = false;

@@ -9,6 +9,7 @@ namespace CarProto
     internal class Game1 : GeonBitGame
     {
         GameState gameState;
+        Color BackColor = Color.MonoGameOrange;
 
         /// <summary>
         /// Initialize your GeonBitGame properties here.
@@ -88,6 +89,7 @@ namespace CarProto
         {
             /// TBD add any custom drawing functionality here.
             /// Note: since GeonBit handle its own drawing internally, usually you don't need to do anything here.
+            
         }
     }
 }
