@@ -1,9 +1,4 @@
 ﻿using GeonBit.ECS.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarProto.CustomComponents
 {
@@ -20,6 +15,13 @@ namespace CarProto.CustomComponents
             this.speedZ = speedZ;
         }
 
+        public void UpdateSpeed(float speedX, float speedY, float speedZ)
+        {
+            this.speedX = speedX;
+            this.speedY = speedY;
+            this.speedZ = speedZ;
+        }
+
         protected override void OnUpdate()
         {
             _GameObject.SceneNode.RotationX += speedX * Managers.TimeManager.TimeFactor;
@@ -29,7 +31,7 @@ namespace CarProto.CustomComponents
 
         public override BaseComponent Clone()
         {
-            return new RotatingObject(speedX, speedY,speedZ);
+            return new RotatingObject(speedX, speedY, speedZ);
         }
     }
 }
