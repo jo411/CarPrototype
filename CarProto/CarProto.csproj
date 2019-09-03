@@ -83,6 +83,7 @@
     <Compile Include="CarGameObjectBuilder.cs" />
     <Compile Include="CustomComponents\BoundaryCollision.cs" />
     <Compile Include="CustomComponents\FinishLineCollision.cs" />
+    <Compile Include="CustomComponents\LinearMovingObject.cs" />
     <Compile Include="CustomComponents\ObstacleMove.cs" />
     <Compile Include="CustomComponents\RotatingObject.cs" />
     <Compile Include="CustomGameObjects\Boundary.cs" />

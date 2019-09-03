@@ -1,6 +1,7 @@
 ﻿using CarProto.CustomGameObjects;
 using GeonBit.ECS;
 using GeonBit.ECS.Components;
+using Microsoft.Xna.Framework;
 using System;
 
 namespace CarProto.CustomComponents
@@ -276,6 +277,9 @@ namespace CarProto.CustomComponents
             if (this.damage >= 100)
             {
                 dead = true;
+                GameObject charObj = _GameObject.Find("Character");
+                charObj.AddComponent(new RotatingObject(Util.randomBetween(0, 10), Util.randomBetween(0, 10), Util.randomBetween(0, 10)));
+                charObj.AddComponent(new LinearMovingObject(33, new Vector3(Util.randomBetween(0, 10)/10f, Util.randomBetween(0, 10) / 10f, Util.randomBetween(0, 10) / 10f)));
             }
 
             if(this.damage>=90)
