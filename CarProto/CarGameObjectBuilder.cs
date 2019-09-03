@@ -191,10 +191,10 @@ namespace CarProto
 
                 Model playerModel = ResourcesManager.Instance.GetModel("Models/rockCar/rockCarCharacter");
                 characterObject.AddComponent(new ModelRenderer(playerModel));
-                characterObject.SceneNode.Rotation = new Vector3(Util.degToRad(270f), Util.degToRad(90f), Util.degToRad(180f));
-                characterObject.SceneNode.Scale = new Vector3(.33f, .33f, .33f);
+                characterObject.SceneNode.Rotation = new Vector3(Util.degToRad(280f), Util.degToRad(-90f), Util.degToRad(180f));
+                characterObject.SceneNode.Scale = new Vector3(.28f, .28f, .28f);
                 characterObject.SceneNode.PositionX += 1.5f;
-                characterObject.SceneNode.PositionY += 3.75f;
+                characterObject.SceneNode.PositionY += 3.55f;
             }
             else if (body == BodyTypes.SHOPPING_CART)
             {
@@ -255,7 +255,7 @@ namespace CarProto
                 characterObject.AddComponent(new ModelRenderer(playerModel));
                 characterObject.SceneNode.Rotation = new Vector3(Util.degToRad(-40f), Util.degToRad(90f), Util.degToRad(180f));
                 characterObject.SceneNode.Scale = new Vector3(.25f, .25f, .25f);
-                characterObject.SceneNode.PositionY += 1f;
+                characterObject.SceneNode.PositionY += 1.7f;
             }
             else //default
             {
