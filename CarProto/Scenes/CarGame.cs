@@ -31,7 +31,7 @@ namespace CarProto
 
         bool showTutorial = false;
         bool showDebug = true;
-        private bool flyCam=false;
+        private bool flyCam = false;
 
         //bool quited = false;
 
@@ -62,6 +62,8 @@ namespace CarProto
             addTrack();
             addCamera();
             addFinishLine();
+            addPond();
+            addGrass();
 
             addBoundary();
             //addTutorialGui();
@@ -259,7 +261,7 @@ namespace CarProto
             //obstacles.Add(new Obstacle(-5, 690, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(15, 700, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(-18, 710, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(0, 710, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(0, 710, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(0, 680, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(5, 690, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(3, 700, carObject, this, baseDamage));
@@ -268,34 +270,34 @@ namespace CarProto
             obstacles.Add(new Obstacle(-5, 660, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(2, 670, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(0, 690, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(24, 700, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(34, 700, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(10, 710, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(13, 680, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(33, 680, carObject, this, baseDamage));
 
-            obstacles.Add(new Obstacle(15, 710, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(25, 710, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(-20, 720, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(-5, 730, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(15, 730, carObject, this, baseDamage));
-            //obstacles.Add(new Obstacle(-5, 740, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(0, 750, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(20, 760, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(0, 730, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(15, 730, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(-5, 740, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(15, 750, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(30, 760, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(5, 760, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(13, 770, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(15, 780, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(17, 790, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(23, 770, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(25, 780, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(37, 790, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(25, 800, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(6, 810, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(15, 810, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(30, 780, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(30, 790, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(35, 780, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(38, 790, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(35, 800, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(30, 810, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(47, 810, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(38, 810, carObject, this, baseDamage));
+            //obstacles.Add(new Obstacle(47, 810, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(26, 810, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(55, 810, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(70, 780, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(60, 790, carObject, this, baseDamage));
-            obstacles.Add(new Obstacle(55, 800, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(90, 780, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(40, 790, carObject, this, baseDamage));
+            obstacles.Add(new Obstacle(75, 800, carObject, this, baseDamage));
             //obstacles.Add(new Obstacle(50, 810, carObject, this, baseDamage));
             obstacles.Add(new Obstacle(57, 810, carObject, this, baseDamage));
 
@@ -331,6 +333,34 @@ namespace CarProto
                 obstacle.SceneNode.Scale = new Vector3(4, 4, 4);
                 //obstacle.AddComponent(new StaticBody(new BoxInfo(new Vector3(1, 1, 1))));
             }
+        }
+
+        void addPond()
+        {
+            Pond pond1 = new Pond(15, 150, carObject, this);
+            Pond pond2 = new Pond(-10, 230, carObject, this);
+            Pond pond3 = new Pond(0, 260, carObject, this);
+            Pond pond4 = new Pond(18, 370, carObject, this);
+            Pond pond5 = new Pond(25, 510, carObject, this);
+            Pond pond6 = new Pond(35, 580, carObject, this);
+            Pond pond7 = new Pond(18, 650, carObject, this);
+            Pond pond8 = new Pond(-20, 850, carObject, this);
+        }
+
+        void addGrass()
+        {
+            Grass grass1 = new Grass(-20, 150, carObject, this);
+            //Grass grass2 = new Grass(10, 200, carObject, this);
+            Grass grass3 = new Grass(20, 320, carObject, this);
+            //Grass grass4 = new Grass(25, 460, carObject, this);
+            Grass grass5 = new Grass(-20, 470, carObject, this);
+            //Grass grass6 = new Grass(-20, 550, carObject, this);
+            Grass grass7 = new Grass(30, 570, carObject, this);
+            //Grass grass8 = new Grass(-40, 680, carObject, this);
+            Grass grass9 = new Grass(-20, 700, carObject, this);
+            //Grass grass10 = new Grass(30, 800, carObject, this);
+            Grass grass11 = new Grass(-20, 760, carObject, this);
+            //Grass grass12 = new Grass(-10, 770, carObject, this);
         }
 
         void addPlayer()

@@ -83,12 +83,16 @@
     <Compile Include="CarGameObjectBuilder.cs" />
     <Compile Include="CustomComponents\BoundaryCollision.cs" />
     <Compile Include="CustomComponents\FinishLineCollision.cs" />
+    <Compile Include="CustomComponents\GrassCollision.cs" />
     <Compile Include="CustomComponents\LinearMovingObject.cs" />
     <Compile Include="CustomComponents\ObstacleMove.cs" />
+    <Compile Include="CustomComponents\PondCollision.cs" />
     <Compile Include="CustomComponents\RotatingObject.cs" />
     <Compile Include="CustomGameObjects\Boundary.cs" />
     <Compile Include="CustomGameObjects\CarObject.cs" />
     <Compile Include="CustomGameObjects\FinishLine.cs" />
+    <Compile Include="CustomGameObjects\Grass.cs" />
+    <Compile Include="CustomGameObjects\Pond.cs" />
     <Compile Include="Scenes\CarBuilder.cs" />
     <Compile Include="Scenes\CarGame.cs" />
     <Compile Include="CustomComponents\CameraFollow.cs" />

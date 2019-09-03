@@ -31,8 +31,11 @@ namespace CarProto.CustomComponents
         public int minWeight;
 
         private bool knocked;
+        private bool slippery;
+        private int slipDir;
         private bool knockedDirLeft;
         private float distanceCounter;
+        Random rand;
 
         private float damageReductionFactor = 0.5f;
         private float currentDamageReductionFactor = 1;
@@ -57,7 +60,7 @@ namespace CarProto.CustomComponents
            // weight = Util.randomBetween(minWeight, maxWeight);
             maxZoffset = zOffset;
             this.carState = carState;
-                  
+            rand = new Random();
         }
 
         protected override void OnAddToScene()
@@ -307,6 +310,25 @@ namespace CarProto.CustomComponents
         {
             knockedDirLeft = left;
             knocked = true;
+        }
+
+        public void RandomShift(bool dir)
+        {
+            if (dir)
+                _GameObject.SceneNode.PositionX += Managers.TimeManager.TimeFactor * (turningSpeed * damageShift()) * 0.5f;
+            else
+                _GameObject.SceneNode.PositionX -= Managers.TimeManager.TimeFactor * (turningSpeed * damageShift()) * 0.5f;
+        }
+
+        public void ReduceSpeed()
+        {
+            movingSpeed -= 300 * weight / 350;
+
+            foreach (GameObject wheelObject in ((CarObject)_GameObject).getWheelObjects())
+            {
+                RotatingObject rotatingObject = wheelObject.GetComponent<RotatingObject>();
+                rotatingObject.UpdateSpeed(0f, 0f, movingSpeed / 10f);
+            }
         }
 
         void detachObjects(wheel wheel)
